@@ -26,6 +26,21 @@ remplacement. Il suffit de déposer le fichier et de relancer le build.
 
 ## Photos livrées le 28 août 2026
 
-Le client a envoyé trois photos par la conversation : Calvin à son bureau, Paul à
-son bureau, et la devanture. Elles doivent être enregistrées ici sous les trois
-noms du tableau ci-dessus.
+Les trois fichiers sont en place. Ils ont été extraits de la conversation, où le
+client les avait envoyés.
+
+| Fichier | Source | Recadrage appliqué |
+|---|---|---|
+| `devanture.jpg` | 640 × 500 (ratio 1,28) | 4/3, quasi aucune perte |
+| `calvin.jpg` | 640 × 500 (ratio 1,28) | 4/5, recadré sur les côtés seulement |
+| `paul.jpg` | **286 × 357** (ratio 0,80) | 4/5, correspondance exacte, aucune perte |
+
+Les proportions d'affichage ont été choisies d'après les sources, et non
+l'inverse : un 16/9 sur une photo en 1,28 aurait amputé l'enseigne et le
+trottoir.
+
+**À remplacer dès que possible.** `paul.jpg` ne fait que 286 px de large, alors
+que son cadre en fait 384 px sur un écran de bureau, soit 768 px en densité
+double. La photo est donc affichée au-delà de sa résolution et paraît molle.
+Astro ne fabrique pas de pixels : il n'agrandit jamais une image. Demander
+l'original sorti du téléphone (question 26).

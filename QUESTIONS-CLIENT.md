@@ -58,9 +58,16 @@ devanture du 35 rue Jean Jaurès. Elles règlent la question 17 pour l'accueil.
 
 **Reste à obtenir sur les photos :**
 
-26. **Fichiers en pleine résolution.** Les trois photos reçues sont en basse
-    résolution (environ 640 px de large). Le hero les affiche jusqu'à 1440 px sur
-    un écran à densité double : il faut les originaux sortis du téléphone.
+26. **Fichiers en pleine résolution.** Les trois photos sont en place et le site
+    les affiche, mais elles sont en basse résolution :
+    - `devanture.jpg` et `calvin.jpg` : 640 × 500. Acceptable, un peu juste sur
+      grand écran.
+    - `paul.jpg` : **286 × 357 seulement.** Son cadre fait 384 px sur un écran de
+      bureau, soit 768 px en densité double. La photo est donc affichée au-delà
+      de sa résolution et paraît molle. **C'est la plus urgente à remplacer.**
+
+    Envoyer les originaux sortis du téléphone, sans passer par une messagerie qui
+    recompresse (WhatsApp, iMessage en « basse qualité »).
 27. **Autorisation de publication** des deux portraits, à confirmer par écrit
     avec chacun des associés.
 28. **Photo de l'intérieur de l'agence**, pour la page `/agence-montereau`
