@@ -1,0 +1,58 @@
+---
+import { site } from '../config/site.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Chemin de la page, sans domaine. Ex. « /assurances/auto-moto ». */
+  path: string;
+  /** Image Open Graph, chemin absolu depuis la racine du site. */
+  image?: string;
+  noindex?: boolean;
+  /** Type Open Graph. « article » sur les billets de blog. */
+  ogType?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+}
+
+const {
+  title,
+  description,
+  path,
+  image = '/images/og-default.png',
+  noindex = false,
+  ogType = 'website',
+  publishedTime,
+  modifiedTime,
+} = Astro.props;
+
+const canonical = new URL(path, site.url).href;
+const ogImage = new URL(image, site.url).href;
+// Le titre de la page d'accueil est déjà complet, les autres portent le suffixe.
+const fullTitle = path === '/' ? title : `${title} | ${site.name}`;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="fr_FR" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<meta name="geo.region" content="FR-77" />
+<meta name="geo.placename" content="Montereau-Fault-Yonne" />

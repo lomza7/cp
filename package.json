@@ -1,0 +1,29 @@
+{
+  "name": "cpsolutions77",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Site vitrine de CP SOLUTIONS, cabinet de courtage en assurances et crédits à Montereau-Fault-Yonne",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "check:legal": "node --experimental-strip-types scripts/check-legal.ts",
+    "check:redirects": "node --experimental-strip-types scripts/check-redirects.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "latest",
+    "@astrojs/vercel": "latest",
+    "@iconify-json/ph": "latest",
+    "astro": "latest",
+    "astro-icon": "latest",
+    "sharp": "latest"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "typescript": "latest",
+    "vitest": "latest"
+  }
+}

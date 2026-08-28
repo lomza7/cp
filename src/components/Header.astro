@@ -1,0 +1,313 @@
+---
+import { Icon } from 'astro-icon/components';
+import { nav, contact, site } from '../config/site.ts';
+
+const chemin = Astro.url.pathname.replace(/\/$/, '') || '/';
+const estActif = (href: string) => chemin === href || chemin.startsWith(`${href}/`);
+---
+
+<header class="header">
+  <div class="conteneur header__interieur">
+    <a href="/" class="header__logo" aria-label={`${site.name}, retour à l'accueil`}>
+      <img
+        src="/images/logo.png"
+        alt=""
+        width="608"
+        height="220"
+        fetchpriority="high"
+        decoding="sync"
+      />
+    </a>
+
+    <nav class="header__nav" aria-label="Navigation principale">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={estActif(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a class="header__tel" href={contact.phoneHref}>
+        <Icon name="ph:phone-fill" aria-hidden="true" />
+        <span class="header__tel-texte">{contact.phoneDisplay}</span>
+        <span class="header__tel-court">Appeler</span>
+      </a>
+      <a class="header__rdv" href={contact.calendly} target="_blank" rel="noopener">
+        Rendez-vous<span class="lecteur-seul"> (nouvel onglet)</span>
+      </a>
+      <button
+        class="header__menu"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu-mobile"
+        data-menu-bouton
+      >
+        <span class="lecteur-seul">Ouvrir le menu</span>
+        <Icon name="ph:list" aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+
+  <!--
+    Le menu mobile est un panneau en flux, masqué par [hidden]. Pas de position
+    fixe ni de piège de focus à maintenir : il pousse le contenu, ce qui reste
+    lisible au clavier et sans JavaScript une fois l'attribut retiré.
+  -->
+  <div class="menu" id="menu-mobile" hidden data-menu-panneau>
+    <nav class="conteneur" aria-label="Navigation principale, menu déroulé">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={estActif(item.href) ? 'page' : undefined}>
+                {item.label}
+                <Icon name="ph:arrow-right" aria-hidden="true" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const bouton = document.querySelector<HTMLButtonElement>('[data-menu-bouton]');
+  const panneau = document.querySelector<HTMLElement>('[data-menu-panneau]');
+
+  if (bouton && panneau) {
+    const basculer = (ouvrir: boolean) => {
+      bouton.setAttribute('aria-expanded', String(ouvrir));
+      panneau.hidden = !ouvrir;
+      bouton.querySelector('.lecteur-seul')!.textContent = ouvrir
+        ? 'Fermer le menu'
+        : 'Ouvrir le menu';
+    };
+
+    bouton.addEventListener('click', () => {
+      basculer(bouton.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Échap referme et rend le focus au bouton, comportement attendu au clavier.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panneau.hidden) {
+        basculer(false);
+        bouton.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--papier);
+    border-bottom: var(--filet);
+  }
+
+  .header__interieur {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    min-height: 3.5rem;
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+    flex: none;
+    min-height: var(--touche);
+    padding-right: var(--e-2);
+  }
+
+  .header__logo img {
+    height: 1.75rem;
+    width: auto;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .header__nav ul {
+    display: flex;
+    gap: clamp(var(--e-4), 1.4vw, var(--e-6));
+  }
+
+  .header__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touche);
+    color: var(--encre);
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    border-bottom: 2px solid transparent;
+  }
+
+  .header__nav a:hover {
+    border-bottom-color: var(--encre);
+  }
+
+  .header__nav a[aria-current='page'] {
+    border-bottom-color: var(--orange);
+  }
+
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--e-2);
+    flex: none;
+  }
+
+  .header__tel {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--e-2);
+    min-height: var(--touche);
+    padding: var(--e-2) var(--e-4);
+    background: var(--orange);
+    color: var(--encre);
+    border-radius: var(--rayon);
+    font-family: var(--f-donnee);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .header__tel:hover {
+    background: var(--orange-fonce);
+    color: var(--encre);
+  }
+
+  .header__tel :global(svg) {
+    width: 1.125em;
+    height: 1.125em;
+  }
+
+  .header__tel-texte {
+    display: none;
+  }
+
+  .header__rdv {
+    display: none;
+  }
+
+  .header__menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--touche);
+    height: var(--touche);
+    margin-right: calc(var(--e-3) * -1);
+    color: var(--encre);
+  }
+
+  .header__menu :global(svg) {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  /* ---- Menu déroulé (mobile et tablette) ---- */
+  .menu {
+    border-top: var(--filet);
+    background: var(--papier);
+  }
+
+  .menu ul {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 56px;
+    padding: var(--e-3) 0;
+    border-bottom: var(--filet);
+    color: var(--encre);
+    font-weight: 700;
+    font-size: var(--t-4);
+    text-decoration: none;
+  }
+
+  .menu li:last-child a {
+    border-bottom: 0;
+  }
+
+  .menu a[aria-current='page'] {
+    color: var(--bleu);
+  }
+
+  .menu a :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--encre-2);
+  }
+
+  @media (min-width: 60rem) {
+    .header__interieur {
+      min-height: 4.5rem;
+      gap: var(--e-8);
+    }
+
+    .header__logo img {
+      height: 2.125rem;
+    }
+
+    .header__nav,
+    .header__rdv {
+      display: block;
+    }
+
+    .header__tel-texte {
+      display: inline;
+    }
+
+    .header__tel-court,
+    .header__menu {
+      display: none;
+    }
+
+    .header__tel {
+      min-height: 42px;
+      padding-inline: var(--e-3);
+    }
+
+    .header__rdv {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: var(--e-2) var(--e-3);
+      border: 2px solid var(--encre);
+      border-radius: var(--rayon);
+      color: var(--encre);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .header__rdv:hover {
+      background: var(--encre);
+      color: var(--papier);
+    }
+
+    .menu {
+      display: none;
+    }
+  }
+</style>

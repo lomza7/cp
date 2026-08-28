@@ -1,0 +1,284 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site, contact, address, footerNav, social, areaServed } from '../config/site.ts';
+import { orias } from '../config/legal.ts';
+import Horaires from './Horaires.astro';
+
+const annee = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="conteneur">
+    <div class="footer__haut">
+      <div class="footer__identite">
+        <img src="/images/logo.png" alt={site.name} width="608" height="220" loading="lazy" />
+        <p class="footer__slogan">{site.slogan}</p>
+        <address class="footer__adresse">
+          {address.street}<br />
+          {address.postalCode} {address.city}
+        </address>
+        <p class="footer__contacts">
+          <a href={contact.phoneHref} class="footer__tel">{contact.phoneDisplay}</a><br />
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        </p>
+        <ul class="footer__social">
+          <li>
+            <a href={social.facebook} target="_blank" rel="noopener" aria-label="Facebook (nouvel onglet)">
+              <Icon name="ph:facebook-logo-fill" aria-hidden="true" />
+            </a>
+          </li>
+          <li>
+            <a href={social.instagram} target="_blank" rel="noopener" aria-label="Instagram (nouvel onglet)">
+              <Icon name="ph:instagram-logo-fill" aria-hidden="true" />
+            </a>
+          </li>
+          <li>
+            <a href={social.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn (nouvel onglet)">
+              <Icon name="ph:linkedin-logo-fill" aria-hidden="true" />
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <nav class="footer__colonnes" aria-label="Plan du site">
+        <div>
+          <h2 class="libelle">Assurances</h2>
+          <ul>
+            {footerNav.assurances.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 class="libelle">Crédits</h2>
+          <ul>
+            {footerNav.credits.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 class="libelle">Le cabinet</h2>
+          <ul>
+            {footerNav.cabinet.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 class="libelle">Horaires</h2>
+          <Horaires compact class="footer__horaires" />
+        </div>
+      </nav>
+    </div>
+
+    <div class="footer__zone">
+      <p>
+        <span class="libelle">Zone desservie</span>
+        {areaServed.join(' · ')}
+      </p>
+    </div>
+
+    <div class="footer__bas">
+      <p class="footer__mentions">
+        {site.legalName} · SIREN 903 877 066 ·{' '}
+        {
+          orias.number ? (
+            <>Immatriculé à l'ORIAS sous le n° {orias.number}</>
+          ) : (
+            <span class="footer__todo">Numéro ORIAS à renseigner</span>
+          )
+        }
+      </p>
+      <ul class="footer__legal">
+        {footerNav.legal.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+      <p class="footer__copyright">© {annee} {site.legalName}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: auto;
+    border-top: var(--filet-fort);
+    background: var(--papier);
+    padding-block: var(--e-12) var(--e-8);
+  }
+
+  .footer__haut {
+    display: grid;
+    gap: var(--e-12);
+  }
+
+  .footer__identite img {
+    height: 2.25rem;
+    width: auto;
+  }
+
+  .footer__slogan {
+    margin-top: var(--e-3);
+    font-weight: 700;
+    font-size: var(--t-4);
+    letter-spacing: -0.01em;
+  }
+
+  .footer__adresse {
+    margin-top: var(--e-4);
+    font-style: normal;
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .footer__contacts {
+    margin-top: var(--e-2);
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+  }
+
+  .footer__contacts a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touche);
+  }
+
+  .footer__tel {
+    font-weight: 500;
+    color: var(--encre);
+    text-decoration-color: var(--orange);
+    text-decoration-thickness: 2px;
+  }
+
+  .footer__social {
+    display: flex;
+    gap: var(--e-2);
+    margin-top: var(--e-4);
+  }
+
+  .footer__social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--touche);
+    height: var(--touche);
+    color: var(--encre);
+    border: var(--filet);
+    border-radius: var(--rayon);
+  }
+
+  .footer__social a:hover {
+    background: var(--papier-2);
+  }
+
+  .footer__social :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .footer__colonnes {
+    display: grid;
+    gap: var(--e-8);
+  }
+
+  .footer__colonnes h2 {
+    padding-bottom: var(--e-2);
+    border-bottom: var(--filet);
+  }
+
+  .footer__colonnes ul {
+    margin-top: var(--e-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-1);
+  }
+
+  .footer__colonnes a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: var(--e-1);
+    color: var(--encre);
+    font-size: var(--t-small);
+    text-decoration: none;
+  }
+
+  .footer__colonnes a:hover {
+    color: var(--bleu);
+    text-decoration: underline;
+  }
+
+  .footer__zone {
+    margin-top: var(--e-12);
+    padding-top: var(--e-4);
+    border-top: var(--filet);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .footer__zone .libelle {
+    display: block;
+    margin-bottom: var(--e-1);
+  }
+
+  .footer__bas {
+    margin-top: var(--e-6);
+    padding-top: var(--e-4);
+    border-top: var(--filet);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3) var(--e-6);
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .footer__mentions {
+    font-family: var(--f-donnee);
+    font-size: 0.8125rem;
+  }
+
+  /* Un champ légal manquant se voit, il ne disparaît pas silencieusement. */
+  .footer__todo {
+    background: var(--orange);
+    color: var(--encre);
+    padding: 0 var(--e-1);
+    font-weight: 500;
+  }
+
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-4);
+  }
+
+  .footer__legal a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--encre-2);
+  }
+
+  .footer__legal a:hover {
+    color: var(--encre);
+  }
+
+  .footer__copyright {
+    font-family: var(--f-donnee);
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: 48rem) {
+    .footer__colonnes {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--e-8) var(--e-6);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .footer__haut {
+      grid-template-columns: 18rem 1fr;
+      gap: var(--e-16);
+    }
+
+    /* La colonne des horaires porte deux créneaux par jour : elle a besoin de plus de place. */
+    .footer__colonnes {
+      grid-template-columns: 1fr 1fr 0.8fr 1.1fr;
+    }
+  }
+</style>

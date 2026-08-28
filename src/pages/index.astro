@@ -1,0 +1,645 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import Bouton from '../components/Bouton.astro';
+import Tampon from '../components/Tampon.astro';
+import Horaires from '../components/Horaires.astro';
+import { site, contact, address, team, googleReviews, quoteForms } from '../config/site.ts';
+import { formatNote } from '../lib/format.ts';
+
+const paul = team.find((m) => m.id === 'paul')!;
+const calvin = team.find((m) => m.id === 'calvin')!;
+
+const assurances = [
+  { label: 'Auto et moto, y compris après résiliation', href: '/assurances/auto-moto' },
+  { label: 'Habitation, locataire, propriétaire, PNO', href: '/assurances/habitation' },
+  { label: 'Professionnels, décennale, dommage-ouvrage', href: '/assurances/professionnels' },
+  { label: 'Camping-car, santé, animaux, voyage, GLI', href: '/assurances/autres' },
+];
+
+const credits = [
+  { label: 'Prêt immobilier', href: '/credits/immobilier' },
+  { label: 'Rachat et regroupement de crédits', href: '/credits/rachat-regroupement' },
+  { label: 'Assurance emprunteur', href: '/assurance-emprunteur' },
+];
+---
+
+<Base
+  title="Courtier en assurances et crédits à Montereau-Fault-Yonne | CP SOLUTIONS"
+  description="Cabinet de courtage à Montereau-Fault-Yonne. Assurances auto, habitation, professionnels, y compris après résiliation. Prêt immobilier et rachat de crédits. Appelez le 01 64 24 83 45."
+  path="/"
+>
+  <!-- Hero : la thèse du site en un écran. Le téléphone est atteignable ici et dans la barre du bas. -->
+  <section class="hero">
+    <div class="conteneur hero__grille">
+      <div class="hero__texte">
+        <h1>Le courtier qui décroche.</h1>
+        <p class="hero__accroche">
+          Assurances et crédits à Montereau-Fault-Yonne. Deux associés, une agence
+          rue Jean Jaurès, ouverte du lundi au samedi.
+        </p>
+        <div class="hero__actions">
+          <Bouton href={contact.phoneHref} variante="encre" taille="grand" icone="ph:phone-fill">
+            Appeler le {contact.phoneDisplay}
+          </Bouton>
+          <Bouton href="/credits#simulateur" variante="lien">
+            Simuler mon budget d'achat
+          </Bouton>
+        </div>
+      </div>
+
+      <!-- TODO client (QUESTIONS-CLIENT n° 17) : remplacer par la photo du shooting. -->
+      <div class="hero__visuel emplacement" role="img" aria-label="Emplacement réservé à une photo des deux associés devant l'agence">
+        Photo · Paul Poirier et Calvin Riffault devant l'agence
+      </div>
+    </div>
+  </section>
+
+  <!-- Preuve sociale : l'actif le plus sous-exploité du cabinet, mis juste sous le hero. -->
+  <section class="preuve">
+    <div class="conteneur preuve__interieur">
+      <Tampon couleur="bleu">{formatNote(googleReviews.rating)} / 5 · {googleReviews.count} avis</Tampon>
+      <p>
+        La note du cabinet sur Google, laissée par {googleReviews.count} clients.{' '}
+        <a href={googleReviews.url} target="_blank" rel="noopener">
+          Lire les avis<span class="lecteur-seul"> sur Google (nouvel onglet)</span>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Les deux métiers, en vis-à-vis. C'est la seule section du site où l'orange et
+    le bleu ont le même poids : le visiteur doit comprendre en une seconde qu'il
+    y a deux métiers, et à qui il va parler.
+  -->
+  <section class="duo" aria-labelledby="duo-titre">
+    <h2 id="duo-titre" class="lecteur-seul">Nos deux métiers</h2>
+
+    <div class="duo__bloc duo__bloc--assurances" data-metier="assurances">
+      <div class="duo__interieur">
+        <p class="duo__qui">
+          Assurances · <a href="/le-cabinet#paul">{paul.firstName} {paul.lastName}</a>
+        </p>
+        <h3>Assuré, même quand les autres disent non.</h3>
+        <ul>
+          {
+            assurances.map((item) => (
+              <li>
+                <a href={item.href}>
+                  <span>{item.label}</span>
+                  <Icon name="ph:arrow-right" aria-hidden="true" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <Bouton href="/assurances" variante="contour">Toutes les assurances</Bouton>
+      </div>
+    </div>
+
+    <div class="duo__bloc duo__bloc--credits" data-metier="credits" data-fond="bleu">
+      <div class="duo__interieur">
+        <p class="duo__qui">
+          Crédits · <a href="/le-cabinet#calvin">{calvin.firstName} {calvin.lastName}</a>
+        </p>
+        <h3>Du compromis aux clés, en dix étapes.</h3>
+        <ul>
+          {
+            credits.map((item) => (
+              <li>
+                <a href={item.href}>
+                  <span>{item.label}</span>
+                  <Icon name="ph:arrow-right" aria-hidden="true" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <Bouton href="/credits" variante="contour">Tous les crédits</Bouton>
+      </div>
+    </div>
+  </section>
+
+  <!-- L'angle qui différencie vraiment le cabinet. -->
+  <section class="refus section" data-metier="assurances">
+    <div class="conteneur refus__grille">
+      <div>
+        <div class="refus__entete">
+          <h2>Résilié, malussé, permis annulé ?</h2>
+          <Tampon couleur="orange" angle={-6}>Accepté</Tampon>
+        </div>
+        <p class="mesure">
+          Une résiliation, une perte de permis, trop d'accidents ou du malus : ce sont
+          les dossiers que les compagnies refusent en ligne, et ceux que nous traitons
+          le plus souvent. Nous savons lesquelles acceptent, à quelles conditions et à
+          quel prix.
+        </p>
+        <p class="mesure refus__agira">
+          Inutile de cacher votre historique : il est enregistré à l'AGIRA, tous les
+          assureurs y ont accès. Dites-nous la vérité, nous chercherons la solution.
+        </p>
+        <div class="refus__actions">
+          <Bouton href={quoteForms.auto} variante="accent" externe icone="ph:file-text">
+            Devis auto en ligne
+          </Bouton>
+          <Bouton href={contact.phoneHref} variante="contour" icone="ph:phone-fill">
+            Ou appelez-nous
+          </Bouton>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Les deux associés : à qui vous allez parler, avec leurs propres mots. -->
+  <section class="associes section">
+    <div class="conteneur">
+      <h2>Deux associés, deux métiers</h2>
+      <p class="associes__intro mesure">
+        Contrairement à un agent lié à une seule compagnie, nous comparons pour vous.
+        Notre rôle est de défendre vos intérêts, pas ceux d'un assureur ou d'une banque.
+      </p>
+
+      <div class="associes__grille">
+        {
+          team.map((membre) => (
+            <article class="associe" data-metier={membre.domain}>
+              <div
+                class="associe__photo emplacement"
+                role="img"
+                aria-label={`Emplacement réservé au portrait de ${membre.firstName} ${membre.lastName}`}
+              >
+                Portrait · {membre.firstName} {membre.lastName}
+              </div>
+              <h3 id={membre.id}>
+                {membre.firstName} {membre.lastName}
+              </h3>
+              <p class="associe__role libelle">{membre.role}</p>
+              <blockquote class="associe__citation">{membre.quote}</blockquote>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- L'agence : la preuve qu'ils existent physiquement. -->
+  <section class="agence section">
+    <div class="conteneur agence__grille">
+      <div>
+        <h2>Poussez la porte</h2>
+        <p class="mesure">
+          Chez nous le téléphone existe, mais vous pouvez aussi venir. L'agence est au
+          {' '}{address.street}, à {address.city}, ouverte six jours sur sept, avec ou
+          sans rendez-vous.
+        </p>
+        <div class="agence__actions">
+          <Bouton href="/agence-montereau" variante="contour" icone="ph:map-pin">
+            Voir l'agence
+          </Bouton>
+          <Bouton href={contact.calendly} variante="lien" externe>
+            Prendre rendez-vous
+          </Bouton>
+        </div>
+      </div>
+      <div class="agence__horaires">
+        <h3 class="libelle">Horaires d'ouverture</h3>
+        <Horaires />
+      </div>
+    </div>
+  </section>
+
+  <!-- Dernière chance de convertir : le numéro, en grand. -->
+  <section class="appel" data-fond="sombre">
+    <div class="conteneur appel__interieur">
+      <div>
+        <h2>Un doute ? Appelez, on répond.</h2>
+        <p>Un courtier au bout du fil, pas un serveur vocal. {site.slogan}.</p>
+      </div>
+      <div class="appel__actions">
+        <a class="appel__numero" href={contact.phoneHref}>
+          <Icon name="ph:phone-fill" aria-hidden="true" />
+          {contact.phoneDisplay}
+        </a>
+        <a class="appel__rappel" href="/contact">Ou demandez à être rappelé</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---- Hero ---- */
+  .hero {
+    padding-block: var(--e-8) var(--e-12);
+    border-bottom: var(--filet);
+  }
+
+  .hero__grille {
+    display: grid;
+    gap: var(--e-8);
+  }
+
+  .hero h1 {
+    max-width: 20ch;
+  }
+
+  .hero__accroche {
+    margin-top: var(--e-4);
+    max-width: 34ch;
+    font-size: clamp(1.0625rem, 1rem + 0.5vw, 1.1875rem);
+    color: var(--encre-2);
+  }
+
+  .hero__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4) var(--e-6);
+  }
+
+  /*
+    Sur mobile, un emplacement photo au format portrait occuperait 450 px de
+    vide sous les boutons. Format paysage tant qu'on est en une colonne.
+  */
+  .hero__visuel {
+    aspect-ratio: 16 / 10;
+    min-height: 10rem;
+  }
+
+  /* ---- Preuve sociale ---- */
+  .preuve {
+    border-bottom: var(--filet);
+    padding-block: var(--e-6);
+  }
+
+  .preuve__interieur {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4) var(--e-8);
+  }
+
+  .preuve p {
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .preuve a {
+    white-space: nowrap;
+  }
+
+  /* ---- Les deux métiers ---- */
+  .duo {
+    display: grid;
+    border-bottom: var(--filet-fort);
+  }
+
+  .duo__bloc {
+    padding-block: var(--section-y);
+  }
+
+  .duo__bloc--assurances {
+    background: var(--orange);
+    color: var(--encre);
+  }
+
+  .duo__bloc--credits {
+    background: var(--bleu);
+    color: var(--papier);
+  }
+
+  .duo__interieur {
+    width: 100%;
+    max-width: calc(var(--conteneur) / 2);
+    margin-inline: auto;
+    padding-inline: var(--gouttiere);
+  }
+
+  .duo__qui {
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .duo__qui a {
+    display: inline-block;
+    padding-block: var(--e-2);
+    color: inherit;
+    text-decoration-thickness: 1px;
+  }
+
+  .duo__bloc h3 {
+    margin-top: var(--e-2);
+    font-size: var(--t-2);
+    max-width: 22ch;
+    font-variation-settings: 'opsz' 72;
+  }
+
+  .duo__bloc ul {
+    margin-top: var(--e-6);
+  }
+
+  .duo__bloc li {
+    border-top: 1px solid rgb(27 27 24 / 0.2);
+  }
+
+  .duo__bloc--credits li {
+    border-top-color: rgb(243 242 237 / 0.3);
+  }
+
+  .duo__bloc li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    min-height: var(--touche);
+    padding-block: var(--e-2);
+    color: inherit;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .duo__bloc li a:hover span {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .duo__bloc li :global(svg) {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: none;
+  }
+
+  .duo__bloc :global(.bouton) {
+    margin-top: var(--e-6);
+  }
+
+  .duo__bloc--credits :global(.bouton--contour) {
+    color: var(--papier);
+  }
+
+  .duo__bloc--credits :global(.bouton--contour:hover) {
+    background: var(--papier);
+    color: var(--bleu);
+  }
+
+  .duo__bloc--assurances :global(.bouton--contour:hover) {
+    background: var(--encre);
+    color: var(--orange);
+  }
+
+  /* ---- Résiliés ---- */
+  .refus {
+    background: var(--orange-pale);
+    border-bottom: var(--filet-fort);
+  }
+
+  .refus__grille {
+    display: grid;
+    gap: var(--e-8);
+  }
+
+  .refus__agira {
+    margin-top: var(--e-4);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .refus__entete + p {
+    margin-top: var(--e-4);
+  }
+
+  .refus__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3);
+  }
+
+  /*
+    Le tampon répond à la question du titre : il reste avec lui, et passe à la
+    ligne sous le titre quand la place manque.
+  */
+  .refus__entete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4) var(--e-6);
+  }
+
+  /* ---- Associés ---- */
+  .associes__intro {
+    margin-top: var(--e-4);
+    color: var(--encre-2);
+  }
+
+  .associes__grille {
+    margin-top: var(--e-8);
+    display: grid;
+    gap: var(--e-8);
+  }
+
+  /* En une colonne, un portrait 4/5 ferait 440 px de hachures. Paysage d'abord. */
+  .associe__photo {
+    aspect-ratio: 3 / 2;
+    margin-bottom: var(--e-4);
+  }
+
+  .associe h3 {
+    font-size: var(--t-3);
+  }
+
+  .associe__role {
+    margin-top: var(--e-1);
+    color: var(--accent);
+  }
+
+  /* Le bleu passe en texte, l'orange non : il ne tient pas le contraste. */
+  .associe[data-metier='assurances'] .associe__role {
+    color: var(--encre-2);
+  }
+
+  .associe__citation {
+    margin-top: var(--e-3);
+    padding-left: var(--e-4);
+    border-left: 3px solid var(--accent);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  /* ---- Agence ---- */
+  .agence {
+    border-top: var(--filet);
+  }
+
+  .agence__grille {
+    display: grid;
+    gap: var(--e-8);
+  }
+
+  .agence p {
+    margin-top: var(--e-4);
+  }
+
+  .agence__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4);
+  }
+
+  .agence__horaires h3 {
+    padding-bottom: var(--e-2);
+    border-bottom: var(--filet);
+    margin-bottom: var(--e-2);
+  }
+
+  /* ---- Appel final ---- */
+  .appel {
+    background: var(--encre);
+    color: var(--papier);
+    padding-block: var(--section-y);
+  }
+
+  .appel__interieur {
+    display: grid;
+    gap: var(--e-8);
+  }
+
+  .appel h2 {
+    max-width: 24ch;
+  }
+
+  .appel p {
+    margin-top: var(--e-3);
+    color: rgb(243 242 237 / 0.75);
+  }
+
+  .appel__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .appel__numero {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--e-3);
+    padding: var(--e-4) var(--e-6);
+    background: var(--orange);
+    color: var(--encre);
+    border-radius: var(--rayon);
+    font-family: var(--f-donnee);
+    font-size: clamp(1.25rem, 1rem + 1.6vw, 1.75rem);
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .appel__numero:hover {
+    background: var(--orange-fonce);
+    color: var(--encre);
+  }
+
+  .appel__numero :global(svg) {
+    width: 1.125em;
+    height: 1.125em;
+  }
+
+  .appel__rappel {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touche);
+    margin-top: var(--e-2);
+    color: var(--papier);
+    font-weight: 700;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  .appel__rappel:hover {
+    color: var(--orange);
+  }
+
+  /* ---- Points de rupture ---- */
+  @media (min-width: 48rem) {
+    .hero__visuel {
+      max-height: 18rem;
+    }
+
+    .duo {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .duo__interieur {
+      max-width: calc(var(--conteneur) / 2);
+      margin-inline: 0;
+    }
+
+    .duo__bloc--assurances .duo__interieur {
+      margin-left: auto;
+      padding-right: var(--e-8);
+    }
+
+    .duo__bloc--credits .duo__interieur {
+      padding-left: var(--e-8);
+    }
+
+    .associe__photo {
+      aspect-ratio: 4 / 5;
+    }
+
+    .associes__grille,
+    .agence__grille {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--e-12);
+    }
+
+
+    .appel__interieur {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: var(--e-12);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .hero {
+      padding-block: var(--e-12) var(--e-16);
+    }
+
+    .hero__grille {
+      grid-template-columns: 7fr 5fr;
+      gap: var(--e-16);
+      align-items: center;
+    }
+
+    /*
+      Hauteur plafonnée : sans cela, un portrait 4/5 sur cinq colonnes fait
+      630 px de haut et fait flotter le titre au milieu de l'écran.
+    */
+    .hero__visuel {
+      aspect-ratio: 4 / 5;
+      max-height: 26rem;
+      min-height: 20rem;
+      margin-inline-start: auto;
+      width: 100%;
+      max-width: 21rem;
+    }
+
+    .agence__grille {
+      grid-template-columns: 1fr 22rem;
+      gap: var(--e-16);
+    }
+
+    .associes__grille {
+      grid-template-columns: repeat(2, minmax(0, 22rem));
+    }
+  }
+</style>

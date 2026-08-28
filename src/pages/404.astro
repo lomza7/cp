@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import Bouton from '../components/Bouton.astro';
+import { contact, nav } from '../config/site.ts';
+---
+
+<Base
+  title="Page introuvable"
+  description="Cette page n'existe pas ou plus. Retrouvez les assurances, les crédits et le contact du cabinet CP SOLUTIONS."
+  path="/404"
+  noindex
+>
+  <section class="section conteneur">
+    <p class="libelle">Erreur 404</p>
+    <h1>Cette page n'existe pas.</h1>
+    <p class="mesure intro">
+      Elle a peut-être été déplacée lors de la refonte du site. Voici où aller,
+      ou appelez-nous et nous vous dirons où chercher.
+    </p>
+
+    <ul class="liens">
+      {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+    </ul>
+
+    <div class="actions">
+      <Bouton href={contact.phoneHref} variante="encre" icone="ph:phone-fill">
+        Appeler le {contact.phoneDisplay}
+      </Bouton>
+      <Bouton href="/" variante="contour">Retour à l'accueil</Bouton>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    margin-top: var(--e-2);
+  }
+
+  .intro {
+    margin-top: var(--e-4);
+    color: var(--encre-2);
+  }
+
+  .liens {
+    margin-top: var(--e-8);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2) var(--e-6);
+    padding-top: var(--e-4);
+    border-top: var(--filet);
+  }
+
+  .liens a {
+    display: inline-block;
+    padding-block: var(--e-2);
+    font-weight: 700;
+  }
+
+  .actions {
+    margin-top: var(--e-8);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3);
+  }
+</style>

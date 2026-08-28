@@ -1,0 +1,115 @@
+/*
+  Direction « Deux mains ».
+  Fond papier, encre noire, et deux couleurs qui appartiennent chacune à un
+  associé : l'orange aux assurances (Paul), le bleu aux crédits (Calvin).
+
+  Règle non négociable : l'orange est un aplat, jamais un texte. Son contraste
+  sur le papier est de 2,5:1. C'est l'encre qui s'écrit dessus (6,1:1).
+*/
+
+:root {
+  color-scheme: light;
+
+  /* ---- Couleurs ---- */
+  --papier: #f3f2ed;
+  --papier-2: #e9e7df;
+  --papier-3: #fbfbf9; /* fond de champ de saisie, plus clair que la page */
+  --encre: #1b1b18; /* 15,4:1 sur papier */
+  --encre-2: #5c5b55; /* 6,1:1 sur papier */
+
+  --orange: #ee7a16; /* aplats assurances. Encre dessus : 6,1:1 */
+  --orange-fonce: #d46a0c; /* survol. Encre dessus : 4,8:1 */
+  --orange-pale: #fbe3cc; /* fond de section. Encre dessus : 13,9:1 */
+
+  --bleu: #1d3fb8; /* texte et aplats crédits. 7,6:1 sur papier */
+  --bleu-fonce: #162f8f; /* survol. Papier dessus : 10,2:1 */
+  --bleu-pale: #dde3f7; /* fond de section. Bleu dessus : 6,7:1 */
+
+  --ok: #25693f; /* 5,9:1 sur papier */
+  --erreur: #b3261e; /* 5,8:1 sur papier */
+
+  /* Couleurs de la section courante. Redéfinies par [data-metier]. */
+  --accent: var(--encre);
+  --accent-fonce: var(--encre);
+  --accent-pale: var(--papier-2);
+  --sur-accent: var(--papier);
+
+  /* ---- Typographie ---- */
+  --f-texte: 'Bricolage Grotesque', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --f-donnee: 'IBM Plex Mono', ui-monospace, 'SF Mono', SFMono-Regular, Menlo,
+    Consolas, 'Liberation Mono', monospace;
+
+  --t-1: clamp(2.5rem, 1.6rem + 4vw, 4rem); /* 40 -> 64 px */
+  --t-2: clamp(1.875rem, 1.4rem + 2.1vw, 2.75rem); /* 30 -> 44 px */
+  --t-3: clamp(1.5rem, 1.35rem + 0.65vw, 1.875rem); /* 24 -> 30 px */
+  --t-4: clamp(1.25rem, 1.2rem + 0.22vw, 1.375rem); /* 20 -> 22 px */
+  --t-body: clamp(1.0625rem, 1.04rem + 0.11vw, 1.125rem); /* 17 -> 18 px */
+  --t-small: 0.9375rem; /* 15 px */
+  --t-mono: clamp(0.9375rem, 0.92rem + 0.11vw, 1rem); /* 15 -> 16 px */
+  --t-mono-xl: clamp(2.5rem, 1.9rem + 2.7vw, 3.5rem); /* 40 -> 56 px */
+  --t-libelle: 0.78125rem; /* 12,5 px, libellés en capitales */
+
+  --lh-titre: 1.05;
+  --lh-texte: 1.55;
+  --mesure: 65ch;
+
+  /* ---- Espacements, base 4 ---- */
+  --e-1: 0.25rem;
+  --e-2: 0.5rem;
+  --e-3: 0.75rem;
+  --e-4: 1rem;
+  --e-6: 1.5rem;
+  --e-8: 2rem;
+  --e-12: 3rem;
+  --e-16: 4rem;
+  --e-24: 6rem;
+  --e-32: 8rem;
+
+  /* Rythme vertical d'une section, resserré sur mobile. */
+  --section-y: clamp(2.5rem, 1.5rem + 4.4vw, 5rem);
+
+  /* ---- Grille ---- */
+  --conteneur: 75rem; /* 1200 px */
+  --gouttiere: 1rem;
+
+  /* ---- Formes ---- */
+  --rayon: 2px; /* le rayon d'une chemise cartonnée. Aucune exception. */
+  --filet: 1px solid var(--papier-2);
+  --filet-fort: 2px solid var(--encre);
+  --touche: 48px; /* zone tactile minimale */
+
+  /* ---- Mouvement ---- */
+  --duree: 160ms;
+  --courbe: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---- Plans ---- */
+  --z-header: 10;
+  --z-barre: 20;
+  --z-menu: 30;
+  --z-evitement: 40;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gouttiere: 1.5rem;
+  }
+}
+
+/*
+  Un conteneur peut déclarer son métier ; ses enfants héritent des bonnes
+  couleurs sans que chaque composant ait à connaître la règle.
+*/
+[data-metier='assurances'] {
+  --accent: var(--orange);
+  --accent-fonce: var(--orange-fonce);
+  --accent-pale: var(--orange-pale);
+  --sur-accent: var(--encre);
+}
+
+[data-metier='credits'] {
+  --accent: var(--bleu);
+  --accent-fonce: var(--bleu-fonce);
+  --accent-pale: var(--bleu-pale);
+  --sur-accent: var(--papier);
+}

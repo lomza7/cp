@@ -1,0 +1,176 @@
+---
+import { hours, formatSlot } from '../config/site.ts';
+
+interface Props {
+  /** Met en évidence le jour courant. */
+  surligneAujourdhui?: boolean;
+  /**
+   * Variante resserrée pour les colonnes étroites (pied de page) : jour abrégé
+   * et créneaux empilés, sans quoi le tableau triple de hauteur.
+   */
+  compact?: boolean;
+  class?: string;
+}
+
+const { surligneAujourdhui = true, compact = false, class: classe } = Astro.props;
+
+/*
+  L'index du jour est calculé au build : sur un site statique, il serait faux
+  dès le lendemain. On le laisse donc au client, en une ligne, sans framework.
+*/
+---
+
+<table
+  class:list={['horaires', compact && 'horaires--compact', classe]}
+  data-surligne={surligneAujourdhui ? '' : undefined}
+>
+  <caption class="lecteur-seul">Horaires d'ouverture de l'agence de Montereau-Fault-Yonne</caption>
+  <tbody>
+    {
+      hours.map((jour) => (
+        <tr data-jour={jour.iso}>
+          <th scope="row">
+            <span class="horaires__long">{compact ? jour.short : jour.day}</span>
+            <span class="horaires__court">{jour.short}</span>
+            {/*
+              Rendu au build, révélé par le sélecteur [data-aujourdhui] : un
+              élément créé côté client ne porte pas l'attribut de portée d'Astro
+              et ses styles scopés ne s'appliqueraient pas.
+            */}
+            <span class="horaires__marque">aujourd’hui</span>
+          </th>
+          <td>
+            {jour.slots ? (
+              jour.slots.map((slot) => <span class="horaires__creneau">{formatSlot(slot)}</span>)
+            ) : (
+              <span class="horaires__ferme">Fermé</span>
+            )}
+          </td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<script>
+  // Surligne le jour courant, côté client : la date du build ne vaut rien ici.
+  const jours = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const aujourdhui = jours[new Date().getDay()];
+  for (const table of document.querySelectorAll('.horaires[data-surligne]')) {
+    const ligne = table.querySelector(`[data-jour="${aujourdhui}"]`);
+    if (ligne) {
+      ligne.setAttribute('data-aujourdhui', '');
+      // Mention textuelle : la graisse seule ne dirait rien à un lecteur d'écran.
+      // Le CSS fait le reste : [data-aujourdhui] révèle la mention.
+    }
+  }
+</script>
+
+<style>
+  .horaires {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .horaires th,
+  .horaires td {
+    padding: var(--e-2) 0;
+    border-bottom: var(--filet);
+    text-align: left;
+    vertical-align: baseline;
+  }
+
+  .horaires tr:last-child th,
+  .horaires tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .horaires th {
+    font-weight: 700;
+    font-size: var(--t-small);
+    padding-right: var(--e-4);
+    white-space: nowrap;
+  }
+
+  .horaires td {
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+    text-align: right;
+  }
+
+  /* Une plage ne doit jamais se couper en deux : le retour se fait entre créneaux. */
+  .horaires__creneau {
+    white-space: nowrap;
+  }
+
+  .horaires__creneau + .horaires__creneau::before {
+    content: ' · ';
+    color: var(--encre-2);
+  }
+
+  .horaires__ferme {
+    color: var(--encre-2);
+  }
+
+  .horaires__court {
+    display: none;
+  }
+
+  .horaires [data-aujourdhui] th,
+  .horaires [data-aujourdhui] td {
+    font-weight: 700;
+  }
+
+  .horaires [data-aujourdhui] .horaires__marque {
+    display: block;
+  }
+
+  .horaires__marque {
+    display: none;
+    font-family: var(--f-donnee);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bleu);
+    white-space: nowrap;
+  }
+
+  /* ---- Variante resserrée (pied de page) ---- */
+  .horaires--compact th,
+  .horaires--compact td {
+    padding-block: var(--e-1);
+    font-size: 0.8125rem;
+  }
+
+  .horaires--compact td {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.45;
+  }
+
+  /* En colonne étroite, les deux créneaux s'empilent : le point médian ne veut plus rien dire. */
+  .horaires--compact .horaires__creneau + .horaires__creneau::before {
+    content: none;
+  }
+
+  .horaires--compact .horaires__marque {
+    font-size: 0.625rem;
+  }
+
+  @media (max-width: 22.5rem) {
+    .horaires__long {
+      display: none;
+    }
+
+    .horaires__court {
+      display: inline;
+    }
+
+    .horaires td {
+      font-size: 0.875rem;
+    }
+  }
+</style>

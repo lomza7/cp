@@ -1,0 +1,83 @@
+---
+import { Icon } from 'astro-icon/components';
+import { contact } from '../config/site.ts';
+
+/**
+ * Barre d'action fixe, mobile seulement. C'est le principal levier de
+ * conversion du site : trois actions, jamais plus, jamais masquée.
+ * La hauteur est réservée en bas du body (global.css) pour qu'elle ne
+ * recouvre rien.
+ */
+---
+
+<nav class="barre-action" aria-label="Actions rapides">
+  <a class="barre-action__item barre-action__item--appel" href={contact.phoneHref}>
+    <Icon name="ph:phone-fill" aria-hidden="true" />
+    <span>Appeler</span>
+  </a>
+  <a class="barre-action__item" href="/credits#simulateur">
+    <Icon name="ph:calculator" aria-hidden="true" />
+    <span>Simuler</span>
+  </a>
+  <a class="barre-action__item" href={contact.calendly} target="_blank" rel="noopener">
+    <Icon name="ph:calendar-blank" aria-hidden="true" />
+    <span>Rendez-vous</span>
+    <span class="lecteur-seul">(nouvel onglet)</span>
+  </a>
+</nav>
+
+<style>
+  .barre-action {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-barre);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--encre);
+    border-top: 2px solid var(--encre);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .barre-action__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 4rem;
+    padding: var(--e-2);
+    color: var(--papier);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .barre-action__item :global(svg) {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+
+  /* Le seul aplat orange permanent du site : l'appel est l'action n° 1. */
+  .barre-action__item--appel {
+    background: var(--orange);
+    color: var(--encre);
+  }
+
+  .barre-action__item:focus-visible {
+    outline: 3px solid var(--papier);
+    outline-offset: -5px;
+  }
+
+  .barre-action__item--appel:focus-visible {
+    outline-color: var(--encre);
+  }
+
+  @media (min-width: 48rem) {
+    .barre-action {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,56 @@
+---
+/**
+ * Le seul élément expressif du site. Trois usages, et trois seulement :
+ *  - la note Google,
+ *  - le mot « ACCEPTÉ » sur les pages destinées aux résiliés et malussés,
+ *  - « Dossier suivi par … » en pied des pages métier.
+ * Deux tampons par page au maximum.
+ */
+interface Props {
+  couleur?: 'bleu' | 'orange' | 'encre';
+  /** Léger décalage d'angle, pour que deux tampons voisins ne soient pas jumeaux. */
+  angle?: number;
+  class?: string;
+}
+
+const { couleur = 'bleu', angle = -3, class: classe } = Astro.props;
+---
+
+<span
+  class:list={['tampon', `tampon--${couleur}`, classe]}
+  style={`--angle: ${angle}deg`}
+>
+  <slot />
+</span>
+
+<style>
+  .tampon {
+    display: inline-block;
+    padding: var(--e-2) var(--e-3);
+    border-radius: var(--rayon);
+    font-family: var(--f-donnee);
+    font-size: var(--t-mono);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transform: rotate(var(--angle));
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tampon--bleu {
+    border: 3px double var(--bleu);
+    color: var(--bleu);
+  }
+
+  .tampon--orange {
+    border: 3px double var(--encre);
+    background: var(--orange);
+    color: var(--encre);
+  }
+
+  .tampon--encre {
+    border: 3px double var(--encre);
+    color: var(--encre);
+  }
+</style>
