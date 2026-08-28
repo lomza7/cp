@@ -100,3 +100,47 @@ Un encart de simulateur est prévu sur l'accueil, entre les sections 3 et 4. Il 
 - Le logo est le PNG récupéré depuis Wix (52 ko, 608 × 220). Un SVG est demandé au client (question 16). En attendant, il est servi tel quel et affiché à 28 px de haut sur mobile.
 - Les images Open Graph ne sont pas encore générées : `Seo.astro` pointe vers `/images/og-default.png`, à produire en Phase 5.
 - Les coordonnées géographiques de `site.ts` sont approximatives, à relever sur la fiche Google.
+
+---
+
+## 9. Déploiement Vercel : état
+
+Le dépôt est poussé sur `github.com/lomza7/cp` (privé, branche `main`, 3 commits).
+
+**Build vérifié dans un clone vierge** avec `npm ci`, exactement comme le fera Vercel :
+
+| Contrôle | Résultat |
+|---|---|
+| Installation et build | réussis, 489 ms |
+| JavaScript compressé | 953 octets |
+| Redirections 301 générées | 32 |
+| `robots.txt` en cible « preview » | `Disallow: /` |
+| Balise `noindex, nofollow` | présente sur toutes les pages |
+| Tests | 21 sur 21 |
+
+**Ce qui reste à faire à la main.** Le connecteur Vercel a signalé la création
+du projet `cpsolutions77` (`prj_4wa3R1CQ16rITADA0J4H7jJJO6Nm`) puis a renvoyé
+404 sur ce projet, une liste de projets vide, et 403 sur ses déploiements. Ses
+droits ne permettent pas de confirmer ni de terminer le lien Git. À faire depuis
+l'interface Vercel :
+
+1. Ouvrir vercel.com et regarder si un projet `cpsolutions77` existe.
+2. **S'il existe** : Settings, Git, connecter `lomza7/cp`, branche de production `main`.
+3. **S'il n'existe pas** : Add New, Project, Import `lomza7/cp`. Ne pas créer un
+   second projet portant le même nom.
+4. Le framework est détecté automatiquement (Astro). Aucune variable
+   d'environnement n'est nécessaire pour ce premier déploiement ; la clé Resend
+   n'arrive qu'en Phase 3.
+
+**Le verrou d'indexation est automatique.** Vercel renseigne `VERCEL_ENV` :
+toute cible autre que `production` produit un `robots.txt` en `Disallow: /` et
+une balise `noindex, nofollow`. Le jour où le domaine `cpsolutions77.com` est
+basculé sur la cible de production, l'indexation s'ouvre d'elle-même, sans
+intervention. Voir `src/lib/env.ts`.
+
+**Après le premier déploiement**, lancer la vérification des redirections
+contre l'URL obtenue :
+
+```bash
+npm run check:redirects https://cpsolutions77-xxxx.vercel.app
+```
