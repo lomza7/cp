@@ -4,40 +4,51 @@ import Base from '../layouts/Base.astro';
 import Bouton from '../components/Bouton.astro';
 import Tampon from '../components/Tampon.astro';
 import Horaires from '../components/Horaires.astro';
+import Photo from '../components/Photo.astro';
 import { site, contact, address, team, googleReviews, quoteForms } from '../config/site.ts';
 import { formatNote } from '../lib/format.ts';
 
 const paul = team.find((m) => m.id === 'paul')!;
 const calvin = team.find((m) => m.id === 'calvin')!;
 
+/*
+  Les intitulés reprennent ceux de la vitrine de l'agence, photographiée le
+  28 août 2026 : ce sont les mots que le cabinet a lui-même choisi d'afficher
+  dans la rue.
+*/
 const assurances = [
-  { label: 'Auto et moto, y compris après résiliation', href: '/assurances/auto-moto' },
+  { label: 'Auto et moto, résilié, malussé, jeune permis', href: '/assurances/auto-moto' },
   { label: 'Habitation, locataire, propriétaire, PNO', href: '/assurances/habitation' },
-  { label: 'Professionnels, décennale, dommage-ouvrage', href: '/assurances/professionnels' },
-  { label: 'Camping-car, santé, animaux, voyage, GLI', href: '/assurances/autres' },
+  { label: 'Professionnels, RC pro, décennale', href: '/assurances/professionnels' },
+  { label: 'Mutuelle, animaux, camping-car, voyage', href: '/assurances/autres' },
 ];
 
 const credits = [
   { label: 'Prêt immobilier', href: '/credits/immobilier' },
-  { label: 'Rachat et regroupement de crédits', href: '/credits/rachat-regroupement' },
+  { label: 'Rachat, regroupement, renégociation', href: '/credits/rachat-regroupement' },
   { label: 'Assurance emprunteur', href: '/assurance-emprunteur' },
 ];
 ---
 
 <Base
   title="Courtier en assurances et crédits à Montereau-Fault-Yonne | CP SOLUTIONS"
-  description="Cabinet de courtage à Montereau-Fault-Yonne. Assurances auto, habitation, professionnels, y compris après résiliation. Prêt immobilier et rachat de crédits. Appelez le 01 64 24 83 45."
+  description="Cabinet de courtage à Montereau-Fault-Yonne. Assurances auto, habitation, professionnels, y compris après résiliation ou malus. Prêt immobilier, rachat de crédits. Appelez le 01 64 24 83 45."
   path="/"
 >
-  <!-- Hero : la thèse du site en un écran. Le téléphone est atteignable ici et dans la barre du bas. -->
+  <!--
+    Le hero repose sur la devanture : le visiteur doit voir qu'il y a une vraie
+    porte à pousser. C'est l'argument que ni un comparateur en ligne ni une
+    plateforme ne peuvent copier.
+  -->
   <section class="hero">
     <div class="conteneur hero__grille">
       <div class="hero__texte">
-        <h1>Le courtier qui décroche.</h1>
+        <h1>Assurances et crédits, à Montereau.</h1>
         <p class="hero__accroche">
-          Assurances et crédits à Montereau-Fault-Yonne. Deux associés, une agence
-          rue Jean Jaurès, ouverte du lundi au samedi.
+          Deux courtiers indépendants, rue Jean Jaurès, du lundi au samedi.
+          On compare les compagnies et les banques à votre place.
         </p>
+
         <div class="hero__actions">
           <Bouton href={contact.phoneHref} variante="encre" taille="grand" icone="ph:phone-fill">
             Appeler le {contact.phoneDisplay}
@@ -46,25 +57,27 @@ const credits = [
             Simuler mon budget d'achat
           </Bouton>
         </div>
+
+        <!-- La note Google entre dans le hero : c'est la preuve la plus forte du cabinet. -->
+        <p class="hero__preuve">
+          <Tampon couleur="bleu">
+            {formatNote(googleReviews.rating)} / 5 · {googleReviews.count} avis
+          </Tampon>
+          <a href={googleReviews.url} target="_blank" rel="noopener">
+            Lire sur Google<span class="lecteur-seul"> (nouvel onglet)</span>
+          </a>
+        </p>
       </div>
 
-      <!-- TODO client (QUESTIONS-CLIENT n° 17) : remplacer par la photo du shooting. -->
-      <div class="hero__visuel emplacement" role="img" aria-label="Emplacement réservé à une photo des deux associés devant l'agence">
-        Photo · Paul Poirier et Calvin Riffault devant l'agence
-      </div>
-    </div>
-  </section>
-
-  <!-- Preuve sociale : l'actif le plus sous-exploité du cabinet, mis juste sous le hero. -->
-  <section class="preuve">
-    <div class="conteneur preuve__interieur">
-      <Tampon couleur="bleu">{formatNote(googleReviews.rating)} / 5 · {googleReviews.count} avis</Tampon>
-      <p>
-        La note du cabinet sur Google, laissée par {googleReviews.count} clients.{' '}
-        <a href={googleReviews.url} target="_blank" rel="noopener">
-          Lire les avis<span class="lecteur-seul"> sur Google (nouvel onglet)</span>
-        </a>
-      </p>
+      <Photo
+        class="hero__visuel"
+        nom="devanture"
+        alt="La devanture de CP SOLUTIONS au 35 rue Jean Jaurès à Montereau-Fault-Yonne : enseigne bleue au logo de deux mains qui se serrent, vitrine listant les assurances et les crédits proposés, porte d'entrée vitrée."
+        attente="la devanture du 35 rue Jean Jaurès"
+        ratio="16 / 10"
+        prioritaire
+        sizes="(min-width: 64rem) 50vw, 100vw"
+      />
     </div>
   </section>
 
@@ -161,24 +174,33 @@ const credits = [
       </p>
 
       <div class="associes__grille">
-        {
-          team.map((membre) => (
-            <article class="associe" data-metier={membre.domain}>
-              <div
-                class="associe__photo emplacement"
-                role="img"
-                aria-label={`Emplacement réservé au portrait de ${membre.firstName} ${membre.lastName}`}
-              >
-                Portrait · {membre.firstName} {membre.lastName}
-              </div>
-              <h3 id={membre.id}>
-                {membre.firstName} {membre.lastName}
-              </h3>
-              <p class="associe__role libelle">{membre.role}</p>
-              <blockquote class="associe__citation">{membre.quote}</blockquote>
-            </article>
-          ))
-        }
+        <article class="associe" data-metier="assurances">
+          <Photo
+            class="associe__photo"
+            nom="paul"
+            alt={`${paul.firstName} ${paul.lastName} à son bureau, devant un ordinateur portable, dans l'agence de Montereau-Fault-Yonne.`}
+            attente={`portrait de ${paul.firstName} ${paul.lastName}`}
+            ratio="3 / 2"
+            sizes="(min-width: 48rem) 45vw, 100vw"
+          />
+          <h3 id={paul.id}>{paul.firstName} {paul.lastName}</h3>
+          <p class="associe__role libelle">{paul.role}</p>
+          <blockquote class="associe__citation">{paul.quote}</blockquote>
+        </article>
+
+        <article class="associe" data-metier="credits">
+          <Photo
+            class="associe__photo"
+            nom="calvin"
+            alt={`${calvin.firstName} ${calvin.lastName} dans son bureau à l'agence de Montereau-Fault-Yonne, les mains posées sur la table.`}
+            attente={`portrait de ${calvin.firstName} ${calvin.lastName}`}
+            ratio="3 / 2"
+            sizes="(min-width: 48rem) 45vw, 100vw"
+          />
+          <h3 id={calvin.id}>{calvin.firstName} {calvin.lastName}</h3>
+          <p class="associe__role libelle">{calvin.role}</p>
+          <blockquote class="associe__citation">{calvin.quote}</blockquote>
+        </article>
       </div>
     </div>
   </section>
@@ -231,7 +253,7 @@ const credits = [
   /* ---- Hero ---- */
   .hero {
     padding-block: var(--e-8) var(--e-12);
-    border-bottom: var(--filet);
+    border-bottom: var(--filet-fort);
   }
 
   .hero__grille {
@@ -239,13 +261,18 @@ const credits = [
     gap: var(--e-8);
   }
 
+  /*
+    Échelle propre au hero : le titre partage la largeur avec la devanture, il
+    ne peut donc pas prendre les 64 px de --t-1 sans passer à quatre lignes.
+  */
   .hero h1 {
-    max-width: 20ch;
+    font-size: clamp(2.375rem, 1.7rem + 3vw, 3.25rem);
+    max-width: 22ch;
   }
 
   .hero__accroche {
     margin-top: var(--e-4);
-    max-width: 34ch;
+    max-width: 38ch;
     font-size: clamp(1.0625rem, 1rem + 0.5vw, 1.1875rem);
     color: var(--encre-2);
   }
@@ -258,35 +285,25 @@ const credits = [
     gap: var(--e-4) var(--e-6);
   }
 
-  /*
-    Sur mobile, un emplacement photo au format portrait occuperait 450 px de
-    vide sous les boutons. Format paysage tant qu'on est en une colonne.
-  */
-  .hero__visuel {
-    aspect-ratio: 16 / 10;
-    min-height: 10rem;
-  }
-
-  /* ---- Preuve sociale ---- */
-  .preuve {
-    border-bottom: var(--filet);
-    padding-block: var(--e-6);
-  }
-
-  .preuve__interieur {
+  .hero__preuve {
+    margin-top: var(--e-8);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--e-4) var(--e-8);
-  }
-
-  .preuve p {
+    gap: var(--e-2) var(--e-4);
     font-size: var(--t-small);
     color: var(--encre-2);
   }
 
-  .preuve a {
-    white-space: nowrap;
+  .hero__preuve a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 700;
+  }
+
+  .hero__visuel {
+    width: 100%;
   }
 
   /* ---- Les deux métiers ---- */
@@ -403,23 +420,6 @@ const credits = [
     gap: var(--e-8);
   }
 
-  .refus__agira {
-    margin-top: var(--e-4);
-    font-size: var(--t-small);
-    color: var(--encre-2);
-  }
-
-  .refus__entete + p {
-    margin-top: var(--e-4);
-  }
-
-  .refus__actions {
-    margin-top: var(--e-6);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--e-3);
-  }
-
   /*
     Le tampon répond à la question du titre : il reste avec lui, et passe à la
     ligne sous le titre quand la place manque.
@@ -429,6 +429,23 @@ const credits = [
     flex-wrap: wrap;
     align-items: center;
     gap: var(--e-4) var(--e-6);
+  }
+
+  .refus__entete + p {
+    margin-top: var(--e-4);
+  }
+
+  .refus__agira {
+    margin-top: var(--e-4);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .refus__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3);
   }
 
   /* ---- Associés ---- */
@@ -443,9 +460,7 @@ const credits = [
     gap: var(--e-8);
   }
 
-  /* En une colonne, un portrait 4/5 ferait 440 px de hachures. Paysage d'abord. */
-  .associe__photo {
-    aspect-ratio: 3 / 2;
+  .associe :global(.associe__photo) {
     margin-bottom: var(--e-4);
   }
 
@@ -569,10 +584,6 @@ const credits = [
 
   /* ---- Points de rupture ---- */
   @media (min-width: 48rem) {
-    .hero__visuel {
-      max-height: 18rem;
-    }
-
     .duo {
       grid-template-columns: 1fr 1fr;
     }
@@ -591,16 +602,11 @@ const credits = [
       padding-left: var(--e-8);
     }
 
-    .associe__photo {
-      aspect-ratio: 4 / 5;
-    }
-
     .associes__grille,
     .agence__grille {
       grid-template-columns: 1fr 1fr;
       gap: var(--e-12);
     }
-
 
     .appel__interieur {
       grid-template-columns: 1fr auto;
@@ -614,23 +620,14 @@ const credits = [
       padding-block: var(--e-12) var(--e-16);
     }
 
-    .hero__grille {
-      grid-template-columns: 7fr 5fr;
-      gap: var(--e-16);
-      align-items: center;
-    }
-
     /*
-      Hauteur plafonnée : sans cela, un portrait 4/5 sur cinq colonnes fait
-      630 px de haut et fait flotter le titre au milieu de l'écran.
+      La devanture prend la moitié du hero : c'est le visuel qui fait le travail
+      de confiance, pas une illustration d'accompagnement.
     */
-    .hero__visuel {
-      aspect-ratio: 4 / 5;
-      max-height: 26rem;
-      min-height: 20rem;
-      margin-inline-start: auto;
-      width: 100%;
-      max-width: 21rem;
+    .hero__grille {
+      grid-template-columns: 6fr 5fr;
+      gap: var(--e-12);
+      align-items: center;
     }
 
     .agence__grille {
@@ -639,7 +636,7 @@ const credits = [
     }
 
     .associes__grille {
-      grid-template-columns: repeat(2, minmax(0, 22rem));
+      grid-template-columns: repeat(2, minmax(0, 24rem));
     }
   }
 </style>

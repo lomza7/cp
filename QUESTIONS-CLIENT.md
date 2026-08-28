@@ -48,3 +48,39 @@ Chaque réponse débloque un `TODO` visible dans le code. Tant qu'une réponse m
 23. **Envoi des formulaires** via Resend, expéditeur `formulaire@cpsolutions77.com` (nécessite deux enregistrements DNS).
 24. **Carte de l'agence** : image statique + lien « Itinéraire » vers Google Maps, plutôt qu'une carte Google embarquée (cookies tiers et 300 ko de JavaScript en moins).
 25. **Calendly** : lien externe (nouvel onglet) plutôt qu'un widget embarqué, pour les mêmes raisons.
+
+---
+
+## Ajouté le 28 août 2026, après réception des photos
+
+Le client a envoyé trois photos : Calvin à son bureau, Paul à son bureau, et la
+devanture du 35 rue Jean Jaurès. Elles règlent la question 17 pour l'accueil.
+
+**Reste à obtenir sur les photos :**
+
+26. **Fichiers en pleine résolution.** Les trois photos reçues sont en basse
+    résolution (environ 640 px de large). Le hero les affiche jusqu'à 1440 px sur
+    un écran à densité double : il faut les originaux sortis du téléphone.
+27. **Autorisation de publication** des deux portraits, à confirmer par écrit
+    avec chacun des associés.
+28. **Photo de l'intérieur de l'agence**, pour la page `/agence-montereau`
+    (Phase 4). La devanture couvre l'accueil, pas la page locale.
+
+**Relevé sur la photo de la devanture, à trancher :**
+
+29. **La vitrine annonce deux produits crédit absents du site et du brief :**
+    « Consommation » et « Renégociation ». La vitrine liste :
+    - *Assurance* : Sinistré, Résilié, Malussé, Auto, Moto, Habitation, Mutuelle,
+      Animaux, RC pro, Décennale, Jeune permis
+    - *Crédit* : Immobilier, **Consommation**, Regroupement, **Renégociation**,
+      Assurance emprunteur
+
+    « Renégociation » a été rattachée à la page
+    `/credits/rachat-regroupement`, qui la couvrira. En revanche le **crédit à la
+    consommation** n'a aucune page dans l'architecture validée. Trois options :
+    lui créer sa page `/credits/consommation`, l'intégrer à la page rachat, ou le
+    retirer de la vitrine s'il n'est plus proposé. Aucun lien mort n'a été créé
+    en attendant.
+30. **« Sinistré » et « Jeune permis »** sont affichés en vitrine et méritent
+    d'être traités sur `/assurances/auto-moto` : ce sont des requêtes de
+    recherche à forte intention. Confirmer que ces cas sont bien pris en charge.

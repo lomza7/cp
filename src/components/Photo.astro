@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+
+/**
+ * Photo réelle si le fichier existe dans src/assets/photos, sinon un
+ * emplacement qui écrit ce qu'il attend.
+ *
+ * Le fichier est cherché par `import.meta.glob` plutôt qu'importé
+ * directement : un import statique ferait échouer le build tant que le
+ * shooting n'est pas livré, et on veut au contraire que le site tienne sans
+ * photos et s'améliore le jour où elles arrivent, sans toucher au code.
+ */
+interface Props {
+  /** Nom du fichier sans extension, ex. « devanture ». */
+  nom: string;
+  /** Texte alternatif. Obligatoire : ces photos portent de l'information. */
+  alt: string;
+  /** Ce que l'emplacement annonce tant que la photo manque. */
+  attente: string;
+  /** Proportions du cadre, ex. « 3 / 2 ». */
+  ratio?: string;
+  /** Largeurs à générer, et attribut sizes correspondant. */
+  largeurs?: number[];
+  sizes?: string;
+  /** Vrai pour le visuel du hero : chargement prioritaire, pas de lazy. */
+  prioritaire?: boolean;
+  class?: string;
+}
+
+const {
+  nom,
+  alt,
+  attente,
+  ratio = '3 / 2',
+  largeurs = [480, 720, 1080, 1440],
+  sizes = '(min-width: 64rem) 40vw, 100vw',
+  prioritaire = false,
+  class: classe,
+} = Astro.props;
+
+const catalogue = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/photos/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+);
+
+const trouve = Object.entries(catalogue).find(([chemin]) =>
+  chemin.split('/').pop()!.replace(/\.[^.]+$/, '') === nom,
+);
+const image = trouve?.[1].default;
+---
+
+{
+  image ? (
+    <figure class:list={['photo', classe]} style={`--ratio: ${ratio}`}>
+      <Image
+        src={image}
+        alt={alt}
+        widths={largeurs}
+        sizes={sizes}
+        format="avif"
+        quality={62}
+        loading={prioritaire ? 'eager' : 'lazy'}
+        fetchpriority={prioritaire ? 'high' : 'auto'}
+        decoding={prioritaire ? 'sync' : 'async'}
+      />
+    </figure>
+  ) : (
+    <div
+      class:list={['emplacement', classe]}
+      style={`--ratio: ${ratio}`}
+      role="img"
+      aria-label={`Emplacement réservé : ${attente}`}
+    >
+      Photo · {attente}
+    </div>
+  )
+}
+
+<style>
+  .photo {
+    margin: 0;
+    aspect-ratio: var(--ratio);
+    border-radius: var(--rayon);
+    overflow: hidden;
+    background: var(--accent-pale);
+  }
+
+  .photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .emplacement {
+    aspect-ratio: var(--ratio);
+  }
+</style>
