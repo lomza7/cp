@@ -97,7 +97,7 @@ Les textes sont tous repris ou réécrits depuis le contenu existant. Aucune for
 Un encart de simulateur est prévu sur l'accueil, entre les sections 3 et 4. Il n'a pas été posé en Phase 2 pour ne pas laisser une section à moitié construite.
 
 **Points ouverts sans effet sur la Phase 3 :**
-- Le logo est le PNG récupéré depuis Wix (52 ko, 608 × 220). Un SVG est demandé au client (question 16). En attendant, il est servi tel quel et affiché à 28 px de haut sur mobile.
+- Le logo est le PNG récupéré depuis Wix, recompressé sans perte (18 ko, 608 × 220). Un SVG est demandé au client (question 16).
 - Les images Open Graph ne sont pas encore générées : `Seo.astro` pointe vers `/images/og-default.png`, à produire en Phase 5.
 - Les coordonnées géographiques de `site.ts` sont approximatives, à relever sur la fiche Google.
 
