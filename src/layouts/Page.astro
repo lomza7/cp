@@ -1,0 +1,109 @@
+---
+import Base from './Base.astro';
+import Fil from '../components/Fil.astro';
+import { breadcrumbList, type Crumb } from '../lib/schema.ts';
+
+/**
+ * Layout des pages intérieures : fil d'Ariane, titre, chapeau, et le balisage
+ * BreadcrumbList correspondant.
+ */
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  /** Titre affiché en h1, s'il diffère du title de la balise. */
+  h1?: string;
+  /** Chapeau sous le titre. */
+  chapeau?: string;
+  /** Fil d'Ariane, sans l'accueil ni la page courante. */
+  crumbs?: Crumb[];
+  /** Libellé de la page courante dans le fil. */
+  filCourant?: string;
+  /** Colore la page selon le métier : « assurances » ou « credits ». */
+  metier?: 'assurances' | 'credits';
+  schema?: unknown | unknown[];
+  image?: string;
+  noindex?: boolean;
+  /** Relayés à Seo pour les billets de blog. */
+  ogType?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+}
+
+const {
+  title,
+  description,
+  path,
+  h1,
+  chapeau,
+  crumbs = [],
+  filCourant,
+  metier,
+  schema,
+  image,
+  noindex,
+  ogType,
+  publishedTime,
+  modifiedTime,
+} = Astro.props;
+
+const courant = filCourant ?? h1 ?? title;
+const schemas = [
+  breadcrumbList([
+    { label: 'Accueil', href: '/' },
+    ...crumbs,
+    { label: courant, href: path },
+  ]),
+  ...(schema ? (Array.isArray(schema) ? schema : [schema]) : []),
+];
+---
+
+<Base
+  title={title}
+  description={description}
+  path={path}
+  image={image}
+  noindex={noindex}
+  ogType={ogType}
+  publishedTime={publishedTime}
+  modifiedTime={modifiedTime}
+  schema={schemas}
+>
+  <div data-metier={metier}>
+    <div class="conteneur">
+      <Fil crumbs={crumbs} courant={courant} />
+    </div>
+
+    <header class="entete">
+      <div class="conteneur">
+        <h1>{h1 ?? title}</h1>
+        {chapeau && <p class="entete__chapeau mesure">{chapeau}</p>}
+      </div>
+    </header>
+
+    <slot />
+  </div>
+</Base>
+
+<style>
+  .entete {
+    padding-block: var(--e-8) var(--e-6);
+    border-bottom: var(--filet-fort);
+  }
+
+  .entete h1 {
+    max-width: 26ch;
+  }
+
+  .entete__chapeau {
+    margin-top: var(--e-4);
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.1875rem);
+    color: var(--encre-2);
+  }
+
+  @media (min-width: 64rem) {
+    .entete {
+      padding-block: var(--e-12) var(--e-8);
+    }
+  }
+</style>

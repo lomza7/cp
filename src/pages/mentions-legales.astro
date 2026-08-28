@@ -1,0 +1,443 @@
+---
+import Page from '../layouts/Page.astro';
+import { site, contact, address } from '../config/site.ts';
+import {
+  company,
+  orias,
+  supervisor,
+  rcPro,
+  financialGuarantee,
+  professionalAssociation,
+  remuneration,
+  financialLinks,
+  complaints,
+  mediators,
+  host,
+  missingLegalFields,
+} from '../config/legal.ts';
+
+/**
+ * Mentions légales d'un intermédiaire en assurance et en opérations de banque.
+ *
+ * Toutes les valeurs viennent de src/config/legal.ts. Un champ vide affiche un
+ * placeholder visible plutôt qu'un blanc silencieux, et le build écrit un
+ * avertissement listant ce qui manque.
+ */
+const manquants = missingLegalFields();
+
+/* Le champ est vide tant que le client n'a pas répondu : on le lit en string
+   pour que TypeScript ne le réduise pas au type never. */
+const lienMediateurCredit: string = mediators.credit.url;
+const estDev = import.meta.env.DEV;
+
+const modeRemuneration: Record<string, string> = {
+  commissions:
+    "Le cabinet est rémunéré par les commissions versées par les compagnies d'assurance et les établissements de crédit sur les contrats et les prêts placés. Aucun honoraire n'est facturé au client.",
+  honoraires:
+    'Le cabinet est rémunéré par des honoraires facturés au client, communiqués avant tout engagement.',
+  mixte:
+    "Le cabinet est rémunéré par les commissions versées par les compagnies d'assurance et les établissements de crédit, et le cas échéant par des honoraires facturés au client, communiqués avant tout engagement.",
+};
+---
+
+<Page
+  title="Mentions légales"
+  description="Mentions légales de CP SOLUTIONS, cabinet de courtage en assurances et en opérations de banque à Montereau-Fault-Yonne."
+  path="/mentions-legales"
+  h1="Mentions légales"
+  chapeau="Informations réglementaires relatives à l'activité d'intermédiaire en assurance et en opérations de banque et services de paiement."
+>
+  <div class="legal conteneur section">
+    {
+      estDev && manquants.length > 0 && (
+        <p class="todo" role="note">
+          TODO · {manquants.length} mention(s) obligatoire(s) manquante(s) :{' '}
+          {manquants.join(', ')}. Renseigner src/config/legal.ts. Tant qu'elles manquent,
+          le site n'est pas conforme aux obligations d'information de l'ACPR.
+          Détail : npm run check:legal
+        </p>
+      )
+    }
+
+    <section>
+      <h2>Éditeur du site</h2>
+      <dl>
+        <div><dt>Raison sociale</dt><dd>{company.name}</dd></div>
+        <div>
+          <dt>Forme juridique</dt>
+          <dd>{company.legalForm || <span class="vide">À renseigner</span>}</dd>
+        </div>
+        <div>
+          <dt>Capital social</dt>
+          <dd>{company.capital || <span class="vide">À renseigner</span>}</dd>
+        </div>
+        <div>
+          <dt>Siège social</dt>
+          <dd>{address.street}, {address.postalCode} {address.city}</dd>
+        </div>
+        <div><dt>SIREN</dt><dd class="donnee">{company.siren}</dd></div>
+        <div><dt>SIRET</dt><dd class="donnee">{company.siret}</dd></div>
+        <div><dt>Code APE</dt><dd class="donnee">{company.ape}</dd></div>
+        <div><dt>Immatriculation</dt><dd>{company.rcs}</dd></div>
+        <div>
+          <dt>TVA intracommunautaire</dt>
+          <dd>{company.vatNumber || <span class="vide">À renseigner</span>}</dd>
+        </div>
+        <div><dt>Directeur de la publication</dt><dd>{company.publicationDirector}</dd></div>
+        <div><dt>Téléphone</dt><dd><a href={contact.phoneHref}>{contact.phoneDisplay}</a></dd></div>
+        <div><dt>E-mail</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>
+      </dl>
+    </section>
+
+    <section>
+      <h2>Immatriculation ORIAS</h2>
+      <p>
+        Conformément à l'article L.512-1 du Code des assurances et à l'article L.519-3-1
+        du Code monétaire et financier, {company.name} est immatriculé au registre unique
+        des intermédiaires en assurance, banque et finance tenu par l'ORIAS.
+      </p>
+      <dl>
+        <div>
+          <dt>Numéro ORIAS</dt>
+          <dd>
+            {orias.number ? (
+              <span class="donnee">{orias.number}</span>
+            ) : (
+              <span class="vide">À renseigner</span>
+            )}
+          </dd>
+        </div>
+        <div>
+          <dt>Catégories d'immatriculation</dt>
+          <dd>
+            {orias.categories.length > 0 ? (
+              orias.categories.join(', ')
+            ) : (
+              <span class="vide">À renseigner</span>
+            )}
+          </dd>
+        </div>
+        <div>
+          <dt>Vérification</dt>
+          <dd>
+            <a href={orias.registryUrl} target="_blank" rel="noopener">
+              orias.fr<span class="lecteur-seul"> (nouvel onglet)</span>
+            </a>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <section>
+      <h2>Autorité de contrôle</h2>
+      <p>
+        L'activité d'intermédiation en assurance et en opérations de banque est soumise au
+        contrôle de l'{supervisor.name}.
+      </p>
+      <address>
+        {supervisor.name}<br />
+        {supervisor.address}
+      </address>
+      <p>
+        <a href={supervisor.url} target="_blank" rel="noopener">
+          acpr.banque-france.fr<span class="lecteur-seul"> (nouvel onglet)</span>
+        </a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Responsabilité civile professionnelle et garantie financière</h2>
+      <p>
+        Conformément aux {rcPro.legalBasis}, le cabinet dispose d'une assurance de
+        responsabilité civile professionnelle et d'une garantie financière.
+      </p>
+      <dl>
+        <div>
+          <dt>Assureur RC professionnelle</dt>
+          <dd>{rcPro.insurer || <span class="vide">À renseigner</span>}</dd>
+        </div>
+        <div>
+          <dt>Numéro de police</dt>
+          <dd>{rcPro.policyNumber || <span class="vide">À renseigner</span>}</dd>
+        </div>
+        <div>
+          <dt>Garantie financière</dt>
+          <dd>{financialGuarantee.provider || <span class="vide">À renseigner</span>}</dd>
+        </div>
+        <div>
+          <dt>Montant garanti</dt>
+          <dd>{financialGuarantee.amount || <span class="vide">À renseigner</span>}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section>
+      <h2>Association professionnelle</h2>
+      <p>
+        L'adhésion à une association professionnelle agréée par l'ACPR est obligatoire pour
+        les intermédiaires en opérations de banque et services de paiement.
+      </p>
+      <dl>
+        <div>
+          <dt>Association</dt>
+          <dd>{professionalAssociation.name || <span class="vide">À renseigner</span>}</dd>
+        </div>
+        <div>
+          <dt>Numéro d'adhérent</dt>
+          <dd>{professionalAssociation.memberNumber || <span class="vide">À renseigner</span>}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section>
+      <h2>Mode de rémunération</h2>
+      {
+        remuneration.mode ? (
+          <>
+            <p>{modeRemuneration[remuneration.mode]}</p>
+            {remuneration.feesDetail && <p>{remuneration.feesDetail}</p>}
+          </>
+        ) : (
+          <p><span class="vide">À renseigner</span></p>
+        )
+      }
+      <p class="petit">
+        Le détail de la rémunération perçue au titre d'un contrat ou d'un prêt donné est
+        communiqué sur simple demande, avant la conclusion de l'opération.
+      </p>
+    </section>
+
+    <section>
+      <h2>Liens financiers</h2>
+      {
+        financialLinks.hasLinks === null ? (
+          <p><span class="vide">À renseigner</span></p>
+        ) : financialLinks.hasLinks ? (
+          <p>{financialLinks.detail}</p>
+        ) : (
+          <p>
+            {company.name} ne détient aucune participation, directe ou indirecte,
+            supérieure à 10 % des droits de vote ou du capital d'une entreprise
+            d'assurance. Aucune entreprise d'assurance ne détient de participation,
+            directe ou indirecte, supérieure à 10 % des droits de vote ou du capital du
+            cabinet.
+          </p>
+        )
+      }
+    </section>
+
+    <section>
+      <h2>Réclamations</h2>
+      <p>
+        Toute réclamation peut être adressée par écrit, par e-mail ou par courrier
+        postal :
+      </p>
+      <dl>
+        <div>
+          <dt>Par e-mail</dt>
+          <dd>
+            {complaints.email ? (
+              <a href={`mailto:${complaints.email}`}>{complaints.email}</a>
+            ) : (
+              <span class="vide">À renseigner</span>
+            )}
+          </dd>
+        </div>
+        <div><dt>Par courrier</dt><dd>{complaints.postalAddress}</dd></div>
+        <div><dt>Accusé de réception</dt><dd>{complaints.acknowledgementDays}</dd></div>
+        <div><dt>Délai de réponse</dt><dd>{complaints.answerDelay}</dd></div>
+      </dl>
+      <p class="petit">
+        Ces délais correspondent à la recommandation de l'ACPR sur le traitement des
+        réclamations. Si un retard est prévisible, vous en êtes informé.
+      </p>
+    </section>
+
+    <section>
+      <h2>Médiation</h2>
+      <p>
+        Si la réponse apportée ne vous satisfait pas, ou en l'absence de réponse dans les
+        délais, vous pouvez saisir gratuitement le médiateur compétent.
+      </p>
+
+      <h3>Pour un litige en assurance</h3>
+      <address>
+        {mediators.insurance.name}<br />
+        {mediators.insurance.address}
+      </address>
+      <p>
+        <a href={mediators.insurance.url} target="_blank" rel="noopener">
+          mediation-assurance.org<span class="lecteur-seul"> (nouvel onglet)</span>
+        </a>
+      </p>
+
+      <h3>Pour un litige en crédit</h3>
+      {
+        mediators.credit.name ? (
+          <>
+            <address>
+              {mediators.credit.name}<br />
+              {mediators.credit.address}
+            </address>
+            {lienMediateurCredit && (
+              <p>
+                <a href={lienMediateurCredit} target="_blank" rel="noopener">
+                  {lienMediateurCredit.replace(/^https?:\/\//, '')}
+                  <span class="lecteur-seul"> (nouvel onglet)</span>
+                </a>
+              </p>
+            )}
+          </>
+        ) : (
+          <p>
+            <span class="vide">À renseigner</span> Le médiateur compétent est celui désigné
+            par l'association professionnelle à laquelle le cabinet adhère.
+          </p>
+        )
+      }
+    </section>
+
+    <section>
+      <h2>Hébergement</h2>
+      <address>
+        {host.name}<br />
+        {host.address}
+      </address>
+      <p>
+        <a href={host.url} target="_blank" rel="noopener">
+          vercel.com<span class="lecteur-seul"> (nouvel onglet)</span>
+        </a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        L'ensemble du site, sa structure, ses textes et son identité visuelle sont la
+        propriété de {company.name}, sauf mention contraire. Toute reproduction ou
+        représentation, totale ou partielle, sans autorisation écrite préalable est
+        interdite.
+      </p>
+    </section>
+
+    <section>
+      <h2>Données personnelles et cookies</h2>
+      <p>
+        Le traitement de vos données est décrit sur la page{' '}
+        <a href="/confidentialite">confidentialité</a>. L'usage des cookies est décrit sur
+        la page <a href="/cookies">cookies</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Droit applicable</h2>
+      <p>
+        Le présent site et les relations qui en découlent sont régis par le droit
+        français. Les mentions ci-dessus concernent {site.url}.
+      </p>
+    </section>
+  </div>
+</Page>
+
+<style>
+  .legal {
+    max-width: 48rem;
+  }
+
+  .legal section + section {
+    margin-top: var(--e-12);
+  }
+
+  .legal h2 {
+    font-size: var(--t-3);
+    padding-bottom: var(--e-2);
+    border-bottom: 2px solid var(--encre);
+  }
+
+  .legal h3 {
+    margin-top: var(--e-6);
+    font-size: var(--t-4);
+  }
+
+  .legal p {
+    margin-top: var(--e-4);
+    max-width: 66ch;
+  }
+
+  .legal address {
+    margin-top: var(--e-4);
+    font-style: normal;
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+  }
+
+  .petit {
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  dl {
+    margin: var(--e-4) 0 0;
+  }
+
+  dl > div {
+    display: grid;
+    gap: var(--e-1);
+    padding-block: var(--e-3);
+    border-bottom: var(--filet);
+  }
+
+  dt {
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--encre-2);
+  }
+
+  dd a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  .donnee {
+    font-family: var(--f-donnee);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Un champ obligatoire manquant se voit, il ne disparaît pas en silence. */
+  .vide {
+    display: inline-block;
+    padding: 0 var(--e-2);
+    background: var(--orange);
+    color: var(--encre);
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+    font-weight: 500;
+    border-radius: var(--rayon);
+  }
+
+  .todo {
+    margin-bottom: var(--e-8);
+    padding: var(--e-4);
+    background: var(--orange);
+    color: var(--encre);
+    border-radius: var(--rayon);
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+    max-width: none;
+  }
+
+  @media (min-width: 40rem) {
+    dl > div {
+      grid-template-columns: 16rem 1fr;
+      gap: var(--e-4);
+      align-items: baseline;
+    }
+  }
+</style>

@@ -1,0 +1,354 @@
+---
+import Bouton from './Bouton.astro';
+import { rates } from '../config/rates.ts';
+import { simuler } from '../lib/simulate.ts';
+import { formatEuros, formatTaux, formatDateCourte } from '../lib/format.ts';
+
+/**
+ * Îlot 1 : simulateur de capacité d'emprunt.
+ *
+ * Le résultat est calculé au build avec les valeurs par défaut, puis recalculé
+ * dans le navigateur à chaque mouvement de curseur. Conséquence : la page est
+ * juste et complète même avant que le JavaScript arrive, et sans JavaScript le
+ * visiteur voit une simulation valide qu'il peut lire.
+ */
+const b = rates.bounds;
+
+const defauts = {
+  revenus: b.income.default,
+  charges: b.charges.default,
+  apport: b.deposit.default,
+  duree: b.years.default,
+};
+const initial = simuler(defauts);
+
+const curseurs = [
+  { id: 'revenus', label: 'Revenus nets du foyer', unite: '€ par mois', ...b.income, aide: 'Salaires nets, primes régulières, revenus locatifs.' },
+  { id: 'charges', label: 'Crédits en cours', unite: '€ par mois', ...b.charges, aide: 'Auto, travaux, consommation. Hors loyer.' },
+  { id: 'apport', label: 'Apport personnel', unite: '€', ...b.deposit, aide: "Épargne disponible, hors frais de notaire." },
+  { id: 'duree', label: 'Durée du prêt', unite: 'ans', ...b.years, aide: 'Plus la durée est longue, plus vous empruntez, plus le crédit coûte.' },
+] as const;
+---
+
+<section class="simu" id="simulateur" data-metier="credits" data-simu>
+  <div class="conteneur simu__grille">
+    <div class="simu__reglages">
+      <h2>Combien pouvez-vous emprunter ?</h2>
+      <p class="simu__intro">
+        Déplacez les curseurs. Le calcul se fait dans votre navigateur, rien n'est
+        envoyé.
+      </p>
+
+      {
+        curseurs.map((c) => (
+          <div class="champ">
+            <label for={`simu-${c.id}`}>
+              {c.label}
+              <output for={`simu-${c.id}`} id={`sortie-${c.id}`} data-sortie={c.id}>
+                {c.id === 'duree'
+                  ? `${c.default} ${c.unite}`
+                  : `${formatEuros(c.default)}${c.unite.includes('mois') ? ' / mois' : ''}`}
+              </output>
+            </label>
+            <input
+              type="range"
+              id={`simu-${c.id}`}
+              name={c.id}
+              min={c.min}
+              max={c.max}
+              step={c.step}
+              value={c.default}
+              data-curseur={c.id}
+              aria-describedby={`aide-${c.id}`}
+            />
+            <p class="champ__aide" id={`aide-${c.id}`}>{c.aide}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="simu__resultat">
+      <p class="libelle">Budget d'achat total</p>
+      <p class="simu__budget" data-resultat="budget" aria-live="polite">
+        {formatEuros(initial.budget)}
+      </p>
+
+      <table class="simu__detail">
+        <caption class="lecteur-seul">Détail de la simulation</caption>
+        <tbody>
+          <tr>
+            <th scope="row">Montant empruntable</th>
+            <td data-resultat="capital">{formatEuros(initial.capital)}</td>
+          </tr>
+          <tr>
+            <th scope="row">Mensualité</th>
+            <td data-resultat="mensualite">{formatEuros(initial.mensualite)}</td>
+          </tr>
+          <tr>
+            <th scope="row">Apport</th>
+            <td data-resultat="apport">{formatEuros(defauts.apport)}</td>
+          </tr>
+          <tr>
+            <th scope="row">Coût des intérêts</th>
+            <td data-resultat="interets">{formatEuros(initial.interets)}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="simu__alerte" data-alerte hidden>
+        Vos crédits en cours absorbent toute votre capacité de remboursement. Un
+        rachat de crédits peut débloquer la situation : parlons-en.
+      </p>
+
+      <!-- Le bouton emporte le montant simulé vers le formulaire : c'est ce qui transforme un curieux en demande qualifiée. -->
+      <Bouton
+        href="/contact?demande=immobilier"
+        variante="accent"
+        taille="grand"
+        pleineLargeur
+        icone="ph:phone-fill"
+        data-lien-contact
+      >
+        Être rappelé avec ce budget
+      </Bouton>
+
+      <p class="simu__mention">
+        Estimation indicative, calculée sur un taux nominal de{' '}
+        {formatTaux(rates.nominalRate)} et un taux d'endettement de{' '}
+        {Math.round(rates.maxDebtRatio * 100)} %. Hors assurance emprunteur et frais
+        de garantie. Ne constitue ni une offre ni un accord de prêt. Taux mis à jour
+        le {formatDateCourte(rates.updatedAt)}.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { simuler } from '../lib/simulate.ts';
+  import { formatEuros } from '../lib/format.ts';
+
+  const racine = document.querySelector<HTMLElement>('[data-simu]');
+  if (racine) {
+    const curseurs = racine.querySelectorAll<HTMLInputElement>('[data-curseur]');
+    const sorties = new Map<string, HTMLElement>();
+    const resultats = new Map<string, HTMLElement>();
+    for (const el of racine.querySelectorAll<HTMLElement>('[data-sortie]')) {
+      sorties.set(el.dataset.sortie!, el);
+    }
+    for (const el of racine.querySelectorAll<HTMLElement>('[data-resultat]')) {
+      resultats.set(el.dataset.resultat!, el);
+    }
+    const alerte = racine.querySelector<HTMLElement>('[data-alerte]');
+    const lien = racine.querySelector<HTMLAnchorElement>('[data-lien-contact]');
+
+    const lire = (nom: string) =>
+      Number(racine.querySelector<HTMLInputElement>(`[data-curseur="${nom}"]`)!.value);
+
+    function rendre() {
+      const entrees = {
+        revenus: lire('revenus'),
+        charges: lire('charges'),
+        apport: lire('apport'),
+        duree: lire('duree'),
+      };
+      const r = simuler(entrees);
+
+      sorties.get('revenus')!.textContent = `${formatEuros(entrees.revenus)} / mois`;
+      sorties.get('charges')!.textContent = `${formatEuros(entrees.charges)} / mois`;
+      sorties.get('apport')!.textContent = formatEuros(entrees.apport);
+      sorties.get('duree')!.textContent = `${entrees.duree} ans`;
+
+      resultats.get('budget')!.textContent = formatEuros(r.budget);
+      resultats.get('capital')!.textContent = formatEuros(r.capital);
+      resultats.get('mensualite')!.textContent = formatEuros(r.mensualite);
+      resultats.get('apport')!.textContent = formatEuros(entrees.apport);
+      resultats.get('interets')!.textContent = formatEuros(r.interets);
+
+      if (alerte) alerte.hidden = r.finançable;
+
+      // Le formulaire de contact lira ces paramètres pour se pré-remplir.
+      if (lien) {
+        const p = new URLSearchParams({
+          demande: 'immobilier',
+          budget: String(Math.round(r.budget)),
+          apport: String(entrees.apport),
+          mensualite: String(Math.round(r.mensualite)),
+          duree: String(entrees.duree),
+        });
+        lien.href = `/contact?${p.toString()}`;
+      }
+    }
+
+    for (const c of curseurs) c.addEventListener('input', rendre);
+    rendre();
+  }
+</script>
+
+<style>
+  .simu {
+    background: var(--bleu-pale);
+    border-block: var(--filet-fort);
+    padding-block: var(--section-y);
+  }
+
+  .simu__grille {
+    display: grid;
+    gap: var(--e-8);
+  }
+
+  .simu__intro {
+    margin-top: var(--e-3);
+    margin-bottom: var(--e-6);
+    max-width: 46ch;
+    color: var(--encre-2);
+  }
+
+  /* ---- Curseurs ---- */
+  .champ + .champ {
+    margin-top: var(--e-6);
+  }
+
+  .champ label {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--e-2);
+    font-weight: 700;
+  }
+
+  .champ output {
+    font-family: var(--f-donnee);
+    font-weight: 500;
+    font-size: var(--t-mono);
+    color: var(--bleu);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .champ__aide {
+    margin-top: var(--e-1);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: var(--touche);
+    margin-top: var(--e-2);
+    background: transparent;
+    cursor: pointer;
+  }
+
+  input[type='range']::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: var(--rayon);
+    background: var(--papier-2);
+    border: 1px solid var(--encre-2);
+  }
+
+  input[type='range']::-moz-range-track {
+    height: 4px;
+    border-radius: var(--rayon);
+    background: var(--papier-2);
+    border: 1px solid var(--encre-2);
+  }
+
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    margin-top: -13px;
+    border-radius: var(--rayon);
+    background: var(--bleu);
+    border: 2px solid var(--encre);
+  }
+
+  input[type='range']::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--rayon);
+    background: var(--bleu);
+    border: 2px solid var(--encre);
+  }
+
+  input[type='range']:focus-visible {
+    outline: 3px solid var(--encre);
+    outline-offset: 4px;
+  }
+
+  /* ---- Résultat ---- */
+  .simu__resultat {
+    padding: var(--e-6);
+    background: var(--papier);
+    border: 2px solid var(--encre);
+    border-radius: var(--rayon);
+    align-self: start;
+  }
+
+  .simu__budget {
+    margin-top: var(--e-1);
+    font-family: var(--f-donnee);
+    font-size: var(--t-mono-xl);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--bleu);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .simu__detail {
+    width: 100%;
+    margin-top: var(--e-6);
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .simu__detail th,
+  .simu__detail td {
+    padding: var(--e-2) 0;
+    border-bottom: var(--filet);
+    text-align: left;
+    font-size: var(--t-small);
+  }
+
+  .simu__detail th {
+    font-weight: 400;
+    color: var(--encre-2);
+  }
+
+  .simu__detail td {
+    font-family: var(--f-donnee);
+    font-weight: 500;
+    text-align: right;
+  }
+
+  .simu__alerte {
+    margin-top: var(--e-4);
+    padding: var(--e-3);
+    background: var(--orange-pale);
+    border-left: 3px solid var(--orange);
+    border-radius: var(--rayon);
+    font-size: var(--t-small);
+  }
+
+  .simu__resultat :global(.bouton) {
+    margin-top: var(--e-6);
+  }
+
+  .simu__mention {
+    margin-top: var(--e-4);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--encre-2);
+  }
+
+  @media (min-width: 64rem) {
+    .simu__grille {
+      grid-template-columns: 1fr 24rem;
+      gap: var(--e-16);
+      align-items: start;
+    }
+  }
+</style>

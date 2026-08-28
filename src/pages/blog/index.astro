@@ -1,0 +1,273 @@
+---
+import { getCollection } from 'astro:content';
+import Page from '../../layouts/Page.astro';
+import Bouton from '../../components/Bouton.astro';
+import { Icon } from 'astro-icon/components';
+import { contact, social } from '../../config/site.ts';
+import { formatDate } from '../../lib/format.ts';
+
+const articles = (await getCollection('blog', ({ data }) => !data.brouillon)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+/** Contenus de fond du site, utiles tant que le blog n'est pas repris. */
+const ressources = [
+  { titre: 'Les dix étapes du prêt immobilier', href: '/credits/immobilier', icone: 'ph:list-numbers' },
+  { titre: "Simuler sa capacité d'emprunt", href: '/credits#simulateur', icone: 'ph:calculator' },
+  { titre: 'Assurance auto après résiliation ou malus', href: '/assurances/auto-moto', icone: 'ph:car' },
+  { titre: "Changer d'assurance emprunteur", href: '/assurance-emprunteur', icone: 'ph:shield-check' },
+  { titre: "Lexique de l'assurance, 128 termes", href: '/assurances/lexique', icone: 'ph:book' },
+  { titre: 'Lexique du crédit, 30 termes', href: '/credits/lexique', icone: 'ph:book' },
+];
+---
+
+<Page
+  title="Blog : nos conseils assurance et crédit"
+  description="Les conseils de vos courtiers à Montereau-Fault-Yonne sur l'assurance auto, l'habitation, l'assurance emprunteur et le crédit immobilier."
+  path="/blog"
+  h1="Nos articles"
+  chapeau="Ce qu'on explique le plus souvent au téléphone, écrit une fois pour toutes."
+>
+  {
+    articles.length > 0 ? (
+      <section class="section conteneur">
+        <ul class="liste">
+          {articles.map((a) => (
+            <li class="article" data-metier={a.data.metier}>
+              <a href={`/blog/${a.id}`}>
+                <time datetime={a.data.date.toISOString()}>
+                  {formatDate(a.data.date.toISOString().slice(0, 10))}
+                </time>
+                <h2>{a.data.titre}</h2>
+                <p>{a.data.description}</p>
+                <span class="article__aller">
+                  Lire <Icon name="ph:arrow-right" aria-hidden="true" />
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : (
+      <section class="section conteneur">
+        {/*
+          Le moteur est en place mais aucun article n'est encore repris. On le dit
+          plutôt que d'afficher une page vide, et on renvoie vers les contenus de
+          fond du site, qui répondent aux mêmes questions.
+        */}
+        <div class="attente">
+          <h2>Les articles sont en cours de reprise</h2>
+          <p>
+            Les articles publiés depuis 2021 sur l'ancien site sont en train d'être
+            repris ici, avec leurs dates et leurs adresses d'origine pour ne rien perdre
+            du référencement acquis. En attendant, l'essentiel est déjà expliqué sur les
+            pages du site.
+          </p>
+        </div>
+
+        <h2 class="ressources__titre">Les réponses les plus demandées</h2>
+        <ul class="ressources">
+          {ressources.map((r) => (
+            <li>
+              <a href={r.href}>
+                <Icon name={r.icone} aria-hidden="true" />
+                <span>{r.titre}</span>
+                <Icon name="ph:arrow-right" class="fleche" aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <div class="suivre">
+          <h2>Nous suivre</h2>
+          <p>
+            Nos actualités passent aussi par les réseaux, souvent avant d'arriver ici.
+          </p>
+          <div class="suivre__liens">
+            <Bouton href={social.facebook} variante="contour" externe icone="ph:facebook-logo">
+              Facebook
+            </Bouton>
+            <Bouton href={social.instagram} variante="contour" externe icone="ph:instagram-logo">
+              Instagram
+            </Bouton>
+            <Bouton href={social.linkedin} variante="contour" externe icone="ph:linkedin-logo">
+              LinkedIn
+            </Bouton>
+          </div>
+        </div>
+
+        <div class="appel">
+          <p>
+            Une question qui n'a pas sa réponse sur le site ? C'est encore plus rapide au
+            téléphone.
+          </p>
+          <Bouton href={contact.phoneHref} variante="accent" icone="ph:phone-fill">
+            Appeler le {contact.phoneDisplay}
+          </Bouton>
+        </div>
+      </section>
+    )
+  }
+</Page>
+
+<style>
+  .article {
+    border-top: var(--filet);
+  }
+
+  .article:last-child {
+    border-bottom: var(--filet);
+  }
+
+  .article a {
+    display: block;
+    padding-block: var(--e-6);
+    color: var(--encre);
+    text-decoration: none;
+  }
+
+  .article a:hover h2 {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  .article time {
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--encre-2);
+  }
+
+  .article h2 {
+    margin-top: var(--e-2);
+    font-size: var(--t-3);
+    max-width: 40ch;
+  }
+
+  .article p {
+    margin-top: var(--e-2);
+    max-width: 66ch;
+    color: var(--encre-2);
+  }
+
+  .article__aller {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--e-2);
+    margin-top: var(--e-3);
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bleu);
+  }
+
+  .article__aller :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* ---- État d'attente ---- */
+  .attente {
+    padding: var(--e-6);
+    background: var(--papier-2);
+    border-radius: var(--rayon);
+    max-width: 62rem;
+  }
+
+  .attente h2 {
+    font-size: var(--t-3);
+  }
+
+  .attente p {
+    margin-top: var(--e-3);
+    max-width: 66ch;
+  }
+
+  .ressources__titre {
+    margin-top: var(--e-12);
+  }
+
+  .ressources {
+    margin-top: var(--e-4);
+    display: grid;
+    gap: var(--e-2);
+  }
+
+  .ressources a {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    min-height: 56px;
+    padding: var(--e-3) var(--e-4);
+    border: 1.5px solid var(--encre);
+    border-radius: var(--rayon);
+    color: var(--encre);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .ressources a:hover {
+    background: var(--papier-2);
+  }
+
+  .ressources a span {
+    flex: 1;
+  }
+
+  .ressources :global(svg) {
+    width: 1.375rem;
+    height: 1.375rem;
+    flex: none;
+  }
+
+  .ressources :global(.fleche) {
+    width: 1rem;
+    height: 1rem;
+    opacity: 0.6;
+  }
+
+  .suivre {
+    margin-top: var(--e-12);
+    padding-top: var(--e-6);
+    border-top: var(--filet);
+  }
+
+  .suivre p {
+    margin-top: var(--e-3);
+    max-width: 60ch;
+    color: var(--encre-2);
+  }
+
+  .suivre__liens {
+    margin-top: var(--e-4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3);
+  }
+
+  .appel {
+    margin-top: var(--e-12);
+    padding: var(--e-6);
+    background: var(--orange-pale);
+    border-radius: var(--rayon);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+  }
+
+  .appel p {
+    max-width: 44ch;
+    font-weight: 700;
+  }
+
+  @media (min-width: 48rem) {
+    .ressources {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

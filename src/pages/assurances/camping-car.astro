@@ -1,0 +1,128 @@
+---
+import Page from '../../layouts/Page.astro';
+import Bouton from '../../components/Bouton.astro';
+import FormulaireRappel from '../../components/FormulaireRappel.astro';
+import { contact } from '../../config/site.ts';
+import { service } from '../../lib/schema.ts';
+---
+
+<Page
+  title="Assurance camping-car et van aménagé"
+  description="Courtier assurance camping-car à Montereau-Fault-Yonne. Un véhicule et un logement à la fois : garanties adaptées au contenu et à l'aménagement. 01 64 24 83 45."
+  path="/assurances/camping-car"
+  h1="Assurance camping-car"
+  chapeau="Un camping-car est un véhicule et un logement en même temps. Les contrats auto classiques couvrent le premier et oublient le second."
+  crumbs={[{ label: 'Assurances', href: '/assurances' }]}
+  filCourant="Camping-car"
+  metier="assurances"
+  schema={service(
+    'Assurance camping-car',
+    "Courtage en assurance de camping-cars et vans aménagés : responsabilité civile, contenu, aménagements, assistance.",
+    '/assurances/camping-car',
+  )}
+>
+  <section class="section conteneur">
+    <h2>Le minimum, puis ce qui compte vraiment</h2>
+    <p class="mesure">
+      Comme pour toute voiture ou moto, le propriétaire d'un camping-car destiné à
+      circuler en France doit l'assurer au minimum en responsabilité civile. Cette
+      garantie indemnise les tiers et vos passagers pour les dommages causés, mais ni le
+      conducteur responsable, ni le véhicule lui-même.
+    </p>
+
+    <ul class="points">
+      <li>
+        <h3>Le contenu</h3>
+        <p>
+          Vaisselle, literie, vélos, matériel de camping, électronique. C'est là que les
+          contrats standards plafonnent le plus bas, alors que c'est ce qu'on emporte.
+        </p>
+      </li>
+      <li>
+        <h3>Les aménagements</h3>
+        <p>
+          Panneaux solaires, porte-vélos, auvent, cellule. Souvent posés après l'achat,
+          donc absents de la valeur déclarée s'ils ne sont pas signalés.
+        </p>
+      </li>
+      <li>
+        <h3>L'assistance</h3>
+        <p>
+          Une panne en camping-car immobilise aussi votre logement. Vérifiez le
+          remorquage, l'hébergement et le rapatriement, y compris à l'étranger.
+        </p>
+      </li>
+      <li>
+        <h3>Le remisage</h3>
+        <p>
+          Un véhicule qui ne roule que quelques semaines par an reste soumis à
+          l'obligation d'assurance, mais des formules adaptées existent.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section conteneur appel">
+    <h2>Pas de formulaire en ligne pour ce contrat</h2>
+    <p class="mesure">
+      Un camping-car se tarife au cas par cas, selon le véhicule, les aménagements et
+      votre usage. Le plus simple est d'en parler deux minutes au téléphone.
+    </p>
+    <div class="appel__actions">
+      <Bouton href={contact.phoneHref} variante="accent" taille="grand" icone="ph:phone-fill">
+        Appeler le {contact.phoneDisplay}
+      </Bouton>
+    </div>
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande="autre" titre="Ou demandez un rappel" />
+  </section>
+</Page>
+
+<style>
+  .points {
+    margin-top: var(--e-8);
+    display: grid;
+    gap: 0;
+  }
+
+  .points li {
+    padding-block: var(--e-4);
+    border-top: var(--filet);
+  }
+
+  .points li:last-child {
+    border-bottom: var(--filet);
+  }
+
+  .points p {
+    margin-top: var(--e-2);
+    max-width: 62ch;
+    color: var(--encre-2);
+  }
+
+  .appel {
+    border-top: var(--filet-fort);
+  }
+
+  .appel p {
+    margin-top: var(--e-4);
+  }
+
+  .appel__actions {
+    margin-top: var(--e-6);
+  }
+
+  .rappel {
+    border-top: var(--filet);
+    max-width: 46rem;
+  }
+
+  @media (min-width: 48rem) {
+    .points {
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--e-8);
+    }
+  }
+</style>

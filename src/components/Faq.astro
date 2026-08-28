@@ -1,0 +1,95 @@
+---
+import type { FaqItem } from '../lib/schema.ts';
+
+/**
+ * Questions fréquentes, en `details`/`summary` natifs : ouverture au clavier,
+ * recherche du navigateur qui fonctionne, zéro JavaScript.
+ * Le balisage FAQPage correspondant est généré par la page appelante.
+ */
+interface Props {
+  items: FaqItem[];
+  titre?: string;
+  class?: string;
+}
+
+const { items, titre = 'Questions fréquentes', class: classe } = Astro.props;
+---
+
+<div class:list={['faq', classe]}>
+  <h2>{titre}</h2>
+  <div class="faq__liste">
+    {
+      items.map((item) => (
+        <details class="faq__item">
+          <summary>
+            <span>{item.question}</span>
+          </summary>
+          <div class="faq__reponse">
+            <p>{item.answer}</p>
+          </div>
+        </details>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .faq__liste {
+    margin-top: var(--e-6);
+  }
+
+  .faq__item {
+    border-top: var(--filet);
+  }
+
+  .faq__item:last-child {
+    border-bottom: var(--filet);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    min-height: 56px;
+    padding-block: var(--e-3);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: var(--t-4);
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Indicateur d'état, en filets : deux traits qui deviennent un seul à l'ouverture. */
+  summary::after {
+    content: '';
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(45deg) translateY(-25%);
+  }
+
+  [open] > summary::after {
+    transform: rotate(225deg) translateY(-25%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    summary::after {
+      transition: transform var(--duree) var(--courbe);
+    }
+  }
+
+  .faq__reponse {
+    padding-bottom: var(--e-4);
+  }
+
+  .faq__reponse p {
+    max-width: 66ch;
+    color: var(--encre-2);
+  }
+</style>

@@ -1,0 +1,239 @@
+---
+import Page from '../../layouts/Page.astro';
+import LiensDevis from '../../components/LiensDevis.astro';
+import Bouton from '../../components/Bouton.astro';
+import Tampon from '../../components/Tampon.astro';
+import FormulaireRappel from '../../components/FormulaireRappel.astro';
+import { Icon } from 'astro-icon/components';
+import { contact, team } from '../../config/site.ts';
+import { service } from '../../lib/schema.ts';
+
+const paul = team.find((m) => m.id === 'paul')!;
+
+const produits = [
+  {
+    titre: 'Auto et moto',
+    texte: "Obligatoire dès qu'un véhicule circule. Résilié, malussé, jeune permis : c'est là qu'un courtier change tout.",
+    href: '/assurances/auto-moto',
+    icone: 'ph:car',
+  },
+  {
+    titre: 'Habitation',
+    texte: 'Locataire, propriétaire occupant, propriétaire bailleur. Trois situations, trois contrats différents.',
+    href: '/assurances/habitation',
+    icone: 'ph:house',
+  },
+  {
+    titre: 'Professionnels',
+    texte: 'RC professionnelle, décennale, dommage-ouvrage, multirisque, flotte de véhicules.',
+    href: '/assurances/professionnels',
+    icone: 'ph:hard-hat',
+  },
+  {
+    titre: 'Camping-car',
+    texte: 'Un véhicule et un logement à la fois. Les contrats auto classiques couvrent mal le contenu.',
+    href: '/assurances/camping-car',
+    icone: 'ph:van',
+  },
+  {
+    titre: 'Santé, animaux, voyage, GLI',
+    texte: 'Mutuelle, santé animale, véhicule de collection, annulation de voyage, loyers impayés.',
+    href: '/assurances/autres',
+    icone: 'ph:heartbeat',
+  },
+  {
+    titre: 'Assurance emprunteur',
+    texte: "Elle peut représenter une part importante du coût d'un prêt. Elle se change à tout moment.",
+    href: '/assurance-emprunteur',
+    icone: 'ph:bank',
+  },
+];
+---
+
+<Page
+  title="Assurances : auto, habitation, professionnels, à Montereau"
+  description="Courtier en assurances à Montereau-Fault-Yonne. Auto, moto, habitation, professionnels, décennale, santé. Solutions après résiliation, malus ou permis annulé. Devis en ligne ou au 01 64 24 83 45."
+  path="/assurances"
+  h1="Vos assurances, négociées"
+  chapeau="Nous ne sommes liés à aucune compagnie. Nous interrogeons plusieurs assureurs, nous comparons les garanties et les prix, puis nous vous expliquons ce que vous signez."
+  metier="assurances"
+  schema={service(
+    'Courtage en assurances',
+    "Courtage en assurances de particuliers et de professionnels : auto, moto, habitation, santé, décennale, dommage-ouvrage. Prise en charge des risques aggravés.",
+    '/assurances',
+  )}
+>
+  <section class="section conteneur">
+    <div class="intro">
+      <p class="intro__qui libelle">
+        Votre interlocuteur · <a href="/le-cabinet#paul">{paul.firstName} {paul.lastName}</a>
+      </p>
+      <h2>Six familles de contrats</h2>
+    </div>
+
+    <ul class="produits">
+      {
+        produits.map((p) => (
+          <li class="produit">
+            <a href={p.href}>
+              <Icon name={p.icone} aria-hidden="true" />
+              <span class="produit__titre">{p.titre}</span>
+              <span class="produit__texte">{p.texte}</span>
+              <span class="produit__aller">
+                Voir <Icon name="ph:arrow-right" aria-hidden="true" />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="refus section" data-metier="assurances">
+    <div class="conteneur">
+      <div class="refus__entete">
+        <h2>Refusé ailleurs ? C'est notre spécialité.</h2>
+        <Tampon couleur="orange" angle={-5}>Accepté</Tampon>
+      </div>
+      <p class="mesure">
+        Une résiliation pour non-paiement, un malus, un permis annulé, trop de sinistres :
+        les formulaires en ligne s'arrêtent là. Nous savons quelles compagnies acceptent
+        ces dossiers, à quelles conditions et à quel prix.
+      </p>
+      <p class="mesure petit">
+        Inutile de cacher votre historique, il est enregistré à l'AGIRA et tous les
+        assureurs y ont accès. Dites-nous la situation réelle, nous chercherons la
+        solution.
+      </p>
+      <div class="refus__actions">
+        <Bouton href="/assurances/auto-moto" variante="accent" icone="ph:car">
+          Auto après résiliation
+        </Bouton>
+        <Bouton href={contact.phoneHref} variante="contour" icone="ph:phone-fill">
+          Appeler le {contact.phoneDisplay}
+        </Bouton>
+      </div>
+    </div>
+  </section>
+
+  <section class="section conteneur">
+    <LiensDevis />
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande="auto" titre="Vous préférez qu'on vous rappelle ?" />
+  </section>
+</Page>
+
+<style>
+  .intro__qui {
+    margin-bottom: var(--e-2);
+  }
+
+  .intro__qui a {
+    display: inline-block;
+    padding-block: var(--e-2);
+    color: var(--encre);
+  }
+
+  .produits {
+    margin-top: var(--e-6);
+    display: grid;
+    gap: var(--e-4);
+  }
+
+  .produit a {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 'icone titre' 'texte texte' 'aller aller';
+    gap: var(--e-2) var(--e-3);
+    height: 100%;
+    padding: var(--e-4);
+    border: 1.5px solid var(--encre);
+    border-radius: var(--rayon);
+    color: var(--encre);
+    text-decoration: none;
+  }
+
+  .produit a:hover {
+    background: var(--orange-pale);
+  }
+
+  .produit :global(svg) {
+    grid-area: icone;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .produit__titre {
+    grid-area: titre;
+    align-self: center;
+    font-weight: 700;
+    font-size: var(--t-4);
+  }
+
+  .produit__texte {
+    grid-area: texte;
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .produit__aller {
+    grid-area: aller;
+    display: flex;
+    align-items: center;
+    gap: var(--e-2);
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .produit__aller :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .refus {
+    background: var(--orange-pale);
+    border-block: var(--filet-fort);
+  }
+
+  .refus__entete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4) var(--e-6);
+    margin-bottom: var(--e-4);
+  }
+
+  .petit {
+    margin-top: var(--e-4);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .refus__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3);
+  }
+
+  .rappel {
+    border-top: var(--filet-fort);
+    max-width: 46rem;
+  }
+
+  @media (min-width: 48rem) {
+    .produits {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .produits {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

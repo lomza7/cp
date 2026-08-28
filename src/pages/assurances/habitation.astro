@@ -1,0 +1,183 @@
+---
+import Page from '../../layouts/Page.astro';
+import Bouton from '../../components/Bouton.astro';
+import Faq from '../../components/Faq.astro';
+import LiensDevis from '../../components/LiensDevis.astro';
+import FormulaireRappel from '../../components/FormulaireRappel.astro';
+import { contact, quoteForms } from '../../config/site.ts';
+import { faqPage, service } from '../../lib/schema.ts';
+
+const faq = [
+  {
+    question: 'Suis-je obligé d’assurer mon logement ?',
+    answer:
+      "Le locataire d'un bail d'habitation, vide, meublé ou mobilité, a l'obligation de s'assurer contre les risques dont il doit répondre : incendie, dégâts des eaux, explosion. Le propriétaire qui occupe lui-même son logement n'y est pas obligé par la loi, sauf en copropriété où le règlement l'impose presque toujours.",
+  },
+  {
+    question: "Qu'est-ce qu'une assurance PNO ?",
+    answer:
+      "Propriétaire non occupant. Elle couvre le logement que vous louez pour ce qui n'est pas du ressort du locataire : la structure, les parties dont vous restez responsable, les périodes de vacance entre deux locataires. Elle est obligatoire pour un lot en copropriété.",
+  },
+  {
+    question: 'Comment estimer la valeur de mon mobilier ?',
+    answer:
+      "En additionnant ce qu'il coûterait de racheter, pas ce que vous avez payé. Les gens sous-estiment presque toujours ce poste, et l'indemnisation est alors réduite proportionnellement. Faites le tour des pièces, l'électroménager et l'informatique montent vite.",
+  },
+  {
+    question: 'Le prix le plus bas est-il une bonne affaire ?',
+    answer:
+      "Assurer son logement pour un prix dérisoire peut être une mauvaise surprise au moment du sinistre. Les écarts se cachent dans les franchises, les plafonds d'indemnisation et les exclusions. Cela vaut-il le coup de jouer avec le feu pour quelques euros par mois ?",
+  },
+];
+---
+
+<Page
+  title="Assurance habitation : locataire, propriétaire, PNO"
+  description="Courtier assurance habitation à Montereau-Fault-Yonne. Locataire, propriétaire occupant, propriétaire non occupant. Devis en ligne ou au 01 64 24 83 45."
+  path="/assurances/habitation"
+  h1="Assurance habitation"
+  chapeau="Trois situations, trois contrats qui n'ont pas le même objet. Encore faut-il savoir dans laquelle vous êtes, et ce que vous devez vraiment couvrir."
+  crumbs={[{ label: 'Assurances', href: '/assurances' }]}
+  filCourant="Habitation"
+  metier="assurances"
+  schema={[
+    faqPage(faq),
+    service(
+      'Assurance habitation',
+      'Courtage en assurance habitation : locataire, propriétaire occupant, propriétaire non occupant, garantie loyers impayés.',
+      '/assurances/habitation',
+    ),
+  ]}
+>
+  <section class="section conteneur">
+    <div class="cas">
+      <article class="cas__item">
+        <h2>Locataire</h2>
+        <p class="cas__statut libelle">Obligatoire</p>
+        <p>
+          Le titulaire d'un bail d'habitation doit s'assurer contre les risques dont il
+          doit répondre : incendie, dégâts des eaux, explosion. L'attestation est
+          demandée à la signature du bail, puis chaque année.
+        </p>
+        <p class="cas__conseil">
+          Ne négligez pas cette assurance, les prix sont rarement élevés, et elle
+          garantit votre lieu de vie.
+        </p>
+      </article>
+
+      <article class="cas__item">
+        <h2>Propriétaire occupant</h2>
+        <p class="cas__statut libelle">Non obligatoire, mais</p>
+        <p>
+          La loi ne vous impose rien si vous occupez votre logement. En copropriété, le
+          règlement l'exige presque toujours. Et sans contrat, un incendie ou un dégât
+          des eaux reste entièrement à votre charge, y compris ce que vous causez aux
+          voisins.
+        </p>
+        <p class="cas__conseil">
+          C'est le bien le plus cher que vous possédez. Le laisser sans couverture est un
+          pari.
+        </p>
+      </article>
+
+      <article class="cas__item">
+        <h2>Propriétaire bailleur</h2>
+        <p class="cas__statut libelle">PNO, souvent obligatoire</p>
+        <p>
+          L'assurance propriétaire non occupant couvre ce qui n'incombe pas au locataire,
+          et les périodes où le logement est vide. Obligatoire pour un lot en
+          copropriété. On peut y adosser une garantie loyers impayés.
+        </p>
+        <p class="cas__conseil">
+          Vous louez un ou plusieurs biens ? Parlons aussi de la GLI.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section conteneur">
+    <Faq items={faq} />
+  </section>
+
+  <section class="section conteneur">
+    <LiensDevis seulement={['habitation']} titre="Votre devis habitation" />
+    <div class="autres">
+      <Bouton href="/assurances/autres" variante="lien">
+        Garantie loyers impayés et autres contrats
+      </Bouton>
+      <Bouton href={contact.phoneHref} variante="lien">
+        Ou appelez le {contact.phoneDisplay}
+      </Bouton>
+    </div>
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande="habitation" titre="Demander un rappel" />
+  </section>
+</Page>
+
+<style>
+  .cas {
+    display: grid;
+    gap: 0;
+  }
+
+  .cas__item {
+    padding-block: var(--e-6);
+    border-top: var(--filet);
+  }
+
+  .cas__item:last-child {
+    border-bottom: var(--filet);
+  }
+
+  .cas__statut {
+    margin-top: var(--e-1);
+    color: var(--encre-2);
+  }
+
+  .cas__item p:nth-of-type(2) {
+    margin-top: var(--e-3);
+    max-width: 60ch;
+    color: var(--encre-2);
+  }
+
+  .cas__conseil {
+    margin-top: var(--e-3);
+    padding-left: var(--e-4);
+    border-left: 3px solid var(--orange);
+    max-width: 60ch;
+    font-size: var(--t-small);
+    font-weight: 700;
+  }
+
+  .autres {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4);
+    padding-top: var(--e-4);
+    border-top: var(--filet);
+  }
+
+  .rappel {
+    border-top: var(--filet-fort);
+    max-width: 46rem;
+  }
+
+  @media (min-width: 64rem) {
+    .cas {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--e-8);
+    }
+
+    .cas__item {
+      border-top: 2px solid var(--encre);
+    }
+
+    .cas__item:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>

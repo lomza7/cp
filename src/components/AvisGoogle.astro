@@ -1,0 +1,269 @@
+---
+import Etoiles from './Etoiles.astro';
+import avisData from '../content/reviews.json';
+import { address } from '../config/site.ts';
+import { formatNote, formatDate } from '../lib/format.ts';
+
+/**
+ * Bloc d'avis Google.
+ *
+ * Les données viennent d'un fichier JSON recopié à la main, pas de l'API Places :
+ * pas de compte Google Cloud facturé, pas de dépendance au build, mise à jour en
+ * deux minutes. Voir docs/01-cadrage.md § 7.
+ *
+ * Tant que la liste d'avis est vide, on affiche la note et le lien vers la
+ * fiche, sans jamais fabriquer de citation.
+ */
+interface Props {
+  /** « compact » pour le hero, « complet » pour une section. */
+  variante?: 'compact' | 'complet';
+  titre?: string;
+  class?: string;
+}
+
+const { variante = 'complet', titre = 'Ce que disent nos clients', class: classe } = Astro.props;
+
+const { note, nombre, avis, releveLe } = avisData as {
+  note: number;
+  nombre: number;
+  releveLe: string;
+  avis: { prenom: string; date: string; note: number; texte: string }[];
+};
+
+const lienFiche = address.mapsUrl;
+const estDev = import.meta.env.DEV;
+---
+
+{
+  variante === 'compact' ? (
+    <p class:list={['avis-compact', classe]}>
+      <Etoiles note={note} taille="1.375rem" />
+      <span class="avis-compact__note">{formatNote(note)} / 5</span>
+      <a href={lienFiche} target="_blank" rel="noopener">
+        {nombre} avis Google<span class="lecteur-seul"> (nouvel onglet)</span>
+      </a>
+    </p>
+  ) : (
+    <section
+      class:list={['avis', avis.length > 0 ? 'section' : 'avis--bandeau', classe]}
+      aria-labelledby="avis-titre"
+    >
+      <div class="conteneur avis__entete">
+        <div class="avis__note">
+          <p class="avis__chiffre">{formatNote(note)}</p>
+          <Etoiles note={note} taille="1.5rem" />
+        </div>
+
+        <div>
+          {/*
+            Sans texte d'avis, le titre ne promet pas des citations qui
+            n'existent pas : il annonce la note, qui est le fait vérifiable.
+          */}
+          <h2 id="avis-titre">
+            {avis.length > 0 ? titre : `${formatNote(note)} sur 5, sur ${nombre} avis Google`}
+          </h2>
+          <p class="avis__intro">
+            {
+              avis.length > 0
+                ? `Le cabinet a ${nombre} avis sur sa fiche Google, avec une note de ${formatNote(note)} sur 5.`
+                : 'Les avis sont publics et vérifiables sur la fiche Google du cabinet.'
+            }
+          </p>
+          <p class="avis__lien">
+            <a href={lienFiche} target="_blank" rel="noopener">
+              Lire les {nombre} avis sur Google<span class="lecteur-seul"> (nouvel onglet)</span>
+            </a>
+          </p>
+          <p class="avis__source">Note relevée le {formatDate(releveLe)}.</p>
+        </div>
+      </div>
+
+      {avis.length > 0 && (
+        <div class="conteneur">
+          <ul class="avis__liste">
+            {avis.map((a) => (
+              <li class="avis__item">
+                <Etoiles note={a.note} taille="1rem" />
+                <blockquote>{a.texte}</blockquote>
+                <p class="avis__auteur">
+                  {a.prenom}
+                  <span class="avis__date">{formatDate(a.date)}</span>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/*
+        Aucun avis recopié pour l'instant. En développement on le signale bien
+        en vue ; en production le bloc reste utile avec la note et le lien.
+      */}
+      {avis.length === 0 && estDev && (
+        <div class="conteneur">
+          <p class="avis__todo">
+            TODO · Aucun texte d'avis dans src/content/reviews.json. Ce bloc affiche
+            donc la note et le lien seuls. Ne jamais inventer d'avis : demander au
+            client une copie de 6 avis représentatifs (QUESTIONS-CLIENT n° 18).
+          </p>
+        </div>
+      )}
+    </section>
+  )
+}
+
+<style>
+  /* ---- Variante compacte, pour le hero ---- */
+  .avis-compact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-2) var(--e-3);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .avis-compact__note {
+    font-family: var(--f-donnee);
+    font-weight: 500;
+    color: var(--encre);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .avis-compact a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 700;
+  }
+
+  /* ---- Variante complète ---- */
+  .avis {
+    border-top: var(--filet);
+  }
+
+  /* Sans citations, la section devient un bandeau : pas de vide à combler. */
+  .avis--bandeau {
+    padding-block: var(--e-8);
+    background: var(--bleu-pale);
+    border-top: var(--filet-fort);
+    border-bottom: var(--filet-fort);
+  }
+
+  .avis__entete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-6);
+  }
+
+  .avis--bandeau h2 {
+    font-size: var(--t-3);
+    max-width: 30ch;
+  }
+
+  .avis__intro {
+    margin-top: var(--e-2);
+    max-width: 46ch;
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .avis__lien {
+    margin-top: var(--e-1);
+  }
+
+  .avis__lien a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 700;
+  }
+
+  .avis__note {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--e-2);
+    flex: none;
+    padding: var(--e-3) var(--e-4);
+    border: 3px double var(--bleu);
+    border-radius: var(--rayon);
+    background: var(--papier);
+  }
+
+  .avis__chiffre {
+    font-family: var(--f-donnee);
+    font-size: var(--t-mono-xl);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--bleu);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .avis__liste {
+    margin-top: var(--e-8);
+    display: grid;
+    gap: var(--e-6);
+  }
+
+  .avis__item {
+    padding-top: var(--e-4);
+    border-top: var(--filet);
+  }
+
+  .avis__item blockquote {
+    margin-top: var(--e-2);
+  }
+
+  .avis__auteur {
+    margin-top: var(--e-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3);
+    font-weight: 700;
+    font-size: var(--t-small);
+  }
+
+  .avis__date {
+    font-family: var(--f-donnee);
+    font-weight: 500;
+    color: var(--encre-2);
+  }
+
+  /* Visible seulement en développement : un manque ne doit pas être silencieux. */
+  .avis__todo {
+    margin-top: var(--e-6);
+    padding: var(--e-4);
+    background: var(--orange);
+    color: var(--encre);
+    border-radius: var(--rayon);
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+    max-width: 70ch;
+  }
+
+  .avis__source {
+    margin-top: var(--e-1);
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    color: var(--encre-2);
+  }
+
+  @media (min-width: 48rem) {
+    .avis__entete {
+      gap: var(--e-8);
+    }
+
+    .avis__liste {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--e-6) var(--e-8);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .avis__liste {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

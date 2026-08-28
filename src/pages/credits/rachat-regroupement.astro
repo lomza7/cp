@@ -1,0 +1,203 @@
+---
+import Page from '../../layouts/Page.astro';
+import Bouton from '../../components/Bouton.astro';
+import Faq from '../../components/Faq.astro';
+import FormulaireRappel from '../../components/FormulaireRappel.astro';
+import { contact } from '../../config/site.ts';
+import { faqPage, service } from '../../lib/schema.ts';
+
+const faq = [
+  {
+    question: 'Quelle différence entre rachat, regroupement et renégociation ?',
+    answer:
+      "Le regroupement réunit plusieurs crédits en un seul, avec une mensualité unique. Le rachat consiste à faire reprendre un crédit par un autre établissement à de meilleures conditions. La renégociation, elle, se fait avec votre banque actuelle, sans changer d'établissement. Les trois visent la même chose : baisser ce que vous payez.",
+  },
+  {
+    question: 'Cela va-t-il me coûter plus cher au total ?',
+    answer:
+      "Souvent oui, si l'on allonge la durée : la mensualité baisse mais le coût total monte. C'est un arbitrage entre votre trésorerie mensuelle et le coût global. Nous vous montrons les deux chiffres avant toute décision, pas seulement celui qui fait plaisir.",
+  },
+  {
+    question: 'Dois-je changer de banque ?',
+    answer:
+      "Un regroupement implique généralement un changement d'établissement, puisque c'est le nouveau prêteur qui refinance vos crédits en cours. Le compte courant peut souvent rester où il est, mais les mensualités seront prélevées par le nouvel organisme.",
+  },
+  {
+    question: 'Puis-je inclure un besoin de trésorerie ?',
+    answer:
+      "Oui, dans certaines limites : on peut ajouter au montant refinancé une somme pour des travaux ou un projet. Elle s'intègre alors à la mensualité unique, ce qui évite de souscrire un crédit supplémentaire à côté.",
+  },
+];
+---
+
+<Page
+  title="Rachat, regroupement et renégociation de crédits"
+  description="Rachat et regroupement de crédits à Montereau-Fault-Yonne. Une seule mensualité, souvent plus basse. Renégociation de prêt immobilier. Appelez le 01 64 24 83 45."
+  path="/credits/rachat-regroupement"
+  h1="Rachat, regroupement, renégociation"
+  chapeau="Le principe : refinancer un ou plusieurs crédits en cours grâce à un nouveau crédit unique. Vous ne payez ensuite plus qu'une seule mensualité."
+  crumbs={[{ label: 'Crédits', href: '/credits' }]}
+  filCourant="Rachat et regroupement"
+  metier="credits"
+  schema={[
+    faqPage(faq),
+    service(
+      'Rachat et regroupement de crédits',
+      "Refinancement de crédits en cours en un crédit unique, rachat par un nouvel établissement et renégociation de prêt immobilier.",
+      '/credits/rachat-regroupement',
+    ),
+  ]}
+>
+  <section class="section conteneur">
+    <h2>Comment ça marche</h2>
+    <ol class="mecanique">
+      <li>
+        <h3>On additionne vos crédits en cours</h3>
+        <p>
+          Immobilier, auto, travaux, consommation, découvert récurrent : on établit le
+          capital restant dû total et le coût actuel de l'ensemble.
+        </p>
+      </li>
+      <li>
+        <h3>Un nouvel établissement refinance le tout</h3>
+        <p>
+          Il rachète vos crédits et vous en accorde un seul, à des conditions renégociées.
+          Cela implique généralement un changement de banque pour ce prêt.
+        </p>
+      </li>
+      <li>
+        <h3>Vous ne payez plus qu'une mensualité</h3>
+        <p>
+          Une seule date de prélèvement, un seul interlocuteur, un montant en général plus
+          bas parce que la durée est réétalée.
+        </p>
+      </li>
+    </ol>
+
+    <p class="avertissement">
+      Le revers de l'étalement : allonger la durée réduit la mensualité mais augmente le
+      coût total du crédit. Nous vous montrons les deux chiffres côte à côte avant que
+      vous décidiez quoi que ce soit.
+    </p>
+  </section>
+
+  <section class="section conteneur cas">
+    <h2>Quand cela vaut le coup d'en parler</h2>
+    <ul>
+      <li>Vous avez trois crédits ou plus et vous perdez le fil des prélèvements.</li>
+      <li>Votre taux d'endettement dépasse 35 % et bloque un autre projet.</li>
+      <li>Votre prêt immobilier a été signé quand les taux étaient plus hauts.</li>
+      <li>Vos revenus ont baissé et la mensualité actuelle est devenue trop lourde.</li>
+      <li>Vous avez besoin de trésorerie pour des travaux, sans empiler un crédit de plus.</li>
+    </ul>
+  </section>
+
+  <section class="section conteneur">
+    <Faq items={faq} />
+  </section>
+
+  <section class="section conteneur suite">
+    <h2>Faisons le point sur vos crédits</h2>
+    <p class="mesure">
+      Munissez-vous de vos tableaux d'amortissement ou de vos derniers relevés. Un appel
+      suffit à savoir si l'opération a du sens dans votre cas.
+    </p>
+    <div class="suite__actions">
+      <Bouton href={contact.phoneHref} variante="accent" taille="grand" icone="ph:phone-fill">
+        Appeler le {contact.phoneDisplay}
+      </Bouton>
+    </div>
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande="rachat" titre="Être rappelé sur un rachat" />
+  </section>
+</Page>
+
+<style>
+  .mecanique {
+    margin-top: var(--e-6);
+    counter-reset: item;
+    display: grid;
+    gap: 0;
+  }
+
+  .mecanique li {
+    counter-increment: item;
+    padding-block: var(--e-4);
+    border-top: var(--filet);
+  }
+
+  .mecanique li:last-child {
+    border-bottom: var(--filet);
+  }
+
+  .mecanique h3::before {
+    content: counter(item, decimal-leading-zero) ' ';
+    font-family: var(--f-donnee);
+    font-weight: 500;
+    color: var(--bleu);
+  }
+
+  .mecanique h3 {
+    font-size: var(--t-4);
+  }
+
+  .mecanique p {
+    margin-top: var(--e-2);
+    max-width: 62ch;
+    color: var(--encre-2);
+  }
+
+  .avertissement {
+    margin-top: var(--e-6);
+    padding: var(--e-4);
+    background: var(--orange-pale);
+    border-left: 3px solid var(--orange);
+    border-radius: var(--rayon);
+    max-width: 66ch;
+  }
+
+  .cas {
+    border-top: var(--filet-fort);
+  }
+
+  .cas ul {
+    margin-top: var(--e-4);
+    display: grid;
+    gap: var(--e-2);
+    max-width: 66ch;
+  }
+
+  .cas li {
+    padding-left: var(--e-6);
+    position: relative;
+  }
+
+  .cas li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 0.75rem;
+    height: 2px;
+    background: var(--bleu);
+  }
+
+  .suite {
+    border-top: var(--filet-fort);
+  }
+
+  .suite p {
+    margin-top: var(--e-4);
+  }
+
+  .suite__actions {
+    margin-top: var(--e-6);
+  }
+
+  .rappel {
+    border-top: var(--filet);
+    max-width: 46rem;
+  }
+</style>

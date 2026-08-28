@@ -1,0 +1,131 @@
+---
+import Page from '../../layouts/Page.astro';
+import Bouton from '../../components/Bouton.astro';
+import LiensDevis from '../../components/LiensDevis.astro';
+import FormulaireRappel from '../../components/FormulaireRappel.astro';
+import { contact } from '../../config/site.ts';
+import { service } from '../../lib/schema.ts';
+
+const contrats = [
+  {
+    titre: 'Mutuelle santé',
+    texte:
+      "Votre employeur ne propose pas de contrat d'entreprise, ou vous n'êtes plus salarié. Une mutuelle vous garantit des remboursements à la hauteur de vos besoins réels, pas d'un forfait moyen.",
+  },
+  {
+    titre: 'Santé animale',
+    texte:
+      "Sur le même principe que pour les humains : évitez l'imprévu à quatre chiffres en optant pour un contrat qui garantit la santé de votre animal.",
+  },
+  {
+    titre: 'Véhicules de collection',
+    texte:
+      "Un véhicule de plus de trente ans relève d'une assurance spécifique, avec une valeur convenue et un usage limité qui font baisser la cotisation.",
+  },
+  {
+    titre: 'Voyages',
+    texte:
+      "L'assurance annulation n'a jamais eu autant de sens. Bagages, frais médicaux à l'étranger, rapatriement : vérifiez ce que votre carte bancaire couvre déjà avant de payer deux fois.",
+  },
+  {
+    titre: 'Garantie loyers impayés',
+    texte:
+      "Vous louez un ou plusieurs biens ? La GLI couvre les loyers non versés, les dégradations et les frais de procédure. Elle se cumule avec une assurance propriétaire non occupant.",
+  },
+  {
+    titre: 'Risques spécifiques',
+    texte:
+      "Un risque particulier ? Personne n'a trouvé d'assurance pour vous ? Nous sommes pleins de ressources : contactez-nous et expliquez-nous le dossier.",
+  },
+];
+---
+
+<Page
+  title="Santé, animaux, voyage, collection, loyers impayés"
+  description="Mutuelle santé, santé animale, véhicule de collection, assurance voyage, garantie loyers impayés et risques spécifiques. Courtier à Montereau-Fault-Yonne, 01 64 24 83 45."
+  path="/assurances/autres"
+  h1="Les autres contrats"
+  chapeau="Il existe une grande diversité d'assurances, qui garantissent des risques courants ou très particuliers. Si votre besoin n'entre dans aucune case, c'est justement le moment de nous appeler."
+  crumbs={[{ label: 'Assurances', href: '/assurances' }]}
+  filCourant="Autres assurances"
+  metier="assurances"
+  schema={service(
+    'Autres assurances',
+    'Mutuelle santé, santé animale, véhicules de collection, assurance voyage, garantie loyers impayés, risques aggravés et spécifiques.',
+    '/assurances/autres',
+  )}
+>
+  <section class="section conteneur">
+    <ul class="contrats">
+      {
+        contrats.map((c) => (
+          <li>
+            <h2>{c.titre}</h2>
+            <p>{c.texte}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section conteneur">
+    <LiensDevis seulement={['sante', 'santeAnimale']} titre="Vos devis en ligne" />
+    <p class="note">
+      Les autres contrats de cette page se construisent sur mesure. Un appel suffit à
+      cadrer le besoin.
+    </p>
+    <Bouton href={contact.phoneHref} variante="encre" icone="ph:phone-fill">
+      Appeler le {contact.phoneDisplay}
+    </Bouton>
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande="autre" titre="Décrivez votre besoin" />
+  </section>
+</Page>
+
+<style>
+  .contrats {
+    display: grid;
+    gap: 0;
+  }
+
+  .contrats li {
+    padding-block: var(--e-4);
+    border-top: var(--filet);
+  }
+
+  .contrats li:last-child {
+    border-bottom: var(--filet);
+  }
+
+  .contrats h2 {
+    font-size: var(--t-4);
+  }
+
+  .contrats p {
+    margin-top: var(--e-2);
+    max-width: 62ch;
+    color: var(--encre-2);
+  }
+
+  .note {
+    margin-top: var(--e-6);
+    margin-bottom: var(--e-4);
+    max-width: 62ch;
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .rappel {
+    border-top: var(--filet-fort);
+    max-width: 46rem;
+  }
+
+  @media (min-width: 48rem) {
+    .contrats {
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--e-8);
+    }
+  }
+</style>

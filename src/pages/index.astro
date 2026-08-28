@@ -5,8 +5,8 @@ import Bouton from '../components/Bouton.astro';
 import Tampon from '../components/Tampon.astro';
 import Horaires from '../components/Horaires.astro';
 import Photo from '../components/Photo.astro';
-import { site, contact, address, team, googleReviews, quoteForms } from '../config/site.ts';
-import { formatNote } from '../lib/format.ts';
+import AvisGoogle from '../components/AvisGoogle.astro';
+import { site, contact, address, team, quoteForms } from '../config/site.ts';
 
 const paul = team.find((m) => m.id === 'paul')!;
 const calvin = team.find((m) => m.id === 'calvin')!;
@@ -59,14 +59,7 @@ const credits = [
         </div>
 
         <!-- La note Google entre dans le hero : c'est la preuve la plus forte du cabinet. -->
-        <p class="hero__preuve">
-          <Tampon couleur="bleu">
-            {formatNote(googleReviews.rating)} / 5 · {googleReviews.count} avis
-          </Tampon>
-          <a href={googleReviews.url} target="_blank" rel="noopener">
-            Lire sur Google<span class="lecteur-seul"> (nouvel onglet)</span>
-          </a>
-        </p>
+        <AvisGoogle variante="compact" class="hero__preuve" />
       </div>
 
       <Photo
@@ -205,6 +198,8 @@ const credits = [
     </div>
   </section>
 
+  <AvisGoogle />
+
   <!-- L'agence : la preuve qu'ils existent physiquement. -->
   <section class="agence section">
     <div class="conteneur agence__grille">
@@ -285,21 +280,8 @@ const credits = [
     gap: var(--e-4) var(--e-6);
   }
 
-  .hero__preuve {
+  .hero :global(.hero__preuve) {
     margin-top: var(--e-8);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--e-2) var(--e-4);
-    font-size: var(--t-small);
-    color: var(--encre-2);
-  }
-
-  .hero__preuve a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    font-weight: 700;
   }
 
   .hero__visuel {

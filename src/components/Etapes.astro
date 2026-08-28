@@ -1,0 +1,104 @@
+---
+/**
+ * Parcours séquentiel numéroté. Utilisé pour les 10 étapes du crédit
+ * immobilier, qui sont le meilleur contenu du site d'origine.
+ *
+ * La numérotation est légitime ici : c'est une vraie séquence, dans un ordre
+ * que le visiteur doit suivre. On ne numérote pas des sections pour décorer.
+ */
+export interface Etape {
+  titre: string;
+  texte: string;
+  /** Délai réglementaire ou pratique, affiché en chasse fixe. */
+  delai?: string;
+}
+
+interface Props {
+  etapes: Etape[];
+  class?: string;
+}
+
+const { etapes, class: classe } = Astro.props;
+---
+
+<ol class:list={['etapes', classe]}>
+  {
+    etapes.map((e, i) => (
+      <li class="etape">
+        <p class="etape__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+        <div class="etape__corps">
+          <h3>
+            <span class="lecteur-seul">Étape {i + 1} sur {etapes.length}. </span>
+            {e.titre}
+          </h3>
+          <p class="etape__texte">{e.texte}</p>
+          {e.delai && (
+            <p class="etape__delai">
+              <span class="libelle">Délai</span>
+              {e.delai}
+            </p>
+          )}
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .etapes {
+    counter-reset: etape;
+  }
+
+  .etape {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: var(--e-3);
+    padding-block: var(--e-6);
+    border-top: var(--filet);
+  }
+
+  .etape:last-child {
+    border-bottom: var(--filet);
+  }
+
+  .etape__num {
+    font-family: var(--f-donnee);
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .etape h3 {
+    font-size: var(--t-4);
+  }
+
+  .etape__texte {
+    margin-top: var(--e-2);
+    max-width: 62ch;
+    color: var(--encre-2);
+  }
+
+  .etape__delai {
+    margin-top: var(--e-3);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--e-2);
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 48rem) {
+    .etape {
+      grid-template-columns: 4.5rem 1fr;
+      gap: var(--e-6);
+    }
+
+    .etape__num {
+      font-size: 2rem;
+    }
+  }
+</style>

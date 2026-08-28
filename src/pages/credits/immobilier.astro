@@ -1,0 +1,194 @@
+---
+import Page from '../../layouts/Page.astro';
+import Etapes from '../../components/Etapes.astro';
+import Bouton from '../../components/Bouton.astro';
+import Faq from '../../components/Faq.astro';
+import FormulaireRappel from '../../components/FormulaireRappel.astro';
+import { contact } from '../../config/site.ts';
+import { faqPage, service } from '../../lib/schema.ts';
+
+/*
+  Les dix étapes viennent de la page /créditimmobilier du site d'origine, qui
+  est son meilleur contenu. Elles sont réécrites sans être dénaturées, et
+  présentées comme un vrai parcours séquentiel plutôt qu'un pavé en bas de page.
+*/
+const etapes = [
+  {
+    titre: 'Signature du compromis de vente',
+    texte:
+      "On a toujours cette peur de voir le bien qui nous a tapé dans l'œil s'envoler sous notre nez : le compromis est là pour verrouiller ça. Faites-y inscrire les conditions suspensives, en particulier celle d'obtention de prêt : sans elle, vous perdez votre dépôt de garantie si le financement est refusé.",
+    delai: "15 jours pour déposer la demande, 45 jours de réponse de la banque",
+  },
+  {
+    titre: 'Recherche du crédit',
+    texte:
+      "Le taux débiteur est un élément important, mais il ne faut pas regarder uniquement cela : frais de dossier, coût de la garantie, assurance emprunteur, conditions de remboursement anticipé et de modulation pèsent parfois plus lourd sur la durée. Nous comparons l'ensemble et retenons la solution la plus adaptée à votre situation.",
+  },
+  {
+    titre: 'Dépôt du dossier auprès des organismes prêteurs',
+    texte:
+      "Il s'agit de se rapprocher de la banque retenue, de l'informer de votre intérêt et de lui fournir les derniers éléments indispensables à la souscription du prêt. Un dossier complet du premier coup fait gagner des semaines.",
+  },
+  {
+    titre: 'Le retour de la banque',
+    texte:
+      "En cas d'accord, l'établissement vous fournit généralement une lettre d'accord de principe. Attention : ce n'est pas encore l'offre de prêt, et elle reste conditionnée à la validation définitive du dossier.",
+  },
+  {
+    titre: 'La signature avec la banque',
+    texte:
+      "Rendez-vous en agence pour signer les documents, souscrire les contrats d'assurance et ouvrir le compte sur lequel les mensualités seront prélevées. C'est aussi le moment de vérifier ce qui vous est vendu en plus du prêt.",
+  },
+  {
+    titre: "L'offre de prêt",
+    texte:
+      "Ce document obligatoire est fourni par la banque et scelle l'ensemble des conditions et caractéristiques de votre prêt : montant, taux, durée, garanties, TAEG. Lisez-le en entier. Si un point vous échappe, appelez-nous avant de signer.",
+  },
+  {
+    titre: 'Le délai de réflexion',
+    texte:
+      "Ce délai est de dix jours, on ne peut pas l'éviter et il ne faut pas le prendre à la légère. Il court à compter de la réception de l'offre, et l'offre ne peut pas être acceptée avant son terme.",
+    delai: '10 jours, incompressibles',
+  },
+  {
+    titre: "La signature de l'offre de prêt",
+    texte:
+      "Vous retournez l'offre acceptée à la banque, dans les conditions qu'elle a établies. La date d'envoi fait foi : conservez la preuve du dépôt.",
+  },
+  {
+    titre: 'La signature chez le notaire',
+    texte:
+      "Ça y est, vous êtes propriétaire. Enfin, juste après la signature de l'acte authentique et la remise des clés, effectuées lors de ce rendez-vous. La banque débloque les fonds au notaire à cette occasion.",
+  },
+  {
+    titre: 'Le commencement de votre prêt',
+    texte:
+      "Le prêt commence, et la première mensualité également, un mois après la signature de l'acte authentique. Gardez le tableau d'amortissement : il vous servira si vous renégociez ou revendez.",
+  },
+];
+
+const faq = [
+  {
+    question: "Combien puis-je emprunter ?",
+    answer:
+      "Les banques retiennent en général un taux d'endettement maximal de 35 % de vos revenus nets, assurance comprise, recommandation du Haut Conseil de stabilité financière. À partir de là, le montant dépend de la durée, du taux et de votre apport. Notre simulateur en donne un ordre de grandeur en trente secondes.",
+  },
+  {
+    question: "Faut-il obligatoirement un apport ?",
+    answer:
+      "Ce n'est pas une obligation légale, mais la plupart des banques attendent que vous financiez au moins les frais annexes, notaire et garantie, soit environ 8 à 10 % du prix. Les financements sans apport existent, sur des profils précis.",
+  },
+  {
+    question: "Le compromis est signé et la banque a refusé, que se passe-t-il ?",
+    answer:
+      "Si la condition suspensive d'obtention de prêt figure au compromis et que vous avez fait les démarches dans les délais prévus, la vente est annulée et votre dépôt de garantie vous est restitué. C'est précisément pour cela qu'il ne faut jamais y renoncer.",
+  },
+  {
+    question: "Puis-je changer d'assurance emprunteur après la signature ?",
+    answer:
+      "Oui, à tout moment depuis la loi Lemoine, à condition de présenter des garanties au moins équivalentes à celles du contrat de la banque. C'est souvent le poste où l'économie est la plus rapide à obtenir.",
+  },
+];
+---
+
+<Page
+  title="Prêt immobilier : les 10 étapes, du compromis aux clés"
+  description="Courtier en prêt immobilier à Montereau-Fault-Yonne, Nemours, Sens, Fontainebleau. Les 10 étapes expliquées, du compromis de vente au déblocage des fonds. 01 64 24 83 45."
+  path="/credits/immobilier"
+  h1="Du compromis aux clés, en dix étapes"
+  chapeau="Le crédit immobilier concerne l'achat d'un logement, ou d'un terrain destiné à sa construction. Voici le parcours réel, étape par étape, avec les délais qui comptent."
+  crumbs={[{ label: 'Crédits', href: '/credits' }]}
+  filCourant="Prêt immobilier"
+  metier="credits"
+  schema={[
+    faqPage(faq),
+    service(
+      'Courtage en prêt immobilier',
+      "Montage et négociation de prêts immobiliers auprès de plusieurs établissements, pour l'achat d'un logement ou d'un terrain à bâtir.",
+      '/credits/immobilier',
+    ),
+  ]}
+>
+  <section class="section conteneur">
+    <div class="rappel-simu">
+      <p>
+        Avant de commencer : savoir ce que vous pouvez emprunter évite de visiter des
+        biens hors budget.
+      </p>
+      <Bouton href="/credits#simulateur" variante="accent" icone="ph:calculator">
+        Simuler ma capacité d'emprunt
+      </Bouton>
+    </div>
+  </section>
+
+  <section class="section conteneur">
+    <h2>Le parcours</h2>
+    <Etapes etapes={etapes} class="parcours" />
+  </section>
+
+  <section class="section conteneur">
+    <Faq items={faq} />
+  </section>
+
+  <section class="section conteneur suite">
+    <h2>À quelle étape êtes-vous ?</h2>
+    <p class="mesure">
+      Que vous cherchiez encore ou que le compromis soit signé depuis huit jours, le
+      premier appel sert à la même chose : savoir où vous en êtes et ce qui doit être
+      fait maintenant.
+    </p>
+    <div class="suite__actions">
+      <Bouton href={contact.phoneHref} variante="accent" taille="grand" icone="ph:phone-fill">
+        Appeler le {contact.phoneDisplay}
+      </Bouton>
+      <Bouton href={contact.calendly} variante="lien" externe>Prendre rendez-vous</Bouton>
+    </div>
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande="immobilier" titre="Être rappelé sur mon projet" />
+  </section>
+</Page>
+
+<style>
+  .rappel-simu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    padding: var(--e-4);
+    background: var(--bleu-pale);
+    border-radius: var(--rayon);
+  }
+
+  .rappel-simu p {
+    max-width: 44ch;
+    font-weight: 700;
+  }
+
+  .parcours {
+    margin-top: var(--e-6);
+  }
+
+  .suite {
+    border-top: var(--filet-fort);
+  }
+
+  .suite p {
+    margin-top: var(--e-4);
+  }
+
+  .suite__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4);
+  }
+
+  .rappel {
+    border-top: var(--filet);
+    max-width: 46rem;
+  }
+</style>

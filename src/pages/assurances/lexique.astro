@@ -1,0 +1,55 @@
+---
+import Page from '../../layouts/Page.astro';
+import Lexique from '../../components/Lexique.astro';
+import Bouton from '../../components/Bouton.astro';
+import termes from '../../content/lexique-assurance.json';
+import { contact } from '../../config/site.ts';
+---
+
+<Page
+  title="Lexique de l'assurance"
+  description="Franchise, vétusté, bonus-malus, IPT, subrogation : 128 termes d'assurance expliqués simplement par votre courtier à Montereau-Fault-Yonne."
+  path="/assurances/lexique"
+  h1="Le vocabulaire de l'assurance, en clair"
+  chapeau="Un contrat d'assurance est écrit dans une langue à lui. Voici les mots que vous croiserez, expliqués sans détour. Si l'un d'eux vous bloque, appelez-nous : c'est plus rapide."
+  crumbs={[{ label: 'Assurances', href: '/assurances' }]}
+  filCourant="Lexique"
+  metier="assurances"
+>
+  <section class="section conteneur">
+    <Lexique termes={termes} placeholder="Chercher un terme d'assurance" />
+  </section>
+
+  <section class="section conteneur suite">
+    <h2>Un mot vous bloque ?</h2>
+    <p class="mesure">
+      Un contrat mal compris est un contrat mal choisi. Posez la question, on prend le
+      temps d'y répondre.
+    </p>
+    <div class="suite__actions">
+      <Bouton href={contact.phoneHref} variante="encre" icone="ph:phone-fill">
+        Appeler le {contact.phoneDisplay}
+      </Bouton>
+      <Bouton href="/credits/lexique" variante="lien">Voir aussi le lexique du crédit</Bouton>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .suite {
+    border-top: var(--filet-fort);
+  }
+
+  .suite p {
+    margin-top: var(--e-3);
+    color: var(--encre-2);
+  }
+
+  .suite__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4);
+  }
+</style>

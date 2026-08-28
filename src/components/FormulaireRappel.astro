@@ -1,0 +1,435 @@
+---
+import Bouton from './Bouton.astro';
+import { contact } from '../config/site.ts';
+import { TYPES_DEMANDE, CRENEAUX } from '../lib/validate.ts';
+
+/**
+ * Îlot 2 : formulaire de demande de rappel. Un seul formulaire pour tout le
+ * site.
+ *
+ * Il fonctionne sans JavaScript : la route /api/contact accepte un envoi de
+ * formulaire classique et redirige vers /contact/merci. Avec JavaScript, l'envoi
+ * se fait en arrière-plan et les erreurs s'affichent sous les champs concernés.
+ */
+interface Props {
+  /** Type de demande présélectionné, par exemple depuis une page produit. */
+  demande?: string;
+  titre?: string;
+  /** Le titre est un h2 par défaut, h1 sur la page contact. */
+  niveauTitre?: 'h1' | 'h2';
+  class?: string;
+}
+
+const { demande = '', titre = 'Demander à être rappelé', niveauTitre = 'h2', class: classe } = Astro.props;
+const Titre = niveauTitre;
+---
+
+<div class:list={['form', classe]} data-form>
+  <Titre>{titre}</Titre>
+  <p class="form__intro">
+    Laissez vos coordonnées, un courtier vous rappelle. Réponse pendant les heures
+    d'ouverture, dans la demi-journée. Pressé ?{' '}
+    <a href={contact.phoneHref}>Appelez le {contact.phoneDisplay}</a>.
+  </p>
+
+  <form action="/api/contact" method="POST" novalidate data-formulaire>
+    <!-- Résumé des erreurs, annoncé aux lecteurs d'écran après une tentative. -->
+    <div class="form__resume" role="alert" data-resume hidden></div>
+
+    <div class="form__duo">
+      <p class="champ">
+        <label for="f-prenom">Prénom</label>
+        <input type="text" id="f-prenom" name="prenom" autocomplete="given-name" required />
+        <span class="champ__erreur" data-erreur="prenom"></span>
+      </p>
+      <p class="champ">
+        <label for="f-nom">Nom</label>
+        <input type="text" id="f-nom" name="nom" autocomplete="family-name" required />
+        <span class="champ__erreur" data-erreur="nom"></span>
+      </p>
+    </div>
+
+    <div class="form__duo">
+      <p class="champ">
+        <label for="f-telephone">Téléphone</label>
+        <input
+          type="tel"
+          id="f-telephone"
+          name="telephone"
+          inputmode="tel"
+          autocomplete="tel"
+          required
+        />
+        <span class="champ__erreur" data-erreur="telephone"></span>
+      </p>
+      <p class="champ">
+        <label for="f-email">E-mail</label>
+        <input
+          type="email"
+          id="f-email"
+          name="email"
+          inputmode="email"
+          autocomplete="email"
+          required
+        />
+        <span class="champ__erreur" data-erreur="email"></span>
+      </p>
+    </div>
+
+    <p class="champ">
+      <label for="f-demande">Votre demande</label>
+      <select id="f-demande" name="demande" required data-demande>
+        <option value="">Choisissez…</option>
+        {
+          TYPES_DEMANDE.map((t) => (
+            <option value={t.valeur} selected={t.valeur === demande}>
+              {t.label}
+            </option>
+          ))
+        }
+      </select>
+      <span class="champ__erreur" data-erreur="demande"></span>
+    </p>
+
+    <p class="champ">
+      <label for="f-creneau">Quand pouvons-nous vous appeler ?</label>
+      <select id="f-creneau" name="creneau" required>
+        <option value="">Choisissez…</option>
+        {CRENEAUX.map((c) => <option value={c.valeur}>{c.label}</option>)}
+      </select>
+      <span class="champ__erreur" data-erreur="creneau"></span>
+    </p>
+
+    <p class="champ">
+      <label for="f-message">
+        Des informations à nous communiquer ? <span class="champ__option">facultatif</span>
+      </label>
+      <textarea id="f-message" name="message" rows="4" maxlength="2000" data-message></textarea>
+      <span class="champ__erreur" data-erreur="message"></span>
+    </p>
+
+    <!--
+      Champ piège. Hors du flux d'accessibilité : sans aria-hidden et
+      tabindex="-1", il piégerait aussi les utilisateurs de lecteurs d'écran.
+    -->
+    <div class="form__piege" aria-hidden="true">
+      <label for="f-societe">Société</label>
+      <input type="text" id="f-societe" name="piege" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <p class="champ champ--case">
+      <input type="checkbox" id="f-consentement" name="consentement" value="oui" required />
+      <label for="f-consentement">
+        J'accepte que CP SOLUTIONS utilise ces informations pour me rappeler au sujet
+        de ma demande. <a href="/confidentialite">Comment vos données sont traitées</a>.
+      </label>
+      <span class="champ__erreur" data-erreur="consentement"></span>
+    </p>
+
+    <Bouton type="submit" variante="encre" taille="grand" pleineLargeur icone="ph:paper-plane-tilt">
+      Envoyer ma demande
+    </Bouton>
+
+    <p class="form__note">
+      Aucune donnée n'est revendue. Elles servent uniquement à traiter votre demande
+      et sont conservées trois ans.
+    </p>
+  </form>
+</div>
+
+<script>
+  import { valider, estValide, type DonneesRappel } from '../lib/validate.ts';
+
+  for (const racine of document.querySelectorAll<HTMLElement>('[data-form]')) {
+    const form = racine.querySelector<HTMLFormElement>('[data-formulaire]')!;
+    const resume = racine.querySelector<HTMLElement>('[data-resume]')!;
+    const bouton = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const libelleBouton = bouton.querySelector('span')!;
+    const texteInitial = libelleBouton.textContent!;
+
+    const erreurEl = (champ: string) =>
+      form.querySelector<HTMLElement>(`[data-erreur="${champ}"]`);
+
+    const lire = (): Partial<DonneesRappel> => {
+      const d = new FormData(form);
+      return {
+        prenom: String(d.get('prenom') ?? ''),
+        nom: String(d.get('nom') ?? ''),
+        telephone: String(d.get('telephone') ?? ''),
+        email: String(d.get('email') ?? ''),
+        demande: String(d.get('demande') ?? ''),
+        creneau: String(d.get('creneau') ?? ''),
+        message: String(d.get('message') ?? ''),
+        consentement: d.get('consentement') === 'oui',
+        piege: String(d.get('piege') ?? ''),
+      };
+    };
+
+    function afficher(erreurs: Record<string, string | undefined>) {
+      for (const champ of ['prenom', 'nom', 'telephone', 'email', 'demande', 'creneau', 'message', 'consentement']) {
+        const el = erreurEl(champ);
+        const controle = form.querySelector<HTMLElement>(`[name="${champ}"]`);
+        const msg = erreurs[champ];
+        if (el) el.textContent = msg ?? '';
+        if (controle) {
+          controle.setAttribute('aria-invalid', msg ? 'true' : 'false');
+          if (msg && el?.id) controle.setAttribute('aria-describedby', el.id);
+        }
+      }
+    }
+
+    // Chaque message d'erreur a besoin d'un id pour être relié à son champ.
+    for (const el of form.querySelectorAll<HTMLElement>('[data-erreur]')) {
+      el.id = `err-${el.dataset.erreur}`;
+    }
+
+    // On ne valide un champ au départ du focus que s'il a déjà été renseigné :
+    // signaler une erreur sur un champ jamais rempli est agressif.
+    for (const controle of form.querySelectorAll<HTMLInputElement | HTMLSelectElement>('input, select')) {
+      controle.addEventListener('blur', () => {
+        if (!controle.value) return;
+        const e = valider(lire()) as Record<string, string | undefined>;
+        const el = erreurEl(controle.name);
+        if (el) el.textContent = e[controle.name] ?? '';
+        controle.setAttribute('aria-invalid', e[controle.name] ? 'true' : 'false');
+      });
+    }
+
+    form.addEventListener('submit', async (ev) => {
+      const donnees = lire();
+      const erreurs = valider(donnees) as Record<string, string | undefined>;
+
+      if (!estValide(erreurs)) {
+        ev.preventDefault();
+        afficher(erreurs);
+        const nb = Object.keys(erreurs).length;
+        resume.hidden = false;
+        resume.textContent =
+          nb === 1
+            ? 'Un champ est à corriger avant l’envoi.'
+            : `${nb} champs sont à corriger avant l’envoi.`;
+        const premier = form.querySelector<HTMLElement>('[aria-invalid="true"]');
+        premier?.focus();
+        return;
+      }
+
+      ev.preventDefault();
+      afficher({});
+      resume.hidden = true;
+      bouton.disabled = true;
+      libelleBouton.textContent = 'Envoi…';
+
+      try {
+        const reponse = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(donnees),
+        });
+
+        if (reponse.ok) {
+          window.location.assign('/contact/merci');
+          return;
+        }
+
+        const corps = await reponse.json().catch(() => ({}));
+        if (corps.erreurs) {
+          afficher(corps.erreurs);
+          resume.hidden = false;
+          resume.textContent = 'Des champs sont à corriger avant l’envoi.';
+        } else {
+          throw new Error(corps.message ?? 'Envoi impossible');
+        }
+      } catch {
+        // On ne stocke rien : si l'envoi échoue, le visiteur doit le savoir et
+        // avoir le numéro sous les yeux, sinon la demande est perdue en silence.
+        resume.hidden = false;
+        resume.innerHTML =
+          'L’envoi a échoué. Réessayez, ou appelez-nous directement au ' +
+          '<a href="tel:+33164248345">01 64 24 83 45</a>.';
+      } finally {
+        bouton.disabled = false;
+        libelleBouton.textContent = texteInitial;
+      }
+    });
+
+    /*
+      Pré-remplissage depuis le simulateur : le lien du simulateur passe le
+      budget en paramètres d'URL. C'est ce qui transforme un curieux en demande
+      qualifiée, donc le message est rédigé pour le courtier, pas pour la machine.
+     */
+    const params = new URLSearchParams(window.location.search);
+    const select = form.querySelector<HTMLSelectElement>('[data-demande]');
+
+    // Type de demande passé par une page produit, avec ou sans simulation.
+    const demandeUrl = params.get('demande');
+    if (select && demandeUrl && [...select.options].some((o) => o.value === demandeUrl)) {
+      select.value = demandeUrl;
+    }
+
+    const budget = params.get('budget');
+    if (budget) {
+      const message = form.querySelector<HTMLTextAreaElement>('[data-message]');
+      const euros = (v: string | null) =>
+        v ? Number(v).toLocaleString('fr-FR') + ' €' : null;
+
+      if (message && !message.value) {
+        const lignes = [
+          `Simulation faite sur le site : budget d'achat d'environ ${euros(budget)}.`,
+          params.get('apport') ? `Apport : ${euros(params.get('apport'))}.` : null,
+          params.get('mensualite') ? `Mensualité visée : ${euros(params.get('mensualite'))}.` : null,
+          params.get('duree') ? `Durée envisagée : ${params.get('duree')} ans.` : null,
+        ].filter(Boolean);
+        message.value = lignes.join('\n');
+      }
+    }
+  }
+</script>
+
+<style>
+  .form {
+    container-type: inline-size;
+  }
+
+  .form__intro {
+    margin-top: var(--e-3);
+    margin-bottom: var(--e-6);
+    max-width: 52ch;
+    color: var(--encre-2);
+  }
+
+  .form__resume {
+    margin-bottom: var(--e-4);
+    padding: var(--e-3) var(--e-4);
+    background: var(--papier-2);
+    border-left: 3px solid var(--erreur);
+    border-radius: var(--rayon);
+    color: var(--erreur);
+    font-weight: 700;
+    font-size: var(--t-small);
+  }
+
+  .form__resume a {
+    color: var(--erreur);
+  }
+
+  .champ {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-2);
+  }
+
+  .champ + .champ,
+  .form__duo + .champ,
+  .champ + .form__duo,
+  .form__duo + .form__duo {
+    margin-top: var(--e-4);
+  }
+
+  .champ label {
+    font-weight: 700;
+    font-size: var(--t-small);
+  }
+
+  .champ__option {
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--encre-2);
+  }
+
+  input[type='text'],
+  input[type='tel'],
+  input[type='email'],
+  select,
+  textarea {
+    width: 100%;
+    min-height: var(--touche);
+    padding: var(--e-3);
+    background: var(--papier-3);
+    border: 1.5px solid var(--encre);
+    border-radius: var(--rayon);
+    /* 16 px minimum, sinon iOS zoome au focus. */
+    font-size: 1rem;
+  }
+
+  textarea {
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--encre-2);
+  }
+
+  input[aria-invalid='true'],
+  select[aria-invalid='true'],
+  textarea[aria-invalid='true'] {
+    border-color: var(--erreur);
+    border-width: 2px;
+  }
+
+  .champ__erreur:not(:empty) {
+    font-size: var(--t-small);
+    font-weight: 700;
+    color: var(--erreur);
+  }
+
+  /* ---- Case de consentement ---- */
+  .champ--case {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--e-3);
+    align-items: start;
+    margin-top: var(--e-6);
+  }
+
+  .champ--case input {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 2px;
+    accent-color: var(--bleu);
+  }
+
+  .champ--case label {
+    font-weight: 400;
+    font-size: var(--t-small);
+    line-height: 1.5;
+  }
+
+  .champ--case .champ__erreur {
+    grid-column: 1 / -1;
+  }
+
+  /* Le piège doit rester invisible sans display:none, que certains robots détectent. */
+  .form__piege {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form :global(.bouton) {
+    margin-top: var(--e-6);
+  }
+
+  .form__note {
+    margin-top: var(--e-4);
+    font-size: 0.8125rem;
+    color: var(--encre-2);
+  }
+
+  .form__duo {
+    display: grid;
+    gap: var(--e-4);
+  }
+
+  @container (min-width: 34rem) {
+    .form__duo {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

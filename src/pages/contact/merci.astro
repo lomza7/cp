@@ -1,0 +1,127 @@
+---
+import Page from '../../layouts/Page.astro';
+import Bouton from '../../components/Bouton.astro';
+import Horaires from '../../components/Horaires.astro';
+import { Icon } from 'astro-icon/components';
+import { contact } from '../../config/site.ts';
+---
+
+<Page
+  title="Votre demande est envoyée"
+  description="Votre demande de rappel a bien été transmise à CP SOLUTIONS."
+  path="/contact/merci"
+  h1="C'est envoyé."
+  chapeau="Votre demande est arrivée chez nous. Un courtier vous rappelle sur le créneau que vous avez indiqué."
+  crumbs={[{ label: 'Contact', href: '/contact' }]}
+  filCourant="Demande envoyée"
+  noindex
+>
+  <section class="section conteneur">
+    <div class="delai">
+      <Icon name="ph:clock-countdown" aria-hidden="true" />
+      <div>
+        <h2>Sous quel délai ?</h2>
+        <p>
+          Pendant les heures d'ouverture, nous rappelons dans la demi-journée. Une demande
+          déposée le samedi après-midi ou le dimanche est traitée le lundi matin.
+        </p>
+      </div>
+    </div>
+
+    <div class="suite">
+      <div class="bloc">
+        <h2 class="libelle">C'est urgent ?</h2>
+        <p>N'attendez pas notre appel, prenez le vôtre.</p>
+        <Bouton href={contact.phoneHref} variante="accent" icone="ph:phone-fill">
+          Appeler le {contact.phoneDisplay}
+        </Bouton>
+      </div>
+
+      <div class="bloc">
+        <h2 class="libelle">Nos horaires</h2>
+        <Horaires compact />
+      </div>
+    </div>
+
+    <div class="liens">
+      <h2>En attendant</h2>
+      <ul>
+        <li><a href="/credits#simulateur">Simuler ma capacité d'emprunt</a></li>
+        <li><a href="/credits/immobilier">Les dix étapes d'un prêt immobilier</a></li>
+        <li><a href="/assurances/lexique">Comprendre le vocabulaire de l'assurance</a></li>
+        <li><a href="/blog">Nos articles</a></li>
+      </ul>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .delai {
+    display: flex;
+    gap: var(--e-4);
+    padding: var(--e-6);
+    background: var(--bleu-pale);
+    border-radius: var(--rayon);
+    max-width: 52rem;
+  }
+
+  .delai :global(svg) {
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    color: var(--bleu);
+  }
+
+  .delai h2 {
+    font-size: var(--t-4);
+  }
+
+  .delai p {
+    margin-top: var(--e-2);
+    max-width: 56ch;
+  }
+
+  .suite {
+    margin-top: var(--e-12);
+    display: grid;
+    gap: var(--e-8);
+    max-width: 52rem;
+  }
+
+  .bloc h2 {
+    padding-bottom: var(--e-2);
+    border-bottom: var(--filet);
+    margin-bottom: var(--e-3);
+  }
+
+  .bloc p {
+    margin-bottom: var(--e-3);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .liens {
+    margin-top: var(--e-12);
+    padding-top: var(--e-6);
+    border-top: var(--filet-fort);
+  }
+
+  .liens ul {
+    margin-top: var(--e-4);
+    display: grid;
+    gap: var(--e-1);
+  }
+
+  .liens a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 700;
+  }
+
+  @media (min-width: 48rem) {
+    .suite {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+import type { Crumb } from '../lib/schema.ts';
+
+interface Props {
+  /** Sans l'accueil ni la page courante : ils sont ajoutés ici. */
+  crumbs: Crumb[];
+  courant: string;
+}
+
+const { crumbs, courant } = Astro.props;
+---
+
+<nav class="fil" aria-label="Fil d'Ariane">
+  <ol>
+    <li><a href="/">Accueil</a></li>
+    {crumbs.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+    <li aria-current="page">{courant}</li>
+  </ol>
+</nav>
+
+<style>
+  .fil {
+    padding-block: var(--e-3);
+    border-bottom: var(--filet);
+  }
+
+  .fil ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-2);
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--encre-2);
+  }
+
+  .fil li + li::before {
+    content: '/';
+    margin-right: var(--e-2);
+    color: var(--encre-2);
+  }
+
+  .fil a {
+    display: inline-flex;
+    align-items: center;
+    /* 24 px utiles minimum : critère WCAG 2.5.8 sur la taille de cible. */
+    min-height: 24px;
+    padding-block: var(--e-1);
+    color: var(--encre-2);
+  }
+
+  .fil a:hover {
+    color: var(--encre);
+  }
+
+  .fil [aria-current='page'] {
+    color: var(--encre);
+  }
+</style>

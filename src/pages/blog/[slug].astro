@@ -1,0 +1,217 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Page from '../../layouts/Page.astro';
+import Bouton from '../../components/Bouton.astro';
+import FormulaireRappel from '../../components/FormulaireRappel.astro';
+import { Icon } from 'astro-icon/components';
+import { site, contact } from '../../config/site.ts';
+import { formatDate } from '../../lib/format.ts';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const articles = await getCollection('blog', ({ data }) => !data.brouillon);
+  return articles.map((article) => ({ params: { slug: article.id }, props: { article } }));
+};
+
+type Props = { article: CollectionEntry<'blog'> };
+
+const { article } = Astro.props as Props;
+const { Content } = await render(article);
+const d = article.data;
+const iso = (v: Date) => v.toISOString();
+
+const schemaArticle = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.titre,
+  description: d.description,
+  datePublished: iso(d.date),
+  dateModified: iso(d.maj ?? d.date),
+  inLanguage: 'fr-FR',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': `${site.url}/blog/${article.id}` },
+  publisher: { '@id': `${site.url}/#organisation` },
+  author: { '@id': `${site.url}/#organisation` },
+};
+---
+
+<Page
+  title={d.titre}
+  description={d.description}
+  path={`/blog/${article.id}`}
+  h1={d.titre}
+  crumbs={[{ label: 'Blog', href: '/blog' }]}
+  filCourant={d.titre}
+  metier={d.metier}
+  ogType="article"
+  publishedTime={iso(d.date)}
+  modifiedTime={iso(d.maj ?? d.date)}
+  schema={schemaArticle}
+>
+  <section class="section conteneur article">
+    <p class="dates">
+      <time datetime={iso(d.date)}>Publié le {formatDate(iso(d.date).slice(0, 10))}</time>
+      {d.maj && <time datetime={iso(d.maj)}>Mis à jour le {formatDate(iso(d.maj).slice(0, 10))}</time>}
+    </p>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      d.liens.length > 0 && (
+        <nav class="liens" aria-label="Pages liées">
+          <h2 class="libelle">Sur le même sujet</h2>
+          <ul>
+            {d.liens.map((l: { label: string; href: string }) => (
+              <li>
+                <a href={l.href}>
+                  <span>{l.label}</span>
+                  <Icon name="ph:arrow-right" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    <div class="fin">
+      <Bouton href="/blog" variante="lien" icone="ph:arrow-left">Tous les articles</Bouton>
+      <Bouton href={contact.phoneHref} variante="accent" icone="ph:phone-fill">
+        Appeler le {contact.phoneDisplay}
+      </Bouton>
+    </div>
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande={d.metier === 'credits' ? 'immobilier' : 'auto'} />
+  </section>
+</Page>
+
+<style>
+  .article {
+    max-width: 46rem;
+  }
+
+  .dates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-4);
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--encre-2);
+  }
+
+  .prose {
+    margin-top: var(--e-8);
+  }
+
+  .prose :global(h2) {
+    margin-top: var(--e-8);
+    font-size: var(--t-3);
+  }
+
+  .prose :global(h3) {
+    margin-top: var(--e-6);
+    font-size: var(--t-4);
+  }
+
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-top: var(--e-4);
+    max-width: 66ch;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: var(--e-6);
+  }
+
+  .prose :global(ul) {
+    list-style: none;
+  }
+
+  .prose :global(ul li) {
+    position: relative;
+  }
+
+  .prose :global(ul li)::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--e-6) * -1);
+    top: 0.65em;
+    width: 0.75rem;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .prose :global(ol) {
+    list-style: decimal;
+  }
+
+  .prose :global(li + li) {
+    margin-top: var(--e-2);
+  }
+
+  .prose :global(blockquote) {
+    margin-top: var(--e-4);
+    padding-left: var(--e-4);
+    border-left: 3px solid var(--accent);
+    font-weight: 700;
+  }
+
+  .liens {
+    margin-top: var(--e-12);
+    padding-top: var(--e-4);
+    border-top: var(--filet-fort);
+  }
+
+  .liens ul {
+    margin-top: var(--e-3);
+    display: grid;
+    gap: var(--e-2);
+  }
+
+  .liens a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    min-height: 56px;
+    padding: var(--e-3) var(--e-4);
+    border: 1.5px solid var(--encre);
+    border-radius: var(--rayon);
+    color: var(--encre);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .liens a:hover {
+    background: var(--accent-pale);
+  }
+
+  .liens :global(svg) {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: none;
+  }
+
+  .fin {
+    margin-top: var(--e-12);
+    padding-top: var(--e-6);
+    border-top: var(--filet);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+  }
+
+  .rappel {
+    border-top: var(--filet-fort);
+    max-width: 46rem;
+  }
+</style>

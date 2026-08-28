@@ -1,0 +1,122 @@
+[
+ {
+  "terme": "Acte notarié",
+  "definition": "Acte authentique - en l'occurrence acte de vente - rédigé par un officier public. Lors d'un achat immobilier, les frais d'acquisition correspondent à environ 8% du prix du bien pour un logement ancien, 3% pour un logement neuf."
+ },
+ {
+  "terme": "AERAS (convention)",
+  "definition": "Ce dispositif permet aux personnes de moins de 70 ans présentant « un risque aggravé de santé » de souscrire une assurance emprunteur. Dans ce cas, le prêt immobilier ne peut pas excéder 320 000&euro;."
+ },
+ {
+  "terme": "Amortissement (du capital)",
+  "definition": "Pour un emprunt, l'amortissement correspond au capital qui est remboursé à chaque échéance."
+ },
+ {
+  "terme": "Amortissement constant",
+  "definition": "Sur un crédit à amortissement constant, la même somme de capital est remboursée à chaque échéance. Le montant des échéances (capital + intérêts) diminue donc avec le temps. Au contraire, si le montant de l'échéance est fixe, il s'agit d'un crédit à échéances constantes."
+ },
+ {
+  "terme": "Amortissement In Fine",
+  "definition": "Le remboursement du capital est effectué seulement sur la dernière échéance."
+ },
+ {
+  "terme": "Amortissement négatif",
+  "definition": "Les intérêts calculés sont supérieurs au montant de l'échéance payée. Aucun capital n'est remboursé. Au contraire, la différence entre le montant des intérêts et celui de l'échéance s'ajoute au capital restant dû."
+ },
+ {
+  "terme": "Capital restant dû",
+  "definition": "Montant du capital restant à rembourser par l'emprunteur à une date donnée. Il sert de base au calcul des intérêts de l'échéance à venir."
+ },
+ {
+  "terme": "Caution",
+  "definition": "Garantie apportée par une personne morale ou physique qui s'engage à assurer le paiement des mensualités en cas de défaillance du ou des emprunteurs."
+ },
+ {
+  "terme": "Crédit In-fine",
+  "definition": "Type de prêt dans lequel l'emprunteur ne rembourse dans un premier temps que les intérêts avant de rembourser le capital en une seule fois."
+ },
+ {
+  "terme": "Crédit modulable",
+  "definition": "Type de prêt immobilier qui autorise l'emprunteur à modifier la durée et le montant des mensualité selon une périodicité préétablie."
+ },
+ {
+  "terme": "Crédit-relais",
+  "definition": "Crédit accordé dans l'attente d'une rentrée d'argent certaine, notamment lors de la vente d'un bien immobilier."
+ },
+ {
+  "terme": "Délai de franchise",
+  "definition": "Période entre la survenance de l'événement empêchant le remboursement de vos mensualités et la prise en charge de ces dernières par l'assurance."
+ },
+ {
+  "terme": "Différé d'amortissement",
+  "definition": "Période pendant laquelle l'emprunteur ne rembourse aucun capital. Le différé peut être partiel (l'emprunteur ne paie que les intérêts du prêt) ou total (l'emprunteur ne rembourse ni capital ni intérêts). Seules les cotisations d'assurances sont généralement perçues pendant la période de différé."
+ },
+ {
+  "terme": "Durée d'amortissement",
+  "definition": "Durée pendant laquelle le crédit est remboursé en capital. Elle sera différente de la durée du crédit si celui-ci comprend une période de différé."
+ },
+ {
+  "terme": "Frais de dossiers",
+  "definition": "Les frais facturés par la banque pour l'étude et la mise en œuvre de votre prêt immobilier."
+ },
+ {
+  "terme": "Hypothèque",
+  "definition": "C'est l'une des garanties que peut réclamer la banque pour octroyer un prêt immobilier. Elle autorise l'établissement financier à saisir le bien si les remboursements ne sont pas honorés."
+ },
+ {
+  "terme": "Intérêts intercalaires",
+  "definition": "Ils correspondent aux intérêts à verser entre le moment où vous disposez de la somme prêtée et celui où vous commencez à rembourser."
+ },
+ {
+  "terme": "Invalidité",
+  "definition": "Physique ou morale, elle empêche l'emprunteur d'exercer son activité professionnelle et déclenche le remboursement de tout ou partie des mensualités par l'assurance, sous conditions. On distingue l'Invalidité permanente et partielle (IPP), l'Invalidité permanente et totale (IPT) et la Perte totale et irréversible d'autonomie (PTIA)."
+ },
+ {
+  "terme": "IRA (Indemnités de remboursement anticipé)",
+  "definition": "Pénalités payées par l'emprunteur s'il procède à un remboursement anticipé de son prêt immobilier. Elles correspondent à un pourcentage du capital restant dû, fixé à la signature du prêt et qui ne peut excéder 3%."
+ },
+ {
+  "terme": "ITT (Incapacité temporaire de travail)",
+  "definition": "Période durant laquelle l'emprunteur est dans l'incapacité d'exercer son activité professionnelle suite à une maladie ou un accident. L'assurance prend en charge les échéances du prêt immobilier, selon un barème forfaitaire ou indemnitaire."
+ },
+ {
+  "terme": "Offre de prêt",
+  "definition": "Le document adressé par l'organisme prêteur et qui reprend tous les éléments et conditions du prêt. Son contenu est défini par la loi."
+ },
+ {
+  "terme": "Tableau d'amortissement",
+  "definition": "Document recensant l'ensemble des mensualités qui seront payées par l'emprunteur jusqu'à la fin du remboursement."
+ },
+ {
+  "terme": "Taux annuel effectif global (TAEG)",
+  "definition": "Taux annuel actuariel englobant les intérêts et l'ensemble des frais liés à l'octroi d'un crédit (frais de dossier, de garantie, d'assurances). Il permet de mesurer le coût total du crédit. Il ne doit jamais dépasser le taux d'usure en vigueur à la date d'émission de l'offre de prêt."
+ },
+ {
+  "terme": "Taux capé",
+  "definition": "Taux d'intérêt dont la hausse est plafonnée en cas de crédit à taux variable."
+ },
+ {
+  "terme": "Taux d'usure",
+  "definition": "Taux d'intérêt fixé périodiquement par la Banque de France et que les organismes prêteurs ne peuvent dépasser."
+ },
+ {
+  "terme": "Taux effectif global (TEG)",
+  "definition": "Mesure du coût total du crédit prenant en compte les intérêts de l'emprunt ainsi que les différents frais. Le TEG, à la différence du TAEG, est exprimé en taux annuel proportionnel et s'applique principalement aux prêts professionnels."
+ },
+ {
+  "terme": "Taux fixe",
+  "definition": "Le taux d'intérêt est défini à la signature du prêt immobilier et ne bouge pas pendant toute la durée du crédit."
+ },
+ {
+  "terme": "Taux périodique",
+  "definition": "Taux utilisé sur le capital restant dû pour calculer les intérêts d'une échéance. Le taux périodique dépend de la périodicité du crédit (mensuel, annuel…)."
+ },
+ {
+  "terme": "Taux proportionnel",
+  "definition": "Technique du taux consistant à diviser le taux annuel par le nombre d'échéances dans l'année pour obtenir le taux périodique."
+ },
+ {
+  "terme": "Taux variable (ou révisable)",
+  "definition": "Sur la base d'un indice de référence, il évolue à la hausse ou à la baisse, selon une périodicité définie par le prêteur et l'emprunteur. On distingue le taux révisable pur du taux révisable capé, pour lequel un plafond est établi à la signature du prêt."
+ }
+]

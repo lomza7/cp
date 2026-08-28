@@ -1,0 +1,244 @@
+---
+import Page from '../../layouts/Page.astro';
+import Simulateur from '../../components/Simulateur.astro';
+import Bouton from '../../components/Bouton.astro';
+import FormulaireRappel from '../../components/FormulaireRappel.astro';
+import { Icon } from 'astro-icon/components';
+import { contact, team } from '../../config/site.ts';
+import { service } from '../../lib/schema.ts';
+
+const calvin = team.find((m) => m.id === 'calvin')!;
+
+const produits = [
+  {
+    titre: 'Prêt immobilier',
+    texte: "Du compromis aux clés, en dix étapes. Nous montons le dossier et négocions avec plusieurs banques.",
+    href: '/credits/immobilier',
+    icone: 'ph:house',
+  },
+  {
+    titre: 'Rachat et regroupement',
+    texte: 'Plusieurs crédits en cours ? Un seul crédit, une seule mensualité, souvent plus basse.',
+    href: '/credits/rachat-regroupement',
+    icone: 'ph:arrows-merge',
+  },
+  {
+    titre: 'Assurance emprunteur',
+    texte: "Elle pèse lourd dans le coût d'un prêt, et elle se change à tout moment depuis la loi Lemoine.",
+    href: '/assurance-emprunteur',
+    icone: 'ph:shield-check',
+  },
+];
+---
+
+<Page
+  title="Crédit immobilier et rachat de crédits en Seine-et-Marne"
+  description="Courtier en crédit immobilier à Montereau-Fault-Yonne. Simulez votre capacité d'emprunt, faites racheter vos crédits, comparez l'assurance emprunteur. 01 64 24 83 45."
+  path="/credits"
+  h1="Vos crédits, négociés"
+  chapeau="Le taux compte, mais ce n'est pas tout : les frais de dossier, la garantie, l'assurance et les conditions de remboursement anticipé font la vraie différence sur vingt ans."
+  metier="credits"
+  schema={service(
+    'Courtage en crédit',
+    "Courtage en opérations de banque : crédit immobilier, rachat et regroupement de crédits, renégociation, assurance emprunteur.",
+    '/credits',
+  )}
+>
+  <Simulateur />
+
+  <section class="section conteneur">
+    <div class="intro">
+      <p class="intro__qui libelle">
+        Votre interlocuteur · <a href="/le-cabinet#calvin">{calvin.firstName} {calvin.lastName}</a>
+      </p>
+      <h2>Trois façons de vous accompagner</h2>
+    </div>
+
+    <ul class="produits">
+      {
+        produits.map((p) => (
+          <li class="produit">
+            <a href={p.href}>
+              <Icon name={p.icone} aria-hidden="true" />
+              <span class="produit__titre">{p.titre}</span>
+              <span class="produit__texte">{p.texte}</span>
+              <span class="produit__aller">
+                Voir <Icon name="ph:arrow-right" aria-hidden="true" />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section conteneur pourquoi">
+    <h2>Pourquoi passer par un courtier</h2>
+    <div class="pourquoi__grille">
+      <div>
+        <h3>Vous déposez un dossier, pas cinq</h3>
+        <p>
+          Nous constituons le dossier une seule fois et le présentons à plusieurs
+          établissements. Vous fournissez les mêmes pièces qu'à votre banque, et vous
+          gardez un seul interlocuteur.
+        </p>
+      </div>
+      <div>
+        <h3>Nous négocions un volume, vous n'en avez qu'un</h3>
+        <p>
+          Une banque discute autrement avec un apporteur régulier qu'avec un client isolé.
+          C'est mécanique, et c'est tout l'intérêt du courtage.
+        </p>
+      </div>
+      <div>
+        <h3>Nous défendons vos intérêts</h3>
+        <p>
+          Nous ne sommes pas salariés d'une banque. Notre rôle est de vous obtenir les
+          meilleures conditions, pas de vendre le produit du mois.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section conteneur suite">
+    <h2>Un projet en tête ?</h2>
+    <p class="mesure">
+      Compromis signé, recherche en cours, ou simple envie de savoir où vous en êtes :
+      appelez, on fait le point sans engagement.
+    </p>
+    <div class="suite__actions">
+      <Bouton href={contact.phoneHref} variante="accent" taille="grand" icone="ph:phone-fill">
+        Appeler le {contact.phoneDisplay}
+      </Bouton>
+      <Bouton href="/credits/lexique" variante="lien">Lexique du crédit</Bouton>
+    </div>
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande="immobilier" titre="Être rappelé par un courtier" />
+  </section>
+</Page>
+
+<style>
+  .intro__qui {
+    margin-bottom: var(--e-2);
+  }
+
+  .intro__qui a {
+    display: inline-block;
+    padding-block: var(--e-2);
+    color: var(--encre);
+  }
+
+  .produits {
+    margin-top: var(--e-6);
+    display: grid;
+    gap: var(--e-4);
+  }
+
+  .produit a {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 'icone titre' 'texte texte' 'aller aller';
+    gap: var(--e-2) var(--e-3);
+    height: 100%;
+    padding: var(--e-4);
+    border: 1.5px solid var(--encre);
+    border-radius: var(--rayon);
+    color: var(--encre);
+    text-decoration: none;
+  }
+
+  .produit a:hover {
+    background: var(--bleu-pale);
+  }
+
+  .produit :global(svg) {
+    grid-area: icone;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .produit__titre {
+    grid-area: titre;
+    align-self: center;
+    font-weight: 700;
+    font-size: var(--t-4);
+  }
+
+  .produit__texte {
+    grid-area: texte;
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .produit__aller {
+    grid-area: aller;
+    display: flex;
+    align-items: center;
+    gap: var(--e-2);
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .produit__aller :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .pourquoi {
+    border-top: var(--filet-fort);
+  }
+
+  .pourquoi__grille {
+    margin-top: var(--e-6);
+    display: grid;
+    gap: var(--e-6);
+  }
+
+  .pourquoi h3 {
+    font-size: var(--t-4);
+    padding-top: var(--e-3);
+    border-top: 2px solid var(--bleu);
+  }
+
+  .pourquoi p {
+    margin-top: var(--e-2);
+    max-width: 60ch;
+    color: var(--encre-2);
+  }
+
+  .suite {
+    border-top: var(--filet-fort);
+  }
+
+  .suite p {
+    margin-top: var(--e-4);
+  }
+
+  .suite__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4);
+  }
+
+  .rappel {
+    border-top: var(--filet);
+    max-width: 46rem;
+  }
+
+  @media (min-width: 48rem) {
+    .produits {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .pourquoi__grille {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--e-8);
+    }
+  }
+</style>

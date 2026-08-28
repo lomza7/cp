@@ -1,0 +1,55 @@
+---
+import Page from '../../layouts/Page.astro';
+import Lexique from '../../components/Lexique.astro';
+import Bouton from '../../components/Bouton.astro';
+import termes from '../../content/lexique-credit.json';
+import { contact } from '../../config/site.ts';
+---
+
+<Page
+  title="Lexique du crédit immobilier"
+  description="TAEG, taux d'usure, hypothèque, IRA, différé d'amortissement : 30 termes du crédit immobilier expliqués par votre courtier en Seine-et-Marne."
+  path="/credits/lexique"
+  h1="Le vocabulaire du crédit, en clair"
+  chapeau="Une offre de prêt tient en huit pages de termes techniques. Voici ceux qui comptent, expliqués simplement. Aucune question n'est bête quand il s'agit de vingt ans de mensualités."
+  crumbs={[{ label: 'Crédits', href: '/credits' }]}
+  filCourant="Lexique"
+  metier="credits"
+>
+  <section class="section conteneur">
+    <Lexique termes={termes} placeholder="Chercher un terme du crédit" />
+  </section>
+
+  <section class="section conteneur suite">
+    <h2>Un mot vous bloque ?</h2>
+    <p class="mesure">
+      Avant de signer, vous devez comprendre ce que vous signez. C'est notre travail de
+      vous l'expliquer, autant de fois qu'il le faut.
+    </p>
+    <div class="suite__actions">
+      <Bouton href={contact.phoneHref} variante="encre" icone="ph:phone-fill">
+        Appeler le {contact.phoneDisplay}
+      </Bouton>
+      <Bouton href="/assurances/lexique" variante="lien">Voir aussi le lexique de l'assurance</Bouton>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .suite {
+    border-top: var(--filet-fort);
+  }
+
+  .suite p {
+    margin-top: var(--e-3);
+    color: var(--encre-2);
+  }
+
+  .suite__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4);
+  }
+</style>

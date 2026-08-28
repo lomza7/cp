@@ -1,0 +1,244 @@
+---
+import Page from '../../layouts/Page.astro';
+import Bouton from '../../components/Bouton.astro';
+import Tampon from '../../components/Tampon.astro';
+import Faq from '../../components/Faq.astro';
+import LiensDevis from '../../components/LiensDevis.astro';
+import FormulaireRappel from '../../components/FormulaireRappel.astro';
+import { contact, quoteForms } from '../../config/site.ts';
+import { faqPage, service } from '../../lib/schema.ts';
+
+const faq = [
+  {
+    question: "Puis-je être assuré après une résiliation pour non-paiement ?",
+    answer:
+      "Oui. Certaines compagnies acceptent ces dossiers, avec des conditions particulières et souvent un paiement annuel plutôt que mensuel. Nous savons lesquelles et nous nous en occupons. La résiliation figure à l'AGIRA pendant plusieurs années : la déclarer est obligatoire, la cacher expose à une nullité du contrat.",
+  },
+  {
+    question: "Combien de temps un malus reste-t-il sur mon relevé ?",
+    answer:
+      "Le coefficient de réduction-majoration se recalcule chaque année. Il baisse de 5 % par année sans sinistre responsable et revient à 1 après deux ans sans sinistre. Votre relevé d'informations retrace les cinq dernières années.",
+  },
+  {
+    question: "Je suis jeune conducteur, pourquoi est-ce si cher ?",
+    answer:
+      "Les compagnies appliquent une surprime pendant les trois premières années de permis, réduite si vous avez fait la conduite accompagnée. Les écarts de tarif entre assureurs sont importants sur ce profil : c'est exactement le cas où comparer rapporte le plus.",
+  },
+  {
+    question: 'Tiers ou tous risques, comment choisir ?',
+    answer:
+      "La responsabilité civile, ou garantie au tiers, est le minimum légal : elle indemnise les tiers et vos passagers, pas vous ni votre véhicule si vous êtes responsable. Au-delà, le choix dépend de la valeur du véhicule et de ce que vous pourriez assumer seul en cas de sinistre.",
+  },
+  {
+    question: "Mon deux-roues doit-il être assuré s'il ne roule pas ?",
+    answer:
+      "Oui. L'obligation d'assurance porte sur le véhicule terrestre à moteur destiné à circuler, même immobilisé dans un garage. Une formule adaptée au remisage existe et coûte moins cher.",
+  },
+];
+---
+
+<Page
+  title="Assurance auto et moto, y compris après résiliation ou malus"
+  description="Courtier assurance auto et moto à Montereau-Fault-Yonne. Solutions pour résiliés, malussés, jeunes permis et permis annulés. Devis en ligne ou appelez le 01 64 24 83 45."
+  path="/assurances/auto-moto"
+  h1="Assurance auto et moto"
+  chapeau="Tout véhicule terrestre à moteur destiné à circuler en France doit être assuré, au minimum en responsabilité civile. Reste à trouver la compagnie qui accepte votre profil au bon prix."
+  crumbs={[{ label: 'Assurances', href: '/assurances' }]}
+  filCourant="Auto et moto"
+  metier="assurances"
+  schema={[
+    faqPage(faq),
+    service(
+      'Assurance auto et moto',
+      "Courtage en assurance automobile et deux-roues, y compris risques aggravés : résiliation, malus, permis annulé, jeune conducteur.",
+      '/assurances/auto-moto',
+    ),
+  ]}
+>
+  <!-- L'angle qui différencie vraiment le cabinet : il passe en premier. -->
+  <section class="refus section" data-metier="assurances">
+    <div class="conteneur">
+      <div class="refus__entete">
+        <h2>Résilié, malussé, permis annulé ?</h2>
+        <Tampon couleur="orange" angle={-5}>Accepté</Tampon>
+      </div>
+      <p class="mesure">
+        Une résiliation, une perte de permis, trop d'accidents ou du malus : ce sont les
+        dossiers que les comparateurs refusent, et ceux que nous traitons le plus
+        souvent. Nous avons des solutions pour vous permettre d'être assuré à nouveau.
+      </p>
+      <p class="mesure petit">
+        Inutile de cacher votre historique : il est enregistré à l'AGIRA et tous les
+        assureurs y ont accès. Une fausse déclaration peut coûter la nullité du contrat
+        au moment du sinistre, c'est-à-dire au pire moment. Dites-nous la vérité, nous
+        chercherons la solution.
+      </p>
+      <div class="refus__actions">
+        <Bouton href={quoteForms.auto} variante="accent" externe icone="ph:file-text">
+          Devis auto en ligne
+        </Bouton>
+        <Bouton href={contact.phoneHref} variante="contour" icone="ph:phone-fill">
+          Expliquer ma situation au {contact.phoneDisplay}
+        </Bouton>
+      </div>
+    </div>
+  </section>
+
+  <section class="section conteneur">
+    <h2>Ce que couvre un contrat auto</h2>
+    <div class="niveaux">
+      <article class="niveau">
+        <h3>Au tiers</h3>
+        <p class="niveau__sous libelle">Minimum légal</p>
+        <p>
+          La responsabilité civile indemnise les dommages causés aux tiers et à vos
+          passagers. Elle ne couvre ni le conducteur responsable, ni son véhicule.
+        </p>
+      </article>
+      <article class="niveau">
+        <h3>Tiers étendu</h3>
+        <p class="niveau__sous libelle">Intermédiaire</p>
+        <p>
+          On ajoute au minimum légal les garanties qui servent le plus souvent : vol,
+          incendie, bris de glace, catastrophes naturelles, parfois l'assistance.
+        </p>
+      </article>
+      <article class="niveau">
+        <h3>Tous risques</h3>
+        <p class="niveau__sous libelle">Le plus large</p>
+        <p>
+          Vos propres dommages sont couverts même quand vous êtes responsable. Pertinent
+          sur un véhicule récent ou financé à crédit. Les franchises font la vraie
+          différence de prix.
+        </p>
+      </article>
+    </div>
+    <p class="note">
+      Un contrat à prix cassé sur des garanties trop courtes est une mauvaise surprise
+      différée jusqu'au sinistre. Nous regardons les franchises et les exclusions avec
+      vous, pas seulement la ligne du tarif.
+    </p>
+  </section>
+
+  <section class="section conteneur moto">
+    <h2>Deux-roues</h2>
+    <p class="mesure">
+      Sur une moto ou un scooter, la protection du conducteur compte autant que celle du
+      véhicule : en deux-roues, c'est le pilote qui prend le choc. Les écarts de tarif
+      entre compagnies sont importants sur ce marché, et un courtier accède à des
+      conditions que vous ne trouverez pas seul.
+    </p>
+    <div class="moto__actions">
+      <Bouton href={quoteForms.moto} variante="accent" externe icone="ph:motorcycle">
+        Devis moto en ligne
+      </Bouton>
+    </div>
+  </section>
+
+  <section class="section conteneur">
+    <Faq items={faq} />
+  </section>
+
+  <section class="section conteneur">
+    <LiensDevis seulement={['auto', 'moto']} titre="Vos devis en ligne" />
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande="resiliation" titre="Expliquez-nous votre situation" />
+  </section>
+</Page>
+
+<style>
+  .refus {
+    background: var(--orange-pale);
+    border-bottom: var(--filet-fort);
+  }
+
+  .refus__entete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4) var(--e-6);
+    margin-bottom: var(--e-4);
+  }
+
+  .petit {
+    margin-top: var(--e-4);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .refus__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3);
+  }
+
+  .niveaux {
+    margin-top: var(--e-6);
+    display: grid;
+    gap: 0;
+  }
+
+  .niveau {
+    padding-block: var(--e-4);
+    border-top: var(--filet);
+  }
+
+  .niveau:last-child {
+    border-bottom: var(--filet);
+  }
+
+  .niveau__sous {
+    margin-top: var(--e-1);
+  }
+
+  .niveau p:last-child {
+    margin-top: var(--e-2);
+    max-width: 62ch;
+    color: var(--encre-2);
+  }
+
+  .note {
+    margin-top: var(--e-6);
+    padding: var(--e-4);
+    background: var(--papier-2);
+    border-left: 3px solid var(--orange);
+    border-radius: var(--rayon);
+    max-width: 66ch;
+    font-size: var(--t-small);
+  }
+
+  .moto {
+    border-top: var(--filet-fort);
+  }
+
+  .moto p {
+    margin-top: var(--e-4);
+  }
+
+  .moto__actions {
+    margin-top: var(--e-6);
+  }
+
+  .rappel {
+    border-top: var(--filet-fort);
+    max-width: 46rem;
+  }
+
+  @media (min-width: 64rem) {
+    .niveaux {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--e-8);
+    }
+
+    .niveau {
+      border-top: 2px solid var(--encre);
+    }
+
+    .niveau:last-child {
+      border-bottom: 0;
+    }
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+import { Icon } from 'astro-icon/components';
+import { quoteForms, contact } from '../config/site.ts';
+
+/**
+ * Les 8 formulaires de devis déjà configurés chez LyaProtect et
+ * AssurDistribution. On ne les remplace pas, on les relie mieux : chaque
+ * produit ouvre directement le bon formulaire, au lieu d'une page
+ * intermédiaire.
+ */
+const devis = [
+  { cle: 'auto', label: 'Auto', href: quoteForms.auto, icone: 'ph:car' },
+  { cle: 'moto', label: 'Moto', href: quoteForms.moto, icone: 'ph:motorcycle' },
+  { cle: 'habitation', label: 'Habitation', href: quoteForms.habitation, icone: 'ph:house' },
+  { cle: 'sante', label: 'Mutuelle santé', href: quoteForms.sante, icone: 'ph:heartbeat' },
+  { cle: 'santeAnimale', label: 'Santé animale', href: quoteForms.santeAnimale, icone: 'ph:paw-print' },
+  { cle: 'decennale', label: 'Décennale', href: quoteForms.decennale, icone: 'ph:hard-hat' },
+  { cle: 'dommageOuvrage', label: 'Dommage-ouvrage', href: quoteForms.dommageOuvrage, icone: 'ph:blueprint' },
+  { cle: 'emprunteur', label: 'Assurance emprunteur', href: quoteForms.emprunteur, icone: 'ph:bank' },
+] as const;
+
+interface Props {
+  /** Ne montrer que certains produits, par clé. */
+  seulement?: readonly string[];
+  titre?: string;
+  class?: string;
+}
+
+const { seulement, titre = 'Votre devis en ligne', class: classe } = Astro.props;
+const liste = seulement ? devis.filter((d) => seulement.includes(d.cle)) : devis;
+---
+
+<div class:list={['devis', classe]}>
+  <h2>{titre}</h2>
+  <p class="devis__intro">
+    Remplissez le formulaire du produit qui vous intéresse, un courtier vous rappelle
+    avec une proposition. Vous préférez parler à quelqu'un ?{' '}
+    <a href={contact.phoneHref}>Appelez le {contact.phoneDisplay}</a>.
+  </p>
+
+  <ul class="devis__liste">
+    {
+      liste.map((d) => (
+        <li>
+          <a href={d.href} target="_blank" rel="noopener">
+            <Icon name={d.icone} aria-hidden="true" />
+            <span>{d.label}</span>
+            <Icon name="ph:arrow-up-right" class="devis__fleche" aria-hidden="true" />
+            <span class="lecteur-seul">(nouvel onglet)</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .devis__intro {
+    margin-top: var(--e-3);
+    max-width: 56ch;
+    color: var(--encre-2);
+  }
+
+  .devis__liste {
+    margin-top: var(--e-6);
+    display: grid;
+    gap: var(--e-2);
+  }
+
+  .devis__liste a {
+    display: flex;
+    align-items: center;
+    gap: var(--e-3);
+    min-height: 56px;
+    padding: var(--e-3) var(--e-4);
+    background: var(--papier-3);
+    border: 1.5px solid var(--encre);
+    border-radius: var(--rayon);
+    color: var(--encre);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .devis__liste a:hover {
+    background: var(--accent);
+    color: var(--sur-accent);
+  }
+
+  .devis__liste a > span:first-of-type {
+    flex: 1;
+  }
+
+  .devis__liste :global(svg) {
+    width: 1.375rem;
+    height: 1.375rem;
+    flex: none;
+  }
+
+  .devis__liste :global(.devis__fleche) {
+    width: 1rem;
+    height: 1rem;
+    opacity: 0.6;
+  }
+
+  @media (min-width: 34rem) {
+    .devis__liste {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .devis__liste {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

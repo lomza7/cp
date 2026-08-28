@@ -1,0 +1,91 @@
+---
+import { Icon } from 'astro-icon/components';
+
+/**
+ * Note en étoiles.
+ *
+ * Deux rangées superposées : les contours en dessous, les étoiles pleines
+ * au-dessus, tronquées en largeur au pourcentage de la note. Ça gère les
+ * décimales sans demi-étoile approximative et sans une ligne de JavaScript.
+ *
+ * L'équivalent textuel est porté par un aria-label sur le conteneur ; les
+ * étoiles elles-mêmes sont masquées aux technologies d'assistance.
+ */
+interface Props {
+  note: number;
+  sur?: number;
+  /** Hauteur d'une étoile. */
+  taille?: string;
+  class?: string;
+}
+
+const { note, sur = 5, taille = '1.25rem', class: classe } = Astro.props;
+
+const pourcentage = Math.max(0, Math.min(100, (note / sur) * 100));
+const etoiles = Array.from({ length: sur });
+const noteLisible = note.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+---
+
+<span
+  class:list={['etoiles', classe]}
+  style={`--taille: ${taille}; --remplissage: ${pourcentage}%`}
+  role="img"
+  aria-label={`Note de ${noteLisible} sur ${sur}`}
+>
+  <span class="etoiles__fond" aria-hidden="true">
+    {etoiles.map(() => <Icon name="ph:star" />)}
+  </span>
+  <span class="etoiles__plein" aria-hidden="true">
+    {etoiles.map(() => <Icon name="ph:star-fill" />)}
+  </span>
+</span>
+
+<style>
+  .etoiles {
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+    /* Empêche la troncature de la rangée pleine de déborder. */
+    isolation: isolate;
+  }
+
+  .etoiles__fond,
+  .etoiles__plein {
+    display: flex;
+    gap: calc(var(--taille) * 0.12);
+  }
+
+  .etoiles__plein {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: var(--remplissage);
+    overflow: hidden;
+  }
+
+  .etoiles :global(svg) {
+    width: var(--taille);
+    height: var(--taille);
+    flex: none;
+  }
+
+  /* Contours discrets : ils ne servent qu'à montrer le total. */
+  .etoiles__fond :global(svg) {
+    color: var(--encre-2);
+    opacity: 0.35;
+  }
+
+  /*
+    Étoiles pleines en orange, avec un filet d'encre.
+    L'orange seul ne fait que 2,5:1 sur le papier, en dessous du 3:1 exigé
+    pour un élément graphique porteur d'information. Le contour rétablit la
+    lisibilité de la forme sans changer la couleur de la marque.
+  */
+  .etoiles__plein :global(svg) {
+    color: var(--orange);
+    stroke: var(--encre);
+    stroke-width: 6;
+    paint-order: stroke fill;
+    overflow: visible;
+  }
+</style>

@@ -1,0 +1,122 @@
+---
+import Page from '../layouts/Page.astro';
+import { contact } from '../config/site.ts';
+---
+
+<Page
+  title="Cookies"
+  description="Ce site ne dépose aucun cookie. Voici pourquoi, et ce que font les outils externes que nous utilisons."
+  path="/cookies"
+  h1="Cookies"
+  chapeau="Ce site ne dépose aucun cookie. C'est pour cette raison que vous n'avez pas eu de bandeau à cliquer en arrivant."
+>
+  <div class="legal conteneur section">
+    <section>
+      <h2>Aucun cookie sur ce site</h2>
+      <p>
+        Nous n'utilisons ni cookie publicitaire, ni cookie de mesure d'audience, ni
+        traceur tiers. Aucun consentement n'est donc requis, et aucun bandeau n'a de
+        raison d'exister.
+      </p>
+      <p>
+        La mesure d'audience du site fonctionne sans cookie et sans identifiant
+        persistant : elle compte des pages vues, pas des personnes. Voir la page{' '}
+        <a href="/confidentialite">confidentialité</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Ce que votre navigateur stocke quand même</h2>
+      <p>
+        Votre navigateur garde en mémoire les fichiers du site, images et polices, pour
+        que les pages suivantes s'affichent plus vite. C'est du cache technique, pas un
+        cookie : il ne contient aucune information sur vous et se vide avec l'historique
+        de votre navigateur.
+      </p>
+    </section>
+
+    <section>
+      <h2>Les sites de nos partenaires</h2>
+      <p>
+        Trois types de liens vous emmènent hors de ce site, toujours dans un nouvel
+        onglet :
+      </p>
+      <ul class="externes">
+        <li>
+          <strong>Les formulaires de devis</strong>, hébergés par LyaProtect et
+          AssurDistribution.
+        </li>
+        <li><strong>La prise de rendez-vous</strong>, hébergée par Calendly.</li>
+        <li>
+          <strong>Nos pages Facebook, Instagram et LinkedIn</strong>, et notre fiche
+          Google.
+        </li>
+      </ul>
+      <p>
+        Ces services déposent leurs propres cookies, mais seulement à partir du moment où
+        vous êtes sur leur site. Nous n'intégrons aucun de leurs scripts ni aucun de leurs
+        widgets dans nos pages, justement pour que la visite de ce site reste sans
+        traceur.
+      </p>
+      <p class="petit">
+        Concrètement : tant que vous restez sur cpsolutions77.com, personne ne vous suit.
+      </p>
+    </section>
+
+    <section>
+      <h2>Une question ?</h2>
+      <p>
+        Écrivez à <a href={`mailto:${contact.email}`}>{contact.email}</a> ou appelez le{' '}
+        <a href={contact.phoneHref}>{contact.phoneDisplay}</a>.
+      </p>
+    </section>
+  </div>
+</Page>
+
+<style>
+  .legal {
+    max-width: 48rem;
+  }
+
+  .legal section + section {
+    margin-top: var(--e-12);
+  }
+
+  .legal h2 {
+    font-size: var(--t-3);
+    padding-bottom: var(--e-2);
+    border-bottom: 2px solid var(--encre);
+  }
+
+  .legal p {
+    margin-top: var(--e-4);
+    max-width: 66ch;
+  }
+
+  .petit {
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .externes {
+    margin-top: var(--e-4);
+    display: grid;
+    gap: var(--e-2);
+    max-width: 66ch;
+  }
+
+  .externes li {
+    position: relative;
+    padding-left: var(--e-6);
+  }
+
+  .externes li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 0.75rem;
+    height: 2px;
+    background: var(--encre);
+  }
+</style>

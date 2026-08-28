@@ -1,0 +1,221 @@
+---
+import Page from '../layouts/Page.astro';
+import Bouton from '../components/Bouton.astro';
+import Faq from '../components/Faq.astro';
+import FormulaireRappel from '../components/FormulaireRappel.astro';
+import { contact, quoteForms } from '../config/site.ts';
+import { faqPage, service } from '../lib/schema.ts';
+
+/*
+  Page unique et transverse : elle remplace les deux pages en doublon du site
+  d'origine, /assuranceemprunteur et /lassuranceemprunteur.
+
+  TODO client (QUESTIONS-CLIENT n° 11) : les deux anciennes pages annonçaient
+  deux chiffres contradictoires pour le poids de l'assurance dans le coût du
+  crédit, « jusqu'à 25 % » sur l'une et « 15 % » sur l'autre. Aucun des deux
+  n'est repris ici tant que le client n'a pas indiqué lequel est exact et d'où
+  il vient. Le texte fonctionne sans ce chiffre.
+*/
+
+const garanties = [
+  { sigle: 'Décès', libelle: 'Décès', texte: "Le capital restant dû est remboursé à la banque. C'est la garantie systématiquement exigée." },
+  { sigle: 'PTIA', libelle: "Perte totale et irréversible d'autonomie", texte: "Vous ne pouvez plus exercer d'activité et avez besoin d'une assistance permanente. Traitée comme le décès par la plupart des contrats." },
+  { sigle: 'ITT', libelle: 'Incapacité temporaire totale de travail', texte: "L'assureur prend en charge les mensualités pendant votre arrêt, après un délai de franchise à vérifier de près." },
+  { sigle: 'IPT', libelle: 'Invalidité permanente et totale', texte: "Taux d'invalidité généralement supérieur ou égal à 66 %. Prise en charge totale ou partielle des mensualités." },
+  { sigle: 'IPP', libelle: 'Invalidité permanente partielle', texte: "Taux entre 33 % et 66 %. Souvent optionnelle, et c'est pourtant le cas le plus fréquent." },
+  { sigle: 'Emploi', libelle: 'Chômage ou perte d\'emploi', texte: "Optionnelle, plafonnée en durée et en montant. À évaluer selon votre statut, elle ne couvre pas les démissions." },
+  { sigle: 'DOS/PSY', libelle: 'Affections dorsales et psychologiques', texte: "Souvent exclues par défaut. C'est un point à regarder si votre métier est physique ou exposé." },
+];
+
+const faq = [
+  {
+    question: "L'assurance emprunteur est-elle obligatoire ?",
+    answer:
+      "Pas au sens de la loi, mais paradoxalement exigée par les banques dès qu'il s'agit d'un prêt immobilier : aucun établissement ne prête sans elle. Ce qui est libre, en revanche, c'est le choix de l'assureur.",
+  },
+  {
+    question: "Puis-je choisir un autre assureur que ma banque ?",
+    answer:
+      "Oui, c'est la délégation d'assurance. La banque ne peut pas refuser un contrat externe présentant des garanties au moins équivalentes au sien. Elle doit motiver un refus, ce qui est rarement possible quand l'équivalence est établie.",
+  },
+  {
+    question: "Puis-je changer en cours de prêt ?",
+    answer:
+      "Oui, à tout moment depuis la loi Lemoine, sans frais et sans attendre une date anniversaire. La seule condition est l'équivalence des garanties. Plus le prêt est récent, plus l'économie potentielle est importante, puisque l'assurance est calculée sur le capital restant dû.",
+  },
+  {
+    question: "J'ai un problème de santé, suis-je condamné à payer une surprime ?",
+    answer:
+      "Pas nécessairement. La convention AERAS facilite l'accès à l'assurance pour les personnes présentant un risque aggravé de santé. Et depuis la loi Lemoine, le questionnaire médical est supprimé sous conditions de montant et d'âge de fin de prêt. Nous savons quels assureurs sont les moins sévères selon la pathologie.",
+  },
+  {
+    question: "Que veut dire équivalence des garanties ?",
+    answer:
+      "La loi impose que le nouveau contrat couvre au minimum les mêmes risques que celui de la banque, selon une liste de critères que l'établissement a déclarés à l'avance. C'est technique, et c'est précisément le travail que nous faisons à votre place.",
+  },
+];
+---
+
+<Page
+  title="Assurance emprunteur : la changer et faire baisser le coût"
+  description="Assurance de prêt immobilier : délégation, changement à tout moment grâce à la loi Lemoine, équivalence des garanties. Courtier à Montereau-Fault-Yonne, 01 64 24 83 45."
+  path="/assurance-emprunteur"
+  h1="Assurance emprunteur"
+  chapeau="Elle n'est pas obligatoire au sens de la loi, mais aucune banque ne prête sans elle. Ce que vous pouvez choisir, en revanche, c'est qui vous assure et à quel prix."
+  metier="credits"
+  schema={[
+    faqPage(faq),
+    service(
+      'Assurance emprunteur',
+      "Courtage en assurance de prêt : délégation d'assurance, changement en cours de prêt, équivalence de garanties, risques aggravés de santé.",
+      '/assurance-emprunteur',
+    ),
+  ]}
+>
+  <section class="section conteneur pivot">
+    <div>
+      <h2>Le poste que presque personne ne renégocie</h2>
+      <p>
+        Sur un prêt immobilier, l'assurance représente une part significative du coût
+        total, et elle est le plus souvent souscrite auprès de la banque au moment de la
+        signature, sans comparaison. C'est pourtant le seul élément du crédit que vous
+        pouvez changer après coup, à tout moment, sans frais.
+      </p>
+      <p class="petit">
+        Nous comparons et analysons les offres du marché dans un seul but : vous faire
+        économiser de l'argent, à garanties au moins équivalentes.
+      </p>
+    </div>
+    <div class="pivot__actions">
+      <Bouton href={quoteForms.emprunteur} variante="accent" taille="grand" externe icone="ph:calculator">
+        Faire ma simulation
+      </Bouton>
+      <Bouton href={contact.phoneHref} variante="contour" icone="ph:phone-fill">
+        Appeler le {contact.phoneDisplay}
+      </Bouton>
+    </div>
+  </section>
+
+  <section class="section conteneur">
+    <h2>Les garanties, et ce qu'elles couvrent vraiment</h2>
+    <p class="intro mesure">
+      Deux contrats au même prix peuvent couvrir des choses très différentes. Les écarts
+      se nichent dans les délais de franchise, les taux d'invalidité retenus et les
+      exclusions.
+    </p>
+    <dl class="garanties">
+      {
+        garanties.map((g) => (
+          <div class="garantie">
+            <dt>
+              <span class="garantie__sigle">{g.sigle}</span>
+              <span class="garantie__libelle">{g.libelle}</span>
+            </dt>
+            <dd>{g.texte}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section class="section conteneur">
+    <Faq items={faq} />
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande="emprunteur" titre="Faire étudier mon assurance de prêt" />
+  </section>
+</Page>
+
+<style>
+  .pivot {
+    display: grid;
+    gap: var(--e-6);
+  }
+
+  .pivot p {
+    margin-top: var(--e-4);
+    max-width: 62ch;
+  }
+
+  .petit {
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .pivot__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--e-3);
+    align-self: start;
+  }
+
+  .intro {
+    margin-top: var(--e-3);
+    color: var(--encre-2);
+  }
+
+  .garanties {
+    margin: var(--e-6) 0 0;
+  }
+
+  .garantie {
+    padding-block: var(--e-4);
+    border-top: var(--filet);
+  }
+
+  .garantie:last-child {
+    border-bottom: var(--filet);
+  }
+
+  .garantie dt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--e-2) var(--e-3);
+  }
+
+  .garantie__sigle {
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+    font-weight: 500;
+    padding: 2px var(--e-2);
+    background: var(--bleu);
+    color: var(--papier);
+    border-radius: var(--rayon);
+  }
+
+  .garantie__libelle {
+    font-weight: 700;
+  }
+
+  .garantie dd {
+    margin: var(--e-2) 0 0;
+    max-width: 66ch;
+    color: var(--encre-2);
+  }
+
+  .rappel {
+    border-top: var(--filet-fort);
+    max-width: 46rem;
+  }
+
+  @media (min-width: 64rem) {
+    .pivot {
+      grid-template-columns: 1fr 20rem;
+      gap: var(--e-16);
+    }
+
+    .garantie {
+      display: grid;
+      grid-template-columns: 20rem 1fr;
+      gap: var(--e-6);
+      align-items: baseline;
+    }
+
+    .garantie dd {
+      margin-top: 0;
+    }
+  }
+</style>

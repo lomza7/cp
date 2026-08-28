@@ -1,0 +1,514 @@
+[
+ {
+  "terme": "Accident",
+  "definition": "Un accident est un événement, généralement non souhaité, aléatoire et fortuit, qui apparaît ponctuellement dans l'espace et dans le temps, à la suite d'une ou plusieurs causes, et qui entraîne des dommages vis-à-vis des personnes, des biens ou de l'environnement."
+ },
+ {
+  "terme": "Acte de vandalisme",
+  "definition": "Un acte de vandalisme se définit par le caractère volontaire de l'acte de dégradation et de nuisance."
+ },
+ {
+  "terme": "Actuaire",
+  "definition": "Un actuaire est un professionnel spécialiste de l'application du calcul des probabilités et de la statistique aux questions d'assurances, de finance et de prévoyance sociale."
+ },
+ {
+  "terme": "Adhérent",
+  "definition": "Un adhérent est le souscripteur d'un contrat."
+ },
+ {
+  "terme": "Agent général",
+  "definition": "Un agent général d'assurance est un professionnel indépendant exerçant l'activité d'intermédiaire pour le compte d'une compagnie d'assurance dont il a reçu un mandat."
+ },
+ {
+  "terme": "Aide",
+  "definition": "L'Aide à la complémentaire santé ou ACS est une aide financière pour aider à souscrire un contrat complémentaire santé."
+ },
+ {
+  "terme": "ALFA",
+  "definition": "L'ALFA est l'agence pour la lutte contre la fraude à l'assurance (France)."
+ },
+ {
+  "terme": "Apériteur",
+  "definition": "Un apériteur est l'assureur principal dans le cas d'une coassurance."
+ },
+ {
+  "terme": "Assistance",
+  "definition": "L'assistance est une aide financière ou technique au bénéficiaire du contrat lorsque sa situation le nécessite."
+ },
+ {
+  "terme": "Association",
+  "definition": "L'Association pour la gestion des informations sur le risque en assurance ou AGIRA est un organisme qui recense les antécédents d'assurance automobile en France."
+ },
+ {
+  "terme": "Assurance",
+  "definition": "L'assurance en cas de décès ou Assurance-décès est un contrat qui prévoit le versement d'une indemnité en cas de décès de l'assuré pendant la période couverte."
+ },
+ {
+  "terme": "Assurance dommage ouvrage",
+  "definition": "L'assurance dommage ouvrage est souscrite par le propriétaire d'un bien afin de couvrir le coût de la reprise de travaux de construction mal exécutés."
+ },
+ {
+  "terme": "Assuré",
+  "definition": "L'assuré désigne le ou les personnes couvertes par la garantie d'un contrat d'assurance."
+ },
+ {
+  "terme": "Avenant",
+  "definition": "Un avenant est une modification apportée à un contrat d'origine."
+ },
+ {
+  "terme": "Avis",
+  "definition": "L'avis d'échéance est le document émis par l'assureur indiquant le montant de la cotisation d'assurance exigible au terme convenu contractuellement."
+ },
+ {
+  "terme": "Ayant droit",
+  "definition": "Un ayant droit est la personne qui détient un droit du fait de son lien avec l'assuré."
+ },
+ {
+  "terme": "Bancassurance",
+  "definition": "La bancassurance est dit d'une assurance qui étend son activité à la banque (ou inversement)."
+ },
+ {
+  "terme": "Bénéficiaire",
+  "definition": "Le bénéficiaire est la personne qui pourra recevoir le bénéfice des garanties d'un contrat d'assurance."
+ },
+ {
+  "terme": "Bon de capitalisation",
+  "definition": "Un bon de capitalisation est une garantie de capital par la société à la sortie du contrat de placement."
+ },
+ {
+  "terme": "Boni mali d'assurance",
+  "definition": "Un boni mali d'assurance est le cas où une compagnie a fait trop (boni) ou pas assez (mali) de provision pour payer les sinistres d'une année une fois que ces derniers ont tous été clôturés1."
+ },
+ {
+  "terme": "Bonus Malus",
+  "definition": "Le Bonus Malus est une méthode de pondération de l'appréciation du risque par la sinistralité, surtout utilisée pour les assurances auto."
+ },
+ {
+  "terme": "Bureau central",
+  "definition": "Le bureau central de tarification ou BCT est une autorité administrative indépendante française qui a pour rôle exclusif de fixer le montant de la prime moyennant laquelle l'entreprise d'assurance intéressée est tenue de garantir le risque qui lui a été proposé."
+ },
+ {
+  "terme": "Capital mobilier",
+  "definition": "Le capital mobilier désigne la valeur totale du mobilier dans les lieux d'habitation. Sont généralement déclarés à part les objets précieux et les objets de valeur."
+ },
+ {
+  "terme": "Carte verte",
+  "definition": "La carte verte est un certificat d'assurance automobile délivré par l'assureur."
+ },
+ {
+  "terme": "Cas dit de force",
+  "definition": "Un cas dit de force majeure est un événement exceptionnel auquel on ne peut faire face."
+ },
+ {
+  "terme": "Coassurance",
+  "definition": "La coassurance est une assurance dans laquelle des compagnies d'assurances s'associent pour couvrir un risque important."
+ },
+ {
+  "terme": "Code des assurances",
+  "definition": "Le code des assurances comprend l'ensemble des lois et des règlements qui régissent les sociétés d'assurances et les relations entre assureurs et assurés."
+ },
+ {
+  "terme": "Coefficient de réduction-majoration (CRM)",
+  "definition": "Le coefficient de réduction-majoration (CRM) est l'autre nom du Bonus Malus."
+ },
+ {
+  "terme": "Constat amiable",
+  "definition": "Un constat amiable est un document à remplir après un sinistre afin d'expliquer les circonstances de celui-ci, et qui sera utilisé par les assurances pour décider des responsabilités et des indemnisations (automobile, dégât des eaux ou bateau)."
+ },
+ {
+  "terme": "Contrat",
+  "definition": "Le contrat est l'ensemble des documents qui formalise l'engagement entre l'assureur et l'assuré. Il est composé des conditions particulières et des conditions générales."
+ },
+ {
+  "terme": "Contrat mixte",
+  "definition": "Un contrat mixte est un contrat d'assurance qui combine de l'assurance en cas de vie et de l'assurance en cas de décès."
+ },
+ {
+  "terme": "Convention AERAS",
+  "definition": "La Convention AERAS (s'Assurer et Emprunter avec un risque aggravé de santé) est une convention française qui vise à améliorer l'accès au crédit pour les personnes malades ou qui l'ont été. Elle remplace la Convention Belorgey (voir ci-dessous)."
+ },
+ {
+  "terme": "Convention Belorgey",
+  "definition": "La Convention Belorgey est une convention française permettant de faciliter l'accès à une assurance pour les personnes présentant un « risque aggravé » concernant leur état de santé. Elle est remplacée par la convention AERAS (voir ci-dessus)."
+ },
+ {
+  "terme": "Convention CIDRE",
+  "definition": "La Convention CIDRE (Convention d'Indemnisation Directe et de Renonciation à Recours) permet au locataire victime d'un dégât des eaux d'obtenir une indemnisation plus rapide de la part de son propre assureur et de ne pas attendre un recours long."
+ },
+ {
+  "terme": "Convention CRAC",
+  "definition": "La Convention CRAC (Convention de Règlement de l'Assurance Construction) est une convention entre assureurs créée pour améliorer l'efficacité de l'Assurance Construction."
+ },
+ {
+  "terme": "Convention IDA",
+  "definition": "La Convention IDA comme la Convention inter sociétés de règlement des sinistres automobile (IRSA), la convention d'indemnisation des accidents corporels (IDAC) et la convention d'indemnisation pour le compte d'autrui (ICA) a pour but d'améliorer les délais de traitement des sinistres automobiles."
+ },
+ {
+  "terme": "Cotisation",
+  "definition": "La cotisation ou prime d'assurance désigne la somme due par le souscripteur à l'assurance en contrepartie de sa garantie."
+ },
+ {
+  "terme": "Courtier en assurances",
+  "definition": "Un courtier en assurances est un commerçant indépendant, servant d'intermédiaire dans une opération commerciale entre une compagnie d'assurances et le consommateur final."
+ },
+ {
+  "terme": "Couverture Maladie Universelle (CMU)",
+  "definition": "La Couverture Maladie Universelle (CMU) est une prestation sociale française permettant l'accès au soin, le remboursement des soins, prestations et médicaments à toute personne résidant en France et qui n'est pas déjà couverte par un autre régime obligatoire d'assurance maladie."
+ },
+ {
+  "terme": "Déchéance",
+  "definition": "La déchéance est la perte de la garantie couvrant un sinistre en cas de non-respect, par l'assuré, de ses obligations."
+ },
+ {
+  "terme": "Défense-recours",
+  "definition": "La défense-recours est une garantie annexe d'un contrat ayant pour but d'assister l'assuré lors de procédures amiables ou judiciaires et d'exercer éventuellement des recours, en cas de sinistre."
+ },
+ {
+  "terme": "Délai de rétractation",
+  "definition": "Le délai de rétractation est le droit d'un consommateur, pendant une période limitée, d'annuler un contrat."
+ },
+ {
+  "terme": "Délégation d'assurance",
+  "definition": "La délégation d'assurance est, dans le cadre d'un crédit immobilier, la possibilité pour l'emprunteur de contracter une assurance emprunteur auprès d'un autre organisme que celui qui lui accorde le prêt (également appelée assurance de prêt « hors banque »."
+ },
+ {
+  "terme": "Dépassement d'honoraire",
+  "definition": "Un dépassement d'honoraire est la partie excédentaire réclamée par un praticien en sus du tarif conventionnel de la profession."
+ },
+ {
+  "terme": "Dommage",
+  "definition": "Un dommage est un dégât ou préjudice causé ou subit. Il peut être matériel, moral, corporel ou immatériel (préjudice financier résultant de la cessation privative d'un droit ou l'arrêt d'un service rendu)."
+ },
+ {
+  "terme": "Droit d'entrée",
+  "definition": "Le droit d'entrée est un montant à régler préalablement à la souscription d'un contrat."
+ },
+ {
+  "terme": "Droit de renonciation",
+  "definition": "Le droit de renonciation est la faculté en assurance vie d'annuler son contrat dans les 30 jours."
+ },
+ {
+  "terme": "E assurance affinitaire",
+  "definition": "Une assurance affinitaire est un contrat de garantie étudié pour s'adresser à un ensemble de personnes disposant d'une activité commune ou ayant un besoin commun (extension d'assurance pour le matériel électro-ménager, pour des pratiques sportives...)."
+ },
+ {
+  "terme": "E assurance multirisques",
+  "definition": "Une assurance multirisques est un contrat réunissant plusieurs garanties. À titre d'exemple, l'assurance multirisques habitation comprend principalement des garanties incendie, explosion, tempête, catastrophes naturelles, acte de terrorisme, vol, dégât des eaux, bris de glaces et responsabilité civile familiale."
+ },
+ {
+  "terme": "E assurance scolaire",
+  "definition": "Une assurance scolaire est un contrat qui garantit un enfant lorsqu'il se trouve à l'école. Selon les compagnies, cette garantie peut couvrir la responsabilité civile de l'enfant ou bien s'il se blesse (individuelle accident). On parle de garantie extra-scolaire quand la garantie est étendue en dehors du cercle scolaire."
+ },
+ {
+  "terme": "E captive d'assurance",
+  "definition": "Une captive d'assurance est principalement une société filiale, créée par l'entreprise, qui va jouer le rôle d'un assureur traditionnel, en garantissant les risques uniquement supportés par l'entreprise."
+ },
+ {
+  "terme": "E carence",
+  "definition": "Une carence est un terme de droit des contrats qui indique une période de latence, pendant laquelle l'assuré ne bénéficie pas de sa garantie."
+ },
+ {
+  "terme": "E catastrophe naturelle",
+  "definition": "Une catastrophe naturelle est l'effet pernicieux d'un événement naturel plus ou moins violent voire paroxystique, du cours normal d'un phénomène géodynamique : séisme, éruption volcanique, tsunami, mouvements de terrain, inondation, tempête, cyclone, orages..."
+ },
+ {
+  "terme": "E complémentaire santé",
+  "definition": "Une complémentaire santé est un contrat d'assurance permettant le remboursement de frais médicaux en complément du régime obligatoire. Une sur-complémentaire est un contrat d'assurance santé qui vient en supplément des deux premiers."
+ },
+ {
+  "terme": "E franchise",
+  "definition": "Une franchise est la partie restant à la charge de l'assuré (donc non indemnisée par l'assureur) dans le cas où survient un sinistre. Elle peut être absolue, relative, de sinistre, proportionnelle ou kilométrique."
+ },
+ {
+  "terme": "E garantie en frais réels",
+  "definition": "Une garantie en frais réels est une garantie qui couvre le coût total d'un acte de soin."
+ },
+ {
+  "terme": "E indemnité",
+  "definition": "Une indemnité est une somme versée par l'assurance à un assuré ou à la victime d'un préjudice. L'indemnité peut être forfaitaire ou indemnitaire."
+ },
+ {
+  "terme": "E institution",
+  "definition": "Une institution de prévoyance est une société qui gère des contrats collectifs d'assurance de personnes. Elle couvre les risques de : maladie, incapacité de travail et invalidité, dépendance, décès."
+ },
+ {
+  "terme": "E mise en demeure",
+  "definition": "Une mise en demeure est une procédure en cas de non-paiement de la cotisation. L'assureur adresse par recommandé une lettre réclamant à l'assuré le montant de la prime due. Faute de paiement dans les trente jours, le contrat est suspendu, puis il peut être résilié au plus tôt dix jours après la date effective de suspension."
+ },
+ {
+  "terme": "E mutuelle",
+  "definition": "Une mutuelle est un organisme à but non lucratif, les assurés sont des adhérents."
+ },
+ {
+  "terme": "E note de couverture",
+  "definition": "Une note de couverture est une garantie provisoire accordée lorsque le souscripteur n'a pas toutes les pièces nécessaires à la souscription du contrat. Une fois les justificatifs présentés, la note de couverture est transformée en contrat définitif. Si l'assuré ne présente pas toutes les pièces, la garantie s'arrête."
+ },
+ {
+  "terme": "E provision mathématique",
+  "definition": "Une provision mathématique est le montant des sommes que l'assureur doit accumuler et capitaliser grâce au versement des cotisations des assurés, dans le but de pouvoir garantir à tout moment le règlement de ses engagements envers les assurés."
+ },
+ {
+  "terme": "E quittance",
+  "definition": "Une quittance est une lettre de la compagnie à l'assuré pour certifier que son appel à cotisation a été réglé."
+ },
+ {
+  "terme": "E renonciation",
+  "definition": "Une renonciation à recours est généralement une clause du contrat de bail qui consiste pour un assuré à abandonner sa faculté d'exercer recours en cas de sinistre et de manière souvent réciproque."
+ },
+ {
+  "terme": "E rente viagère",
+  "definition": "Une rente viagère est une rente versée jusqu'au décès du bénéficiaire."
+ },
+ {
+  "terme": "E société",
+  "definition": "Une société de groupe d'assurance mutuelle (SGAM) est un statut permettant à des sociétés d'assurance mutuelles ou des institutions de prévoyance, de droit français, d'encadrer leurs relations financières."
+ },
+ {
+  "terme": "E société d'assurances",
+  "definition": "Une société d'assurances est une entreprise qui fournit des services d'assurance."
+ },
+ {
+  "terme": "E sur-complémentaire",
+  "definition": "Une sur-complémentaire est un contrat d'assurance santé qui vient en 3e lieu après le régime obligatoire et la complémentaire santé."
+ },
+ {
+  "terme": "E suspension de contrat",
+  "definition": "Une suspension de contrat est une situation particulière durant laquelle le contrat d'assurance n'a plus effet mais existe malgré tout. Elle peut être due soit à une mise en demeure soit à la vente du bien assuré (en attendant son remplacement)."
+ },
+ {
+  "terme": "Échéance",
+  "definition": "L'échéance est la date à laquelle l'assuré doit payer sa cotisation d'assurance. Il y a l'échéance principale (ou échéance anniversaire) et les échéances intermédiaires."
+ },
+ {
+  "terme": "Effet",
+  "definition": "L'effet (date d'effet) est la date à laquelle un contrat d'assurance ou un avenant entre en application."
+ },
+ {
+  "terme": "Epargne",
+  "definition": "L'Epargne handicap est un contrat d'assurance-vie conçu pour les personnes handicapées, qui jouit d'avantages fiscaux spécifiques."
+ },
+ {
+  "terme": "Épave",
+  "definition": "L'épave est un autre nom pour le véhicule économiquement irréparable (voir le paragraphe V)."
+ },
+ {
+  "terme": "Expertise",
+  "definition": "L'expertise est une analyse menée par un expert. Elle peut être avant sinistre, afin de chiffrer le montant des biens à assurer, ou après sinistre, où l'expert analyse, pour le compte de l'assureur et de l'assuré (dans le cas d'une expertise contradictoire), les éléments techniques indispensables à l'évaluation du sinistre."
+ },
+ {
+  "terme": "Extension",
+  "definition": "L'extension de garantie est une garantie qui s'ajoute au contrat initial en contrepartie d'une rémunération supplémentaire. Elle est souscrite par l'assuré lui-même."
+ },
+ {
+  "terme": "Fausse déclaration",
+  "definition": "La fausse déclaration est le fait pour un assuré de ne pas répondre correctement aux questions posées par l'assureur. En cas de sinistre, l'assuré risque soit une règle proportionnelle, soit une surprime, soit la résiliation du contrat. En cas de mauvaise foi l'assuré risque la nullité du contrat2."
+ },
+ {
+  "terme": "Fédération française",
+  "definition": "La Fédération française des sociétés d'assurances est une société qui représente les intérêts des sociétés d'assurances en France."
+ },
+ {
+  "terme": "Fonds de garantie",
+  "definition": "Le Fonds de garantie des assurances obligatoires de dommages (FGAO), anciennement Fonds de Garantie Automobile (FGA), est une structure chargée d'indemniser les victimes de préjudices dans des hypothèses très variées et selon des modalités différentes."
+ },
+ {
+  "terme": "Fonds de pension",
+  "definition": "Un fonds de pension est un fonds d'investissement spécifique à la retraite par capitalisation. C'est l'outil de l'épargne retraite."
+ },
+ {
+  "terme": "Forfait journalier",
+  "definition": "Le forfait journalier est la somme payée par toute personne hospitalisée et présente plus de 24 heures."
+ },
+ {
+  "terme": "Garantie",
+  "definition": "La garantie est un engagement pris par une compagnie d'assurance de couvrir un ou plusieurs événements déterminés selon les termes du contrat d'assurance."
+ },
+ {
+  "terme": "Garantie des accidents de la vie",
+  "definition": "La garantie des accidents de la vie (GAV) est un contrat d'assurance qui couvre les dommages corporels graves et accidentels ou le décès accidentel survenus dans le cadre de la vie privée3."
+ },
+ {
+  "terme": "Incapacité",
+  "definition": "L'incapacité permanente partielle ou IPP est un pourcentage exprimant l'importance des séquelles qui subsisteront définitivement et qui diminuent la capacité physique d'une personne qui a subi un accident."
+ },
+ {
+  "terme": "Indemnité",
+  "definition": "L'indemnité journalière est la somme versée par la Sécurité Sociale ou par une assurance, à la suite d'un arrêt de travail dû à une maladie ou à un accident."
+ },
+ {
+  "terme": "Indexation",
+  "definition": "L'indexation est la réajustement automatique des garanties et des primes. Les assurances habitations sont indexées sur l'indice FFB."
+ },
+ {
+  "terme": "Indice",
+  "definition": "L'indice du coût de la construction ou indice FFB est un indice relevant les variations tarifaires dans le temps, du secteur du bâtiment."
+ },
+ {
+  "terme": "Individuelle",
+  "definition": "L'individuelle accident est un terme qui désigne une garantie d'assurance de personne qui prévoit le versement d'une somme selon les montants et options souscrits dans le cas d'accident corporel entraînant par exemple le décès, l'incapacité permanente, l'incapacité temporaire de l'assuré."
+ },
+ {
+  "terme": "Médiateur de l'assurance",
+  "definition": "Le médiateur de l'assurance est une personne qui intervient pour aider l'assuré en cas de litige avec son assurance."
+ },
+ {
+  "terme": "Nullité",
+  "definition": "La nullité est la conséquence de l'annulation du contrat et le rétablissement des parties dans l'état dans lequel elles se trouvaient avant de contracter. Elle ne sanctionne pas une fausse déclaration mais un vice dans la formation du contrat."
+ },
+ {
+  "terme": "Organisme",
+  "definition": "L'Organisme pour le registre des intermédiaires en assurance (ORIAS) est un registre des intermédiaires d'assurance, créé en France en 2007, afin de recenser les agents généraux, courtiers d'assurance et de réassurance, mandataires d'assurance ou mandataires d'intermédiaire en assurance."
+ },
+ {
+  "terme": "Perte d'exploitation",
+  "definition": "La perte d'exploitation est une garantie d'assurance qui prend en charge les pertes financières pour une entreprise qui, à la suite d'un sinistre, a dû cesser totalement ou partiellement son activité. Afin de remettre l'entreprise dans la situation financière qui aurait été la sienne sans sinistre."
+ },
+ {
+  "terme": "Plafond Annuel de la Sécurité Sociale",
+  "definition": "Le Plafond Annuel de la Sécurité Sociale (PASS) (égal à 12 fois le Plafond Mensuel de la Sécurité Sociale (PMSS)) est utilisé pour le calcul de certaines cotisations sociales ou par les assurances pour calculer certains remboursements."
+ },
+ {
+  "terme": "Police d'assurance",
+  "definition": "La police d'assurance est une forme de contrat."
+ },
+ {
+  "terme": "Préavis",
+  "definition": "Le préavis est l'intervalle de temps entre la date d'une demande et la date d'effet de la demande."
+ },
+ {
+  "terme": "Prescription",
+  "definition": "La prescription est l'extinction d'un droit après l'écoulement d'une certaine durée. En matière d'assurance, la prescription est généralement de 2 ans."
+ },
+ {
+  "terme": "Prime d'assurance",
+  "definition": "La prime d'assurance est un autre nom pour la cotisation."
+ },
+ {
+  "terme": "Prorata temporis",
+  "definition": "Le prorata temporis est une expression latine signifiant « en fonction du temps écoulé ». C'est un mode de calcul des cotisations ou des remboursements en fonction de la date d'effet ou de la date de la prochaine échéance."
+ },
+ {
+  "terme": "Ratio combiné",
+  "definition": "Le ratio combiné ou ratio sinistre sur prime est le rapport entre le coût des sinistres et des frais de gestion sur le total des primes encaissées par une compagnie d'assurance."
+ },
+ {
+  "terme": "Réassurance",
+  "definition": "La réassurance c'est l'assurance des sociétés d'assurances. Parfois appelée assurance secondaire, celle-ci ne peut pas exister sans l'étape préliminaire du transfert de risque que représente l'assurance primaire."
+ },
+ {
+  "terme": "Recours de l'assureur",
+  "definition": "Le recours de l'assureur est un autre mot pour la subrogation (voir paragraphe S)."
+ },
+ {
+  "terme": "Relevé d'informations",
+  "definition": "Le relevé d'informations est un document remis par l'assurance sur demande de l'assuré, afin de lui détailler son bonus et l'historique de ses sinistres sur les cinq dernières années. Il doit préciser le ou les conducteurs désignés au contrat, la nature des sinistres (corporel ou matériel) et la part de responsabilité du conducteur, l'identité du conducteur responsable, la période de garantie et le coefficient de réduction / majoration à l'échéance anniversaire."
+ },
+ {
+  "terme": "Remorquage",
+  "definition": "Le remorquage est le dépannage d'un véhicule à l'aide d'une remorqueuse. Il peut être la suite d'une panne ou d'un accident."
+ },
+ {
+  "terme": "Résiliation",
+  "definition": "La résiliation est l'arrêt du contrat d'assurance à l'initiative soit de l'assuré, soit de la compagnie d'assurance."
+ },
+ {
+  "terme": "Résultat technique",
+  "definition": "Le résultat technique est la différence entre le débit (sinistre, frais de gestion, commissions...) et le crédit (cotisations et produits financiers)."
+ },
+ {
+  "terme": "Revalorisation",
+  "definition": "La revalorisation est le fait d'augmenter les garanties en contrepartie d'une augmentation de prime comme pour l'indexation."
+ },
+ {
+  "terme": "Risque",
+  "definition": "Le risque est l'aléa sur lequel l'assurance repose. Il est un événement incertain soit par sa survenance ou par sa date de survenance. Cela peut aussi exprimer la garantie (risque incendie ou bris de glace)."
+ },
+ {
+  "terme": "S conditions générales",
+  "definition": "Les conditions générales qui doivent être obligatoirement remises à la souscription du contrat, se présentent sous la forme d'un guide expliquant chaque garantie en détail, notamment les exclusions et le fonctionnement du contrat."
+ },
+ {
+  "terme": "S conditions particulières",
+  "definition": "Les conditions particulières sont propres à chaque assuré et regroupent les informations déclarées par celui-ci. Il y apparaît les caractéristiques du bien assuré, les assurés, le montant de la prime, l'échéance anniversaire et les garanties choisies."
+ },
+ {
+  "terme": "S exclusions",
+  "definition": "Les exclusions désignent ce qui n'est pas garanti par le contrat. Elles peuvent être légales ou contractuelles."
+ },
+ {
+  "terme": "S Plus-values",
+  "definition": "Les Plus-values (ou moins-values) sont l'écart, positif ou négatif, entre la valeur à l'achat et la valeur actuelle."
+ },
+ {
+  "terme": "S règles proportionnelles",
+  "definition": "Les règles proportionnelles de prime et de capitaux ou RPP RPC est une sanction de l'assurance en cas de sinistre lorsque celle-ci détecte une différence entre le risque qu'elle a pris en garantie et le risque réellement assuré. Elle fait une règle de trois entre le montant du sinistre, ce que le client doit régler et ce qu'il aurait dû régler normalement."
+ },
+ {
+  "terme": "Sinistre",
+  "definition": "Le sinistre est constitué par la survenance du risque prévu par le contrat d'assurance; il entraîne la mise en jeu de la garantie."
+ },
+ {
+  "terme": "Sociétaire",
+  "definition": "Un sociétaire est un assuré pour une mutuelle."
+ },
+ {
+  "terme": "Souscripteur",
+  "definition": "Le souscripteur est la personne qui signe le contrat et qui paie les cotisations."
+ },
+ {
+  "terme": "Subrogation",
+  "definition": "La subrogation est le fait que l'assurance fasse le recours contre le responsable d'un dommage ou son assurance à la place de l'assuré."
+ },
+ {
+  "terme": "Tacite reconduction",
+  "definition": "La tacite reconduction désigne le fait qu'un contrat d'assurance soit reconduit automatiquement à l'échéance tant qu'aucune des parties ne manifeste une demande contraire."
+ },
+ {
+  "terme": "Tarif d'autorité",
+  "definition": "Le tarif d'autorité est le tarif forfaitaire fixé par la sécurité sociale pour les professionnels non conventionnés."
+ },
+ {
+  "terme": "Tarif de Convention",
+  "definition": "Le Tarif de Convention (TC) est le tarif de référence sur lequel se base la Sécurité Sociale pour calculer ses remboursements. Pour les soins non remboursés, on parle de soins hors nomenclature."
+ },
+ {
+  "terme": "Ticket modérateur (",
+  "definition": "Le Ticket modérateur ( TM) est la différence entre le tarif de convention et la somme remboursée par la Sécurité Sociale."
+ },
+ {
+  "terme": "Tiers",
+  "definition": "Un tiers est toute personne pouvant être indemnisée au titre de la garantie responsabilité civile."
+ },
+ {
+  "terme": "Tiers Payant",
+  "definition": "Le Tiers Payant est le règlement direct par l'assurance au professionnel de santé (pharmacies, hôpitaux, laboratoires) en lieu et place de l'assuré."
+ },
+ {
+  "terme": "Tontine",
+  "definition": "La tontine est une association collective d'épargne, qui réunit des épargnants pour investir en commun dans un actif financier ou dans un bien dont la propriété revient à une partie seulement des souscripteurs. On distingue trois sortes de tontines."
+ },
+ {
+  "terme": "Valeur à neuf",
+  "definition": "La valeur à neuf est une indemnisation en cas de sinistre qui prend en compte la valeur de remplacement neuf sans déduire de vétusté."
+ },
+ {
+  "terme": "Valeur de rachat,",
+  "definition": "La valeur de rachat, valeur de réduction est la somme placée sur un contrat d'assurance-vie au jour dit (versement - frais de gestion et les plus ou moins-values)."
+ },
+ {
+  "terme": "Valeur de remplacement",
+  "definition": "La valeur de remplacement à dire d'expert (VRAD) est la valeur, déterminée par l'expert, d'un véhicule avant sinistre."
+ },
+ {
+  "terme": "Valeur vénale",
+  "definition": "La valeur vénale correspond à la valeur à neuf sur le marché, vétusté déduite."
+ },
+ {
+  "terme": "Véhicule économiquement irréparable",
+  "definition": "Un véhicule économiquement irréparable (VEI) désigne tout véhicule sinistré dont le montant des réparations est égal ou supérieur à la VRAD. Généralement appelé aussi épave sans que le véhicule soit forcément inutilisable."
+ },
+ {
+  "terme": "Vétusté",
+  "definition": "La vétusté est un élément de dépréciation de la valeur d'un bien en fonction de son état ou de son âge."
+ }
+]

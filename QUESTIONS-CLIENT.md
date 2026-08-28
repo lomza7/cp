@@ -91,3 +91,35 @@ devanture du 35 rue Jean Jaurès. Elles règlent la question 17 pour l'accueil.
 30. **« Sinistré » et « Jeune permis »** sont affichés en vitrine et méritent
     d'être traités sur `/assurances/auto-moto` : ce sont des requêtes de
     recherche à forte intention. Confirmer que ces cas sont bien pris en charge.
+
+---
+
+## Ajouté le 28 août 2026, construction des pages
+
+31. **Export du blog Wix.** Le texte des articles n'est récupérable ni depuis les
+    pages publiques (Wix le charge en JavaScript), ni depuis le flux RSS
+    `/blog-feed.xml`, qui ne renvoie que les 500 premiers caractères. Aucun
+    article n'a été réécrit de mémoire ou inventé.
+
+    Pour reprendre les articles fidèlement, il faut un export depuis le tableau
+    de bord Wix. Le moteur de blog est prêt : un fichier Markdown par article
+    dans `src/content/blog`, avec le modèle et les consignes dans
+    `src/assets/photos/LISEZ-MOI.md` et `src/content/blog/_LISEZ-MOI.md`.
+
+    Constat au passage, qui appuie la curation proposée en question 15 : sur les
+    20 articles du flux RSS, **8 n'ont que 155 caractères de résumé**. Ce sont
+    les doublons « carte grise 2026 ».
+
+32. **Délai de réponse annoncé.** Le site annonce « pendant les heures
+    d'ouverture, dans la demi-journée » sur le formulaire et la page de
+    confirmation. À confirmer, ou à corriger : une promesse non tenue coûte plus
+    cher qu'une promesse modeste.
+
+33. **Accès à l'agence.** La page `/agence-montereau` indique un stationnement en
+    zone bleue devant l'agence et la gare à une dizaine de minutes à pied. À
+    vérifier sur place.
+
+34. **Clé Resend.** Créer un compte sur resend.com, vérifier le domaine
+    `cpsolutions77.com` (deux enregistrements DNS), puis déclarer
+    `RESEND_API_KEY` dans les variables d'environnement Vercel. Sans elle, le
+    formulaire affiche une erreur lisible avec le numéro de téléphone en repli.

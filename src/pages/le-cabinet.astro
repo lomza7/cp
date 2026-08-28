@@ -1,0 +1,226 @@
+---
+import Page from '../layouts/Page.astro';
+import Photo from '../components/Photo.astro';
+import Bouton from '../components/Bouton.astro';
+import AvisGoogle from '../components/AvisGoogle.astro';
+import Faq from '../components/Faq.astro';
+import { contact, team, site, address } from '../config/site.ts';
+import { faqPage } from '../lib/schema.ts';
+
+/* Fusionne « Qui sommes-nous » et « Qu'est-ce qu'un courtier » du site d'origine. */
+
+const faq = [
+  {
+    question: "Qu'est-ce qu'un courtier, concrètement ?",
+    answer:
+      "Un intermédiaire indépendant entre vous et les compagnies d'assurance ou les banques. Il négocie les conditions d'un contrat ou d'une offre de prêt à votre place, en s'appuyant sur le volume d'affaires qu'il apporte. Contrairement à un agent général, il n'est lié à aucune compagnie.",
+  },
+  {
+    question: 'Est-ce que ça me coûte plus cher ?',
+    answer:
+      "Pour une assurance de particulier, non : nous sommes rémunérés par la compagnie sur le contrat placé, et le tarif obtenu est généralement meilleur que celui que vous auriez seul. Pour un crédit, des honoraires de courtage peuvent s'appliquer ; ils sont annoncés avant tout engagement et jamais dus si le prêt n'est pas obtenu.",
+  },
+  {
+    question: 'Comment ça se passe, côté paperasse ?',
+    answer:
+      "Rien de plus que d'habitude. Vous fournissez les mêmes documents que ceux qu'une banque ou un assureur vous demanderait, une seule fois, et vous gardez un seul interlocuteur. En coulisses, nous négocions avec plusieurs établissements.",
+  },
+  {
+    question: 'Faut-il prendre rendez-vous ?',
+    answer:
+      "Pas nécessairement. L'agence du 35 rue Jean Jaurès est ouverte du lundi au samedi, avec ou sans rendez-vous. Si vous préférez être sûr d'avoir quelqu'un de disponible, prenez un créneau ou appelez-nous avant de passer.",
+  },
+];
+---
+
+<Page
+  title="Le cabinet CP SOLUTIONS, courtiers à Montereau-Fault-Yonne"
+  description="Deux associés courtiers à Montereau-Fault-Yonne : Paul Poirier pour les assurances, Calvin Riffault pour les crédits. Indépendants, une agence rue Jean Jaurès. 01 64 24 83 45."
+  path="/le-cabinet"
+  h1="Deux associés, deux métiers"
+  chapeau="Contrairement à un agent lié à une seule compagnie, nous comparons pour vous. Notre rôle est de défendre vos intérêts, pas ceux d'un assureur ou d'une banque."
+  schema={faqPage(faq)}
+>
+  <section class="section conteneur">
+    <div class="associes">
+      {
+        team.map((m) => (
+          <article class="associe" data-metier={m.domain} id={m.id}>
+            <Photo
+              class="associe__photo"
+              nom={m.id}
+              alt={`${m.firstName} ${m.lastName}, dans les bureaux de CP SOLUTIONS à Montereau-Fault-Yonne.`}
+              attente={`portrait de ${m.firstName} ${m.lastName}`}
+              ratio="4 / 5"
+              sizes="(min-width: 48rem) 24rem, 100vw"
+            />
+            <h2>{m.firstName} {m.lastName}</h2>
+            <p class="associe__role libelle">{m.role}</p>
+            <blockquote>{m.quote}</blockquote>
+            <p class="associe__pour">
+              {m.domain === 'assurances'
+                ? "Auto, moto, habitation, professionnels, santé, et tous les dossiers refusés ailleurs."
+                : "Prêt immobilier, rachat et regroupement de crédits, renégociation, assurance de prêt."}
+            </p>
+            <Bouton
+              href={m.domain === 'assurances' ? '/assurances' : '/credits'}
+              variante="contour"
+            >
+              {m.domain === 'assurances' ? 'Voir les assurances' : 'Voir les crédits'}
+            </Bouton>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section conteneur courtier">
+    <h2>Ce que fait un courtier</h2>
+    <div class="courtier__grille">
+      <div>
+        <h3>Il met en relation, et il négocie</h3>
+        <p>
+          Le rôle du courtier est de vous mettre en relation avec l'assureur ou la banque
+          qui correspond à votre dossier, puis de négocier : les conditions du contrat, le
+          taux, les tarifs d'assurance. Il travaille pour vous, pas pour la compagnie.
+        </p>
+      </div>
+      <div>
+        <h3>Pour une assurance</h3>
+        <p>
+          Rien ne change de votre côté : mêmes justificatifs, un seul interlocuteur. En
+          coulisses, nous négocions un volume de contrats auprès des assureurs pour
+          obtenir de meilleurs tarifs ou, quand c'est bloqué, une solution alternative.
+        </p>
+      </div>
+      <div>
+        <h3>Pour un achat immobilier</h3>
+        <p>
+          Vous fournissez les informations et les pièces, nous vous accompagnons sur tout
+          le parcours jusqu'à la signature chez le notaire. Dix étapes, des délais légaux
+          à ne pas manquer, et un dossier présenté à plusieurs banques.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <AvisGoogle />
+
+  <section class="section conteneur">
+    <Faq items={faq} />
+  </section>
+
+  <section class="section conteneur venir">
+    <h2>Vous pouvez aussi pousser la porte</h2>
+    <p class="mesure">
+      Chez nous le téléphone existe, mais l'agence aussi. Elle est au {address.street}, à
+      {' '}{address.city}, ouverte du lundi au samedi. {site.slogan}.
+    </p>
+    <div class="venir__actions">
+      <Bouton href="/agence-montereau" variante="encre" icone="ph:map-pin">
+        Voir l'agence et les horaires
+      </Bouton>
+      <Bouton href={contact.phoneHref} variante="lien">
+        Ou appelez le {contact.phoneDisplay}
+      </Bouton>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .associes {
+    display: grid;
+    gap: var(--e-12);
+  }
+
+  .associe {
+    scroll-margin-top: 6rem;
+  }
+
+  .associe :global(.associe__photo) {
+    margin-bottom: var(--e-4);
+    max-width: 24rem;
+  }
+
+  .associe h2 {
+    font-size: var(--t-3);
+  }
+
+  .associe__role {
+    margin-top: var(--e-1);
+    color: var(--accent);
+  }
+
+  /* Le bleu tient le contraste en texte, l'orange non. */
+  .associe[data-metier='assurances'] .associe__role {
+    color: var(--encre-2);
+  }
+
+  .associe blockquote {
+    margin-top: var(--e-3);
+    padding-left: var(--e-4);
+    border-left: 3px solid var(--accent);
+    max-width: 46ch;
+  }
+
+  .associe__pour {
+    margin-top: var(--e-4);
+    max-width: 46ch;
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .associe :global(.bouton) {
+    margin-top: var(--e-4);
+  }
+
+  .courtier {
+    border-top: var(--filet-fort);
+  }
+
+  .courtier__grille {
+    margin-top: var(--e-6);
+    display: grid;
+    gap: var(--e-6);
+  }
+
+  .courtier h3 {
+    font-size: var(--t-4);
+    padding-top: var(--e-3);
+    border-top: 2px solid var(--encre);
+  }
+
+  .courtier p {
+    margin-top: var(--e-2);
+    max-width: 60ch;
+    color: var(--encre-2);
+  }
+
+  .venir {
+    border-top: var(--filet);
+  }
+
+  .venir p {
+    margin-top: var(--e-4);
+  }
+
+  .venir__actions {
+    margin-top: var(--e-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-4);
+  }
+
+  @media (min-width: 48rem) {
+    .associes {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--e-12);
+    }
+
+    .courtier__grille {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--e-8);
+    }
+  }
+</style>

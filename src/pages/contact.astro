@@ -1,0 +1,177 @@
+---
+import Page from '../layouts/Page.astro';
+import FormulaireRappel from '../components/FormulaireRappel.astro';
+import Horaires from '../components/Horaires.astro';
+import Bouton from '../components/Bouton.astro';
+import { contact, address, team } from '../config/site.ts';
+
+/*
+  Cette page est pré-rendue : Astro.url.searchParams est donc vide au build.
+  Les paramètres ?demande= et ?erreur=1 sont lus côté client par l'îlot du
+  formulaire, qui présélectionne le type de demande et révèle l'alerte.
+*/
+---
+
+<Page
+  title="Contact : appelez ou demandez à être rappelé"
+  description="Contactez CP SOLUTIONS à Montereau-Fault-Yonne : 01 64 24 83 45, contact@cpsolutions77.com, ou 35 rue Jean Jaurès. Demande de rappel en deux minutes."
+  path="/contact"
+  h1="Parlons de votre dossier"
+  chapeau="Trois façons de nous joindre : le téléphone, qui reste le plus rapide, le formulaire de rappel, ou la porte de l'agence."
+>
+  <section class="section conteneur contact">
+    <div class="contact__form">
+      <p class="alerte" role="alert" data-alerte-envoi hidden>
+        Votre demande n'a pas pu être envoyée. Vérifiez les champs et réessayez, ou
+        appelez-nous au <a href={contact.phoneHref}>{contact.phoneDisplay}</a>.
+      </p>
+      <FormulaireRappel titre="Demande de rappel" niveauTitre="h2" />
+    </div>
+
+    <aside class="contact__direct">
+      <div class="bloc bloc--tel">
+        <h2 class="libelle">Le plus rapide</h2>
+        <p class="bloc__tel"><a href={contact.phoneHref}>{contact.phoneDisplay}</a></p>
+        <p class="bloc__note">
+          Un courtier répond. Pas de serveur vocal, pas de mise en attente.
+        </p>
+      </div>
+
+      <div class="bloc">
+        <h2 class="libelle">Rendez-vous</h2>
+        <p class="bloc__note">
+          Choisissez un créneau qui vous arrange, en agence ou par téléphone.
+        </p>
+        <Bouton href={contact.calendly} variante="contour" externe icone="ph:calendar-blank">
+          Prendre rendez-vous
+        </Bouton>
+      </div>
+
+      <div class="bloc">
+        <h2 class="libelle">E-mail</h2>
+        <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+      </div>
+
+      <div class="bloc">
+        <h2 class="libelle">En agence</h2>
+        <address>
+          {address.street}<br />
+          {address.postalCode} {address.city}
+        </address>
+        <Horaires compact />
+        <Bouton href="/agence-montereau" variante="lien">Voir la page de l'agence</Bouton>
+      </div>
+
+      <div class="bloc">
+        <h2 class="libelle">Qui va vous répondre</h2>
+        <ul class="qui">
+          {
+            team.map((m) => (
+              <li>
+                <a href={`/le-cabinet#${m.id}`}>{m.firstName} {m.lastName}</a>
+                <span>{m.role}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </aside>
+  </section>
+</Page>
+
+<script>
+  // La page étant statique, le repli sans JavaScript de /api/contact revient ici
+  // avec ?erreur=1. On révèle alors l'alerte déjà présente dans le HTML.
+  if (new URLSearchParams(window.location.search).get('erreur') === '1') {
+    document.querySelector<HTMLElement>('[data-alerte-envoi]')?.removeAttribute('hidden');
+  }
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--e-12);
+  }
+
+  .alerte {
+    margin-bottom: var(--e-6);
+    padding: var(--e-4);
+    background: var(--papier-2);
+    border-left: 3px solid var(--erreur);
+    border-radius: var(--rayon);
+    font-weight: 700;
+  }
+
+  .contact__direct {
+    display: grid;
+    gap: var(--e-6);
+    align-content: start;
+  }
+
+  .bloc h2 {
+    padding-bottom: var(--e-2);
+    border-bottom: var(--filet);
+    margin-bottom: var(--e-3);
+  }
+
+  .bloc--tel {
+    padding: var(--e-4);
+    background: var(--orange-pale);
+    border-radius: var(--rayon);
+  }
+
+  .bloc__tel a {
+    font-family: var(--f-donnee);
+    font-size: var(--t-3);
+    font-weight: 500;
+    color: var(--encre);
+    text-decoration-color: var(--orange);
+    text-decoration-thickness: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bloc__note {
+    margin-top: var(--e-2);
+    margin-bottom: var(--e-3);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .bloc address {
+    font-style: normal;
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+    margin-bottom: var(--e-3);
+  }
+
+  .qui {
+    display: grid;
+    gap: var(--e-2);
+  }
+
+  .qui li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-1) var(--e-3);
+    align-items: baseline;
+  }
+
+  .qui a {
+    font-weight: 700;
+  }
+
+  .qui span {
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--encre-2);
+  }
+
+  @media (min-width: 64rem) {
+    .contact {
+      grid-template-columns: 1fr 20rem;
+      gap: var(--e-16);
+    }
+  }
+</style>

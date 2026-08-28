@@ -1,0 +1,262 @@
+---
+import Page from '../layouts/Page.astro';
+import { contact, address } from '../config/site.ts';
+import { company, complaints } from '../config/legal.ts';
+---
+
+<Page
+  title="Confidentialité et données personnelles"
+  description="Comment CP SOLUTIONS traite vos données personnelles : finalités, base légale, destinataires, durée de conservation et vos droits."
+  path="/confidentialite"
+  h1="Vos données personnelles"
+  chapeau="Ce que nous collectons, pourquoi, combien de temps nous le gardons et comment vous reprenez la main. En français, pas en jargon."
+>
+  <div class="legal conteneur section">
+    <section>
+      <h2>Qui est responsable</h2>
+      <p>
+        {company.name}, {address.street}, {address.postalCode} {address.city}, est
+        responsable du traitement des données collectées sur ce site. Pour toute question,
+        écrivez à <a href={`mailto:${contact.email}`}>{contact.email}</a> ou appelez le{' '}
+        <a href={contact.phoneHref}>{contact.phoneDisplay}</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Ce que nous collectons, et pourquoi</h2>
+
+      <div class="traitement">
+        <h3>Le formulaire de rappel</h3>
+        <dl>
+          <div>
+            <dt>Données</dt>
+            <dd>
+              Prénom, nom, téléphone, e-mail, type de demande, créneau d'appel souhaité,
+              et le message libre si vous en écrivez un.
+            </dd>
+          </div>
+          <div>
+            <dt>Finalité</dt>
+            <dd>Vous rappeler et traiter votre demande d'assurance ou de crédit.</dd>
+          </div>
+          <div>
+            <dt>Base légale</dt>
+            <dd>
+              Votre consentement, donné en cochant la case du formulaire. Vous pouvez le
+              retirer à tout moment.
+            </dd>
+          </div>
+          <div>
+            <dt>Destinataires</dt>
+            <dd>
+              Les deux associés du cabinet. Et Resend, notre prestataire d'envoi
+              d'e-mails, qui achemine le message sans l'exploiter.
+            </dd>
+          </div>
+          <div>
+            <dt>Conservation</dt>
+            <dd>
+              Trois ans à compter du dernier contact, conformément à la recommandation de
+              la CNIL en matière de prospection. Si un contrat est conclu, les données du
+              dossier suivent la durée légale propre au contrat.
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="traitement">
+        <h3>La mesure d'audience</h3>
+        <dl>
+          <div>
+            <dt>Données</dt>
+            <dd>
+              Pages consultées, type d'appareil, pays, page d'origine. Aucune donnée
+              permettant de vous identifier, aucun identifiant publicitaire.
+            </dd>
+          </div>
+          <div>
+            <dt>Finalité</dt>
+            <dd>Savoir quelles pages servent, pour améliorer le site.</dd>
+          </div>
+          <div>
+            <dt>Base légale</dt>
+            <dd>
+              Notre intérêt légitime à mesurer l'audience de façon anonyme. La solution
+              utilisée ne dépose aucun cookie et ne suit personne d'un site à l'autre,
+              elle ne requiert donc pas votre consentement.
+            </dd>
+          </div>
+          <div>
+            <dt>Conservation</dt>
+            <dd>Statistiques agrégées, sans donnée individuelle conservée.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ce que nous ne faisons pas</h2>
+      <ul class="jamais">
+        <li>Nous ne vendons ni ne louons vos données à personne.</li>
+        <li>Nous ne faisons pas de publicité ciblée et ne déposons aucun traceur publicitaire.</li>
+        <li>Nous ne créons pas de compte ni de profil à votre insu.</li>
+        <li>Nous ne transférons pas vos données hors de l'Union européenne, sauf pour l'acheminement technique des e-mails, encadré contractuellement.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Les formulaires de devis de nos partenaires</h2>
+      <p>
+        Certains devis passent par des formulaires hébergés par nos partenaires,
+        LyaProtect et AssurDistribution. Ils s'ouvrent dans un nouvel onglet, sur leur
+        propre site : à partir de ce moment, c'est leur politique de confidentialité qui
+        s'applique, et non celle-ci. Nous ne recevons que la demande qu'ils nous
+        transmettent.
+      </p>
+      <p>
+        Il en va de même de Calendly pour la prise de rendez-vous.
+      </p>
+    </section>
+
+    <section>
+      <h2>Vos droits</h2>
+      <p>
+        Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation,
+        d'opposition et de portabilité sur vos données, et du droit de retirer votre
+        consentement à tout moment.
+      </p>
+      <p>
+        Pour l'exercer, écrivez à <a href={`mailto:${contact.email}`}>{contact.email}</a>{' '}
+        ou par courrier à {complaints.postalAddress}. Nous répondons dans un délai d'un
+        mois. Une pièce d'identité peut être demandée en cas de doute sérieux sur votre
+        identité.
+      </p>
+      <p>
+        Si notre réponse ne vous satisfait pas, vous pouvez saisir la Commission nationale
+        de l'informatique et des libertés :
+      </p>
+      <address>
+        CNIL<br />
+        3 place de Fontenoy, TSA 80715, 75334 Paris Cedex 07
+      </address>
+      <p>
+        <a href="https://www.cnil.fr" target="_blank" rel="noopener">
+          cnil.fr<span class="lecteur-seul"> (nouvel onglet)</span>
+        </a>
+      </p>
+    </section>
+
+    <section>
+      <h2>Sécurité</h2>
+      <p>
+        Le site est servi exclusivement en HTTPS. Les demandes de rappel ne sont pas
+        stockées dans une base de données : elles sont transmises par e-mail aux deux
+        associés, puis conservées dans leur messagerie professionnelle.
+      </p>
+    </section>
+
+    <section>
+      <h2>Cookies</h2>
+      <p>
+        Ce site ne dépose aucun cookie. Le détail est sur la page{' '}
+        <a href="/cookies">cookies</a>.
+      </p>
+    </section>
+  </div>
+</Page>
+
+<style>
+  .legal {
+    max-width: 48rem;
+  }
+
+  .legal section + section {
+    margin-top: var(--e-12);
+  }
+
+  .legal h2 {
+    font-size: var(--t-3);
+    padding-bottom: var(--e-2);
+    border-bottom: 2px solid var(--encre);
+  }
+
+  .traitement {
+    margin-top: var(--e-6);
+  }
+
+  .traitement h3 {
+    font-size: var(--t-4);
+  }
+
+  .legal p {
+    margin-top: var(--e-4);
+    max-width: 66ch;
+  }
+
+  .legal address {
+    margin-top: var(--e-4);
+    font-style: normal;
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+  }
+
+  dl {
+    margin: var(--e-3) 0 0;
+  }
+
+  dl > div {
+    display: grid;
+    gap: var(--e-1);
+    padding-block: var(--e-3);
+    border-bottom: var(--filet);
+  }
+
+  dt {
+    font-family: var(--f-donnee);
+    font-size: var(--t-libelle);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--encre-2);
+  }
+
+  dd a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+
+  dd {
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .jamais {
+    margin-top: var(--e-4);
+    display: grid;
+    gap: var(--e-2);
+    max-width: 66ch;
+  }
+
+  .jamais li {
+    position: relative;
+    padding-left: var(--e-6);
+  }
+
+  .jamais li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 0.75rem;
+    height: 2px;
+    background: var(--encre);
+  }
+
+  @media (min-width: 40rem) {
+    dl > div {
+      grid-template-columns: 12rem 1fr;
+      gap: var(--e-4);
+      align-items: baseline;
+    }
+  }
+</style>

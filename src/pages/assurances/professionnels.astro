@@ -1,0 +1,182 @@
+---
+import Page from '../../layouts/Page.astro';
+import Bouton from '../../components/Bouton.astro';
+import Faq from '../../components/Faq.astro';
+import LiensDevis from '../../components/LiensDevis.astro';
+import FormulaireRappel from '../../components/FormulaireRappel.astro';
+import { contact } from '../../config/site.ts';
+import { faqPage, service } from '../../lib/schema.ts';
+
+const faq = [
+  {
+    question: 'La décennale est-elle obligatoire pour moi ?',
+    answer:
+      "Si votre activité touche à la construction ou à la rénovation d'un ouvrage, oui : l'assurance de responsabilité civile décennale est une obligation légale, et son attestation est exigée avant le démarrage du chantier. Travailler sans elle est un délit et vous laisse personnellement exposé pendant dix ans.",
+  },
+  {
+    question: 'Quelle différence entre décennale et dommage-ouvrage ?',
+    answer:
+      "La décennale est souscrite par le professionnel qui réalise les travaux. La dommage-ouvrage est souscrite par le maître d'ouvrage, celui qui fait construire : elle permet de financer les réparations sans attendre qu'on ait déterminé qui est responsable. Les deux se complètent.",
+  },
+  {
+    question: "La RC professionnelle couvre-t-elle mes locaux ?",
+    answer:
+      "Non. La responsabilité civile professionnelle couvre les dommages que vous causez à autrui dans le cadre de votre activité. Pour vos locaux, votre matériel et vos stocks, il faut une multirisque professionnelle. Les deux sont souvent réunies dans un même contrat.",
+  },
+  {
+    question: "Puis-je assurer plusieurs véhicules en un seul contrat ?",
+    answer:
+      "Oui, en flotte. À partir de quelques véhicules, la gestion est simplifiée et le tarif généralement meilleur qu'en contrats individuels. Les véhicules destinés à la location relèvent de garanties spécifiques.",
+  },
+];
+---
+
+<Page
+  title="Assurances professionnelles : RC pro, décennale, multirisque"
+  description="Courtier en assurances professionnelles à Montereau-Fault-Yonne. Décennale, dommage-ouvrage, RC pro, multirisque, flotte de véhicules. Devis en ligne ou 01 64 24 83 45."
+  path="/assurances/professionnels"
+  h1="Assurances professionnelles"
+  chapeau="Protéger votre activité, vos salariés, vos locaux et votre matériel. Chaque métier a ses risques : votre contrat doit être modulable pour répondre à ceux de votre quotidien."
+  crumbs={[{ label: 'Assurances', href: '/assurances' }]}
+  filCourant="Professionnels"
+  metier="assurances"
+  schema={[
+    faqPage(faq),
+    service(
+      'Assurances professionnelles',
+      "Courtage en assurances professionnelles : responsabilité civile professionnelle, décennale, dommage-ouvrage, multirisque, flotte de véhicules.",
+      '/assurances/professionnels',
+    ),
+  ]}
+>
+  <section class="section conteneur">
+    <div class="garanties">
+      <article>
+        <h2>Responsabilité civile professionnelle</h2>
+        <p>
+          Elle vous protège contre les dommages que vous pourriez causer à autrui dans le
+          cadre de votre activité : un client, un fournisseur, un passant, un voisin de
+          chantier.
+        </p>
+      </article>
+
+      <article>
+        <h2>Responsabilité civile décennale</h2>
+        <p class="statut libelle">Obligation légale pour le bâtiment</p>
+        <p>
+          Aussi appelée garantie décennale, elle protège les professionnels du bâtiment et
+          de la construction pendant dix ans après la réception des travaux. L'attestation
+          est réclamée avant le début du chantier.
+        </p>
+      </article>
+
+      <article>
+        <h2>Dommage-ouvrage</h2>
+        <p class="statut libelle">Souscrite par le maître d'ouvrage</p>
+        <p>
+          Elle couvre le coût des réparations des désordres de construction sans attendre
+          la recherche de responsabilité. C'est le pendant de la décennale, du côté de
+          celui qui fait construire.
+        </p>
+      </article>
+
+      <article>
+        <h2>Multirisque professionnelle</h2>
+        <p>
+          Une couverture complète des biens mobiliers et immobiliers de l'entreprise, avec
+          sa responsabilité. On y ajoute selon les cas la perte d'exploitation, qui prend
+          en charge le chiffre d'affaires perdu après un sinistre.
+        </p>
+      </article>
+
+      <article>
+        <h2>Véhicules professionnels</h2>
+        <p>
+          Un véhicule, une flotte, ou des véhicules destinés à la location. La gestion en
+          flotte simplifie les échéances et améliore généralement le tarif.
+        </p>
+      </article>
+
+      <article>
+        <h2>Un risque que personne n'a voulu couvrir ?</h2>
+        <p>
+          Activité atypique, antécédent de sinistre, refus en série : c'est le type de
+          dossier que nous cherchons à placer. Appelez-nous et décrivez la situation.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section conteneur">
+    <Faq items={faq} />
+  </section>
+
+  <section class="section conteneur">
+    <LiensDevis
+      seulement={['decennale', 'dommageOuvrage']}
+      titre="Vos devis en ligne"
+    />
+    <p class="note">
+      Les autres contrats professionnels se construisent au cas par cas : un appel de
+      cinq minutes fait gagner un aller-retour de formulaires.
+    </p>
+    <Bouton href={contact.phoneHref} variante="encre" icone="ph:phone-fill">
+      Appeler le {contact.phoneDisplay}
+    </Bouton>
+  </section>
+
+  <section class="section conteneur rappel">
+    <FormulaireRappel demande="professionnel" titre="Décrivez-nous votre activité" />
+  </section>
+</Page>
+
+<style>
+  .garanties {
+    display: grid;
+    gap: 0;
+  }
+
+  .garanties article {
+    padding-block: var(--e-5, 1.25rem) var(--e-6);
+    padding-top: var(--e-4);
+    border-top: var(--filet);
+  }
+
+  .garanties article:last-child {
+    border-bottom: var(--filet);
+  }
+
+  .garanties h2 {
+    font-size: var(--t-4);
+  }
+
+  .statut {
+    margin-top: var(--e-1);
+  }
+
+  .garanties p:last-child {
+    margin-top: var(--e-2);
+    max-width: 62ch;
+    color: var(--encre-2);
+  }
+
+  .note {
+    margin-top: var(--e-6);
+    margin-bottom: var(--e-4);
+    max-width: 62ch;
+    font-size: var(--t-small);
+    color: var(--encre-2);
+  }
+
+  .rappel {
+    border-top: var(--filet-fort);
+    max-width: 46rem;
+  }
+
+  @media (min-width: 48rem) {
+    .garanties {
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--e-8);
+    }
+  }
+</style>

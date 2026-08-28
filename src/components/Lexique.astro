@@ -1,0 +1,264 @@
+---
+import { Icon } from 'astro-icon/components';
+
+/**
+ * Lexique métier. Deux atouts SEO : la longue traîne, et la structure en
+ * liste de définitions que les moteurs lisent bien.
+ *
+ * Le filtre est en JavaScript progressif : sans lui, tous les termes sont
+ * affichés et la recherche du navigateur suffit.
+ */
+export interface Terme {
+  terme: string;
+  definition: string;
+}
+
+interface Props {
+  termes: Terme[];
+  /** Libellé du champ de recherche. */
+  placeholder?: string;
+  class?: string;
+}
+
+const { termes, placeholder = 'Chercher un terme', class: classe } = Astro.props;
+
+/** Regroupement alphabétique, pour permettre une navigation par lettre. */
+const groupes = new Map<string, Terme[]>();
+for (const t of [...termes].sort((a, b) => a.terme.localeCompare(b.terme, 'fr'))) {
+  const lettre = t.terme
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .charAt(0)
+    .toUpperCase();
+  if (!groupes.has(lettre)) groupes.set(lettre, []);
+  groupes.get(lettre)!.push(t);
+}
+const lettres = [...groupes.keys()];
+---
+
+<div class:list={['lex', classe]} data-lexique>
+  <div class="lex__outils">
+    <p class="champ">
+      <label for="lex-recherche">{placeholder}</label>
+      <span class="lex__saisie">
+        <Icon name="ph:magnifying-glass" aria-hidden="true" />
+        <input
+          type="search"
+          id="lex-recherche"
+          data-recherche
+          autocomplete="off"
+          aria-describedby="lex-compte"
+        />
+      </span>
+    </p>
+    <p class="lex__compte" id="lex-compte" role="status" data-compte>
+      {termes.length} termes
+    </p>
+  </div>
+
+  <nav class="lex__lettres" aria-label="Naviguer par lettre">
+    <ul>
+      {lettres.map((l) => <li><a href={`#lettre-${l}`}>{l}</a></li>)}
+    </ul>
+  </nav>
+
+  {
+    lettres.map((lettre) => (
+      <section class="lex__groupe" id={`lettre-${lettre}`} data-groupe>
+        <h2 class="lex__lettre">{lettre}</h2>
+        <dl>
+          {groupes.get(lettre)!.map((t) => (
+            <div class="lex__terme" data-terme={`${t.terme} ${t.definition}`.toLowerCase()}>
+              <dt>{t.terme}</dt>
+              <dd>{t.definition}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    ))
+  }
+
+  <p class="lex__vide" data-vide hidden>
+    Aucun terme ne correspond. Essayez un autre mot, ou appelez-nous : on vous
+    l'expliquera de vive voix.
+  </p>
+</div>
+
+<script>
+  const racine = document.querySelector<HTMLElement>('[data-lexique]');
+  if (racine) {
+    const champ = racine.querySelector<HTMLInputElement>('[data-recherche]')!;
+    const compte = racine.querySelector<HTMLElement>('[data-compte]')!;
+    const vide = racine.querySelector<HTMLElement>('[data-vide]')!;
+    const termes = [...racine.querySelectorAll<HTMLElement>('[data-terme]')];
+    const groupes = [...racine.querySelectorAll<HTMLElement>('[data-groupe]')];
+    const total = termes.length;
+
+    let minuteur: number | undefined;
+    champ.addEventListener('input', () => {
+      window.clearTimeout(minuteur);
+      minuteur = window.setTimeout(() => {
+        const q = champ.value.trim().toLowerCase();
+        let visibles = 0;
+
+        for (const el of termes) {
+          const ok = !q || el.dataset.terme!.includes(q);
+          el.hidden = !ok;
+          if (ok) visibles++;
+        }
+
+        // Une lettre sans terme visible n'a plus de raison d'occuper l'écran.
+        for (const g of groupes) {
+          g.hidden = !g.querySelector('[data-terme]:not([hidden])');
+        }
+
+        compte.textContent = q
+          ? `${visibles} terme${visibles > 1 ? 's' : ''} sur ${total}`
+          : `${total} termes`;
+        vide.hidden = visibles > 0;
+      }, 120);
+    });
+  }
+</script>
+
+<style>
+  .lex__outils {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--e-4);
+  }
+
+  .champ {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-2);
+    flex: 1 1 18rem;
+  }
+
+  .champ label {
+    font-weight: 700;
+    font-size: var(--t-small);
+  }
+
+  .lex__saisie {
+    display: flex;
+    align-items: center;
+    gap: var(--e-2);
+    padding-inline: var(--e-3);
+    background: var(--papier-3);
+    border: 1.5px solid var(--encre);
+    border-radius: var(--rayon);
+  }
+
+  .lex__saisie :global(svg) {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: none;
+    color: var(--encre-2);
+  }
+
+  .lex__saisie input {
+    flex: 1;
+    min-height: var(--touche);
+    border: 0;
+    background: transparent;
+    font-size: 1rem;
+  }
+
+  .lex__saisie input:focus {
+    outline: none;
+  }
+
+  .lex__saisie:focus-within {
+    outline: 3px solid var(--encre);
+    outline-offset: 2px;
+  }
+
+  .lex__compte {
+    font-family: var(--f-donnee);
+    font-size: var(--t-small);
+    color: var(--encre-2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lex__lettres {
+    margin-top: var(--e-6);
+    padding-block: var(--e-3);
+    border-block: var(--filet);
+  }
+
+  .lex__lettres ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-1);
+  }
+
+  .lex__lettres a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    font-family: var(--f-donnee);
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: var(--rayon);
+  }
+
+  .lex__lettres a:hover {
+    border-color: var(--encre);
+    color: var(--encre);
+  }
+
+  .lex__groupe {
+    margin-top: var(--e-8);
+    scroll-margin-top: 6rem;
+  }
+
+  .lex__lettre {
+    font-family: var(--f-donnee);
+    font-size: var(--t-3);
+    font-weight: 500;
+    color: var(--accent);
+    padding-bottom: var(--e-2);
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .lex__groupe dl {
+    margin: 0;
+  }
+
+  .lex__terme {
+    padding-block: var(--e-4);
+    border-bottom: var(--filet);
+  }
+
+  .lex__terme dt {
+    font-weight: 700;
+  }
+
+  .lex__terme dd {
+    margin: var(--e-1) 0 0;
+    max-width: 70ch;
+    color: var(--encre-2);
+  }
+
+  .lex__vide {
+    margin-top: var(--e-8);
+    padding: var(--e-4);
+    background: var(--papier-2);
+    border-radius: var(--rayon);
+    max-width: 60ch;
+  }
+
+  @media (min-width: 48rem) {
+    .lex__terme {
+      display: grid;
+      grid-template-columns: 16rem 1fr;
+      gap: var(--e-6);
+    }
+  }
+</style>
