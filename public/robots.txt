@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://www.cpsolutions77.com/sitemap-index.xml

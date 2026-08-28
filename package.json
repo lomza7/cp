@@ -14,16 +14,19 @@
     "check:redirects": "node --experimental-strip-types scripts/check-redirects.mjs"
   },
   "dependencies": {
-    "@astrojs/sitemap": "latest",
-    "@astrojs/vercel": "latest",
-    "@iconify-json/ph": "latest",
-    "astro": "latest",
-    "astro-icon": "latest",
-    "sharp": "latest"
+    "@astrojs/sitemap": "3.7.3",
+    "@astrojs/vercel": "11.0.8",
+    "@iconify-json/ph": "1.2.2",
+    "astro": "7.2.9",
+    "astro-icon": "1.2.0",
+    "sharp": "0.35.4"
   },
   "devDependencies": {
-    "@astrojs/check": "latest",
-    "typescript": "latest",
-    "vitest": "latest"
+    "@astrojs/check": "0.9.10",
+    "typescript": "6.0.3",
+    "vitest": "4.1.11"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

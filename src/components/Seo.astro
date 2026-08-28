@@ -1,5 +1,6 @@
 ---
 import { site } from '../config/site.ts';
+import { isIndexable } from '../lib/env.ts';
 
 interface Props {
   title: string;
@@ -26,6 +27,8 @@ const {
   modifiedTime,
 } = Astro.props;
 
+// Hors production, toute page est en noindex : voir src/lib/env.ts.
+const bloque = noindex || !isIndexable;
 const canonical = new URL(path, site.url).href;
 const ogImage = new URL(image, site.url).href;
 // Le titre de la page d'accueil est déjà complet, les autres portent le suffixe.
@@ -35,7 +38,7 @@ const fullTitle = path === '/' ? title : `${title} | ${site.name}`;
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
-{noindex && <meta name="robots" content="noindex, follow" />}
+{bloque && <meta name="robots" content="noindex, nofollow" />}
 
 <meta property="og:type" content={ogType} />
 <meta property="og:site_name" content={site.name} />
