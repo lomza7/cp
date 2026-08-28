@@ -103,44 +103,85 @@ Un encart de simulateur est prévu sur l'accueil, entre les sections 3 et 4. Il 
 
 ---
 
-## 9. Déploiement Vercel : état
+## 9. Déploiement Vercel
 
-Le dépôt est poussé sur `github.com/lomza7/cp` (privé, branche `main`, 3 commits).
+Projet `cpsolutions77` sur le compte « Louis' projects » (plan Hobby), lié au
+dépôt privé `github.com/lomza7/cp`, branche de production `main`.
 
-**Build vérifié dans un clone vierge** avec `npm ci`, exactement comme le fera Vercel :
+URLs du projet :
+```
+cpsolutions77-git-main-louis-projects-0b235f3b.vercel.app
+```
 
-| Contrôle | Résultat |
-|---|---|
-| Installation et build | réussis, 489 ms |
-| JavaScript compressé | 953 octets |
-| Redirections 301 générées | 32 |
-| `robots.txt` en cible « preview » | `Disallow: /` |
-| Balise `noindex, nofollow` | présente sur toutes les pages |
-| Tests | 21 sur 21 |
+**Build vérifié dans un clone vierge** avec `npm ci`, comme le fait Vercel :
+installation et build réussis, 953 octets de JavaScript compressé, 32
+redirections 301 générées, 28 tests au vert.
 
-**Ce qui reste à faire à la main.** Le connecteur Vercel a signalé la création
-du projet `cpsolutions77` (`prj_4wa3R1CQ16rITADA0J4H7jJJO6Nm`) puis a renvoyé
-404 sur ce projet, une liste de projets vide, et 403 sur ses déploiements. Ses
-droits ne permettent pas de confirmer ni de terminer le lien Git. À faire depuis
-l'interface Vercel :
+### Le déploiement bloqué du 28 août, et sa cause
 
-1. Ouvrir vercel.com et regarder si un projet `cpsolutions77` existe.
-2. **S'il existe** : Settings, Git, connecter `lomza7/cp`, branche de production `main`.
-3. **S'il n'existe pas** : Add New, Project, Import `lomza7/cp`. Ne pas créer un
-   second projet portant le même nom.
-4. Le framework est détecté automatiquement (Astro). Aucune variable
-   d'environnement n'est nécessaire pour ce premier déploiement ; la clé Resend
-   n'arrive qu'en Phase 3.
+Le premier déploiement a été refusé par Vercel avec ce message :
 
-**Le verrou d'indexation est automatique.** Vercel renseigne `VERCEL_ENV` :
-toute cible autre que `production` produit un `robots.txt` en `Disallow: /` et
-une balise `noindex, nofollow`. Le jour où le domaine `cpsolutions77.com` est
-basculé sur la cible de production, l'indexation s'ouvre d'elle-même, sans
-intervention. Voir `src/lib/env.ts`.
+> The deployment was blocked because the commit email louis.maaza@keyprod.com
+> could not be matched to a GitHub account.
 
-**Après le premier déploiement**, lancer la vérification des redirections
-contre l'URL obtenue :
+Vercel refuse de construire un commit dont l'adresse d'auteur n'est rattachée à
+aucun compte GitHub. C'est une protection contre les déploiements non autorisés,
+et elle est active sur le plan Hobby.
+
+**Correctif appliqué.** Le dépôt porte maintenant sa propre identité Git :
 
 ```bash
-npm run check:redirects https://cpsolutions77-xxxx.vercel.app
+git config user.name  "lomza7"
+git config user.email "223171083+lomza7@users.noreply.github.com"
 ```
+
+L'adresse `users.noreply.github.com` est celle que GitHub associe au compte : elle
+est toujours reconnue et n'expose aucune adresse personnelle. **Tout commit sur ce
+dépôt doit utiliser cette identité**, sinon Vercel bloquera de nouveau. La
+configuration est locale au dépôt, donc elle s'applique d'elle-même.
+
+### Le verrou d'indexation, renforcé
+
+La capture du déploiement bloqué a révélé que la cible était **Production**. Or
+la première version du verrou considérait toute cible `production` comme
+indexable : le site aurait donc été explorable sur une adresse en `.vercel.app`,
+avec des balises canoniques pointant vers `cpsolutions77.com`. Exactement le
+contenu dupliqué qu'on cherche à éviter.
+
+`src/lib/env.ts` exige désormais **deux** conditions : cible `production` **et**
+`VERCEL_PROJECT_PRODUCTION_URL` égal au domaine canonique. Comportement figé par
+sept tests (`src/lib/env.test.ts`) :
+
+| Cible | Domaine de production | Indexable |
+|---|---|---|
+| production | `www.cpsolutions77.com` | oui |
+| production | `cpsolutions77.com` | oui |
+| production | `cpsolutions77.vercel.app` | non |
+| production | inconnu | non |
+| production | `cpsolutions77.com.attaquant.net` | non |
+| preview | `www.cpsolutions77.com` | non |
+| hors Vercel | non renseigné | non |
+
+Conséquence : l'indexation s'ouvrira d'elle-même le jour de la bascule DNS, sans
+toucher au code. Le `robots.txt` écrit en commentaire la raison du blocage, pour
+que ce ne soit pas un mystère si quelqu'un se demande pourquoi le site n'est pas
+indexé.
+
+### À faire dans l'interface Vercel
+
+1. **Web Analytics** et **Speed Insights** sont marqués « Not Enabled ».
+   `astro.config.ts` injecte déjà la balise via l'adaptateur, mais la
+   fonctionnalité doit être activée côté projet pour collecter quoi que ce soit.
+2. **Phase 3** : ajouter la variable d'environnement `RESEND_API_KEY` pour
+   l'envoi du formulaire.
+3. **Phase 6** : rattacher `cpsolutions77.com`, ce qui ouvre l'indexation.
+
+### Après chaque déploiement
+
+```bash
+npm run check:redirects https://cpsolutions77-git-main-louis-projects-0b235f3b.vercel.app
+```
+
+Ce test ne peut pas passer au vert avant la Phase 4 : les 32 anciennes URLs
+renvoient déjà un 301 vers le bon chemin, mais 17 pages de destination ne sont
+pas encore construites.

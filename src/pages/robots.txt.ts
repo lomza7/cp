@@ -1,10 +1,10 @@
 import type { APIRoute } from 'astro';
 import { site } from '../config/site.ts';
-import { isIndexable, deployEnv } from '../lib/env.ts';
+import { isIndexable, raisonNonIndexable } from '../lib/env.ts';
 
 /**
- * robots.txt généré au build. Sur toute autre cible que la production, il
- * interdit l'exploration : voir src/lib/env.ts pour la raison.
+ * robots.txt généré au build. Tant que le site n'est pas servi sur son vrai
+ * domaine, il interdit l'exploration : voir src/lib/env.ts pour la raison.
  */
 export const GET: APIRoute = () => {
   const body = isIndexable
@@ -13,8 +13,8 @@ Allow: /
 
 Sitemap: ${site.url}/sitemap-index.xml
 `
-    : `# Déploiement « ${deployEnv} », pas le site de production.
-# Interdit à l'exploration pour ne pas dupliquer cpsolutions77.com.
+    : `# Déploiement non indexable : ${raisonNonIndexable()}.
+# Interdit à l'exploration pour ne pas dupliquer ${new URL(site.url).host}.
 User-agent: *
 Disallow: /
 `;
